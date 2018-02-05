@@ -27,20 +27,22 @@ public class DriveTrainSide {
             throw new IllegalArgumentException("A drive side may not be in the center");
         }
         if (side == Side.RIGHT) {
+            masterID = RobotMap.RIGHT_DRIVETRAIN_TALON_1;
             masterTalon = new WPI_TalonSRX(RobotMap.RIGHT_DRIVETRAIN_TALON_1);
             slaveTalon1 = new WPI_TalonSRX(RobotMap.RIGHT_DRIVETRAIN_TALON_2);
-            slaveTalon2 = new WPI_TalonSRX(RobotMap.RIGHT_DRIVETRAIN_TALON_2);
-            masterTalon.setInverted(false);
-            slaveTalon1.setInverted(true);
-            slaveTalon1.setInverted(true);
-
-        } else {
-            masterTalon = new WPI_TalonSRX(RobotMap.LEFT_DRIVETRAIN_TALON_1);
-            slaveTalon2 = new WPI_TalonSRX(RobotMap.LEFT_DRIVETRAIN_TALON_2);
-            slaveTalon1 = new WPI_TalonSRX(RobotMap.LEFT_DRIVETRAIN_TALON_2);
+            slaveTalon2 = new WPI_TalonSRX(RobotMap.RIGHT_DRIVETRAIN_TALON_3);
             masterTalon.setInverted(true);
             slaveTalon1.setInverted(false);
-            slaveTalon1.setInverted(false);
+            slaveTalon2.setInverted(false);
+
+        } else {
+            masterID = RobotMap.LEFT_DRIVETRAIN_TALON_1;
+            masterTalon = new WPI_TalonSRX(RobotMap.LEFT_DRIVETRAIN_TALON_1);
+            slaveTalon1 = new WPI_TalonSRX(RobotMap.LEFT_DRIVETRAIN_TALON_2);
+            slaveTalon2 = new WPI_TalonSRX(RobotMap.LEFT_DRIVETRAIN_TALON_3);
+            masterTalon.setInverted(false);
+            slaveTalon1.setInverted(true);
+            slaveTalon2.setInverted(true);
         }
         masterTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
         masterTalon.set(ControlMode.PercentOutput, 0.0);
@@ -50,7 +52,6 @@ public class DriveTrainSide {
 
     public void setPower(double numIn) {
         masterTalon.set(ControlMode.PercentOutput, numIn);
-        slaveTalon1.set(numIn);
     }
 
 
