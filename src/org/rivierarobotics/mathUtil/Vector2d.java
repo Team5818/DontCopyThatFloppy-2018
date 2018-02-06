@@ -63,6 +63,15 @@ public class Vector2d {
     public Vector2d add(Vector2d other) {
         return new Vector2d(x + other.getX(), y + other.getY());
     }
+    
+    /**
+     * 
+     * @param other - other vector
+     * @return difference
+     */
+    public Vector2d subtract(Vector2d other) {
+        return add(other.scale(-1));
+    }
 
     /**
      * 
@@ -96,6 +105,13 @@ public class Vector2d {
         return new Vector2d(x * Math.cos(ang) - y * Math.sin(ang), x * Math.sin(ang) + y * Math.cos(ang));
     }
 
+    /**
+     * @return normal vector
+     */
+    public Vector2d getNormal() {
+        return rotate(Math.PI/2);
+    }
+    
     /**
      * compute dot product
      */
