@@ -10,7 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class Rollers extends Subsystem {
+public class Floppies extends Subsystem {
 	
 	private WPI_TalonSRX left;
 	private WPI_TalonSRX right;
@@ -20,7 +20,7 @@ public class Rollers extends Subsystem {
 	public static int LEFT_ZERO_POS = 1282;
 	public static int RIGHT_ZERO_POS = 3605;
 	
-	public Rollers() {
+	public Floppies() {
 		left = new WPI_TalonSRX(RobotMap.LEFT_ROLLER_TALON);
 		right = new WPI_TalonSRX(RobotMap.RIGHT_ROLLER_TALON);
         left.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, PID_IDX, TIMEOUT);
