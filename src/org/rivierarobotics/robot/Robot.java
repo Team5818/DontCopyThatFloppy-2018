@@ -113,14 +113,14 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 	       printDash();
 	}
-	
+
 	public void printDash() {
 //	    SmartDashboard.putNumber("arm pos", arm.getPosition());
 //	    SmartDashboard.putNumber("arm vel", arm.getVelocity());
 //	    SmartDashboard.putNumber("arm pow", arm.getPower());
-//	    SmartDashboard.putNumber("Left Roller", rollers.getLeftPos());
-//	    SmartDashboard.putNumber("Right Roller", rollers.getRightPos());
-//	    SmartDashboard.putNumber("Left Roller Trunc", rollers.getLeftTrunc());
-//	    SmartDashboard.putNumber("Right Roller Trunc", rollers.getRightTrunc());
+	    SmartDashboard.putNumber("Left Roller", rollers.getLeftPos());
+	    SmartDashboard.putNumber("Right Roller", rollers.getRightPos());
+	    SmartDashboard.putNumber("Left Roller Trunc", rollers.getLeftTrunc());
+	    SmartDashboard.putNumber("Right Roller Trunc", rollers.getRightTrunc());
 	}
 }
