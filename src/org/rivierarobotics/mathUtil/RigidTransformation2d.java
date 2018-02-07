@@ -77,4 +77,12 @@ public class RigidTransformation2d {
     public RigidTransformation2d inverse(){
         return scale(-1);
     } 
+    
+    /**
+     * Treat RT2Ds as lines in point-slope-form, where translation is point & angle is slope
+     * @return the intersection of the two lines
+     */
+    public Vector2d getIntersection() {
+        
+    }
 }
