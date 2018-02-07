@@ -80,5 +80,4 @@ public class Floppies extends Subsystem {
 	protected void initDefaultCommand() {
 		setDefaultCommand(new FloppyControlCommand(Robot.runningRobot.driver.JS_FLOPPIES));
 	}
-
 }
