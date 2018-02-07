@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
 	public DriveTrain driveTrain;
 	public Driver driver;
 	//public Arm arm;
-	//public Rollers rollers;
+	public Rollers rollers;
 	//public Clamp clamp;
 
 	public static Robot runningRobot;
@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
 	    driveTrain = new DriveTrain();
 	    //arm = new Arm();
 	    //clamp = new Clamp();
-	    //rollers = new Rollers();
+	    rollers = new Rollers();
 	    driver = new Driver();
 		m_chooser.addDefault("Default Auto", kDefaultAuto);
 		m_chooser.addObject("My Auto", kCustomAuto);

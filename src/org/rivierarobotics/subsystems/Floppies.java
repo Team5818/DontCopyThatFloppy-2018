@@ -1,5 +1,7 @@
 package org.rivierarobotics.subsystems;
 
+import org.rivierarobotics.commands.RollerControlCommand;
+import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.robot.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -81,7 +83,7 @@ public class Floppies extends Subsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-		//setDefaultCommand(new RollerControlCommand(Robot.runningRobot.driver.JS_ROLLERS));
+		setDefaultCommand(new RollerControlCommand(Robot.runningRobot.driver.JS_ROLLERS));
 	}
 
 }

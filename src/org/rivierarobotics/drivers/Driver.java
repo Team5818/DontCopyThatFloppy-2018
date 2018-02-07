@@ -1,10 +1,13 @@
 package org.rivierarobotics.drivers;
 
+import org.rivierarobotics.commands.SetRollerPositions;
 import org.rivierarobotics.constants.ControlMap;
 import org.rivierarobotics.mathUtil.ArcadeDriveCalculator;
 import org.rivierarobotics.mathUtil.DriveCalculator;
+import org.rivierarobotics.subsystems.Rollers;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class Driver {
     
@@ -32,7 +35,7 @@ public class Driver {
 //        JoystickButton setArmAngleButtonHigh = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_HIGH);
 //        JoystickButton setArmAngleButtonMid = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_MID);
 //        JoystickButton setArmAngleButtonLow = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_LOW);
-//        JoystickButton zeroFlapsButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.ZERO_FLAPPYS_BUTTON);
+          JoystickButton zeroFlapsButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.ZERO_FLAPPYS_BUTTON);
 //        
 //        //Bind Commands
 //        clampOn.whenPressed(new SetClampOpenCommand(false));
@@ -40,6 +43,6 @@ public class Driver {
 //        setArmAngleButtonHigh.whenPressed(new SetArmAngle(700));
 //        setArmAngleButtonMid.whenPressed(new SetArmAngle(485));
 //        setArmAngleButtonLow.whenPressed(new SetArmAngle(250));
-//        zeroFlapsButton.whenPressed(new SetRollerPositions(Rollers.LEFT_ZERO_POS, Rollers.RIGHT_ZERO_POS));
+          zeroFlapsButton.whenPressed(new SetRollerPositions(Rollers.LEFT_ZERO_POS, Rollers.RIGHT_ZERO_POS));
     }    
 }
