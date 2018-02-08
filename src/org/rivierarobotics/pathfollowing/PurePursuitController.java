@@ -6,6 +6,12 @@ import org.rivierarobotics.mathUtil.Vector2d;
 public class PurePursuitController {
     
     private Path path;
+    private final double lookahead;
+    
+    public PurePursuitController(Path p, double look) {
+        path = p;
+        lookahead = look;
+    }
     
     public class Arc{
         public final Vector2d center;
@@ -34,6 +40,8 @@ public class PurePursuitController {
         double ang = Math.abs(centerPoint.subtract(target).getAngle() - centerPoint.subtract(pose.getTranslation()).getAngle());
         return new Arc(centerPoint, radius, ang);
     }
+    
+    public Arc
     
     
     

@@ -35,7 +35,6 @@ public class Path {
     
     private ArrayList<Waypoint> waypoints;
     private ArrayList<RigidTransformation2d> waypointsRT2D;
-    private double pathLength;
     
     public Path(ArrayList<Waypoint> wp, double rad) {
         waypoints = wp;
@@ -50,7 +49,6 @@ public class Path {
             totalLength += waypoints.get(i+1).getPosition().subtract(waypoints.get(i).getPosition()).getMagnitude();
             waypoints.get(i+1).setDistance(totalLength);
         }
-        pathLength = totalLength;
     }
     
     private void calculateRigidTransforms() {
