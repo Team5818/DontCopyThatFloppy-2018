@@ -18,6 +18,11 @@ public class RigidTransformation2d {
         rotation = rot;
     }
     
+    public RigidTransformation2d(Vector2d point1, Vector2d point2) {
+        translation = point1;
+        rotation = point2.subtract(point1).getAngle();
+    }
+    
     /**
      * 
      * @return translational component of transformation
@@ -77,6 +82,10 @@ public class RigidTransformation2d {
     public RigidTransformation2d inverse(){
         return scale(-1);
     } 
+    
+    public double getNormalToRotation() {
+        return MathUtil.wrapAngleRad(rotation + Math.PI/2);
+    }
     
     /**
      * Treat RT2Ds as lines in point-slope-form, where translation is point & angle is slope

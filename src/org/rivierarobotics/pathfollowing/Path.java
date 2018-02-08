@@ -2,50 +2,95 @@ package org.rivierarobotics.pathfollowing;
 
 import java.util.ArrayList;
 
+import org.rivierarobotics.mathUtil.RigidTransformation2d;
 import org.rivierarobotics.mathUtil.Vector2d;
 
 public class Path {
     
-    private enum InterpolationMethod{
-        LINEAR_SHARP, LINEAR_ROUNDED
-    }
-    
-    public class Arc{
-        Vector2d point1;
-        Vector2d point2;
-        double radius;
+    public class Waypoint{
+        private Vector2d position;
+        private double distanceAlongPath;
         
-        public Arc(Vector2d p1, Vector2d p2, double rad) {
-            point1 = p1;
-            point2 = p2;
-            radius = rad;
+        public Waypoint(Vector2d pos, double dist) {
+            position = pos;
+            distanceAlongPath = dist;
         }
         
-        public Vector2d interpolatePosition(double t) {
-            
+        public Waypoint(Vector2d pos) {
+            this(pos, Double.NaN);
+        }
+        
+        public Vector2d getPosition() {
+            return position;
+        }
+        
+        public double getDistanceAlongPath() {
+            return distanceAlongPath;
+        }
+        
+        public void setDistance(double dist) {
+            distanceAlongPath = dist;
         }
     }
     
-    private ArrayList<Vector2d> waypoints;
-    private double arcRadius;
+    private ArrayList<Waypoint> waypoints;
+    private ArrayList<RigidTransformation2d> waypointsRT2D;
+    private double pathLength;
     
-    public Path(ArrayList<Vector2d> wp, double rad) {
+    public Path(ArrayList<Waypoint> wp, double rad) {
         waypoints = wp;
-        arcRadius = rad;
+        calculatePathLength();
+        calculateRigidTransforms();
     }
     
-    public double getPathLength() {
+    private void calculatePathLength() {
         double totalLength = 0;
+        waypoints.get(0).setDistance(0);
         for(int i = 0; i < waypoints.size() - 1; i++) {
-            totalLength += waypoints.get(i+1).subtract(waypoints.get(i)).getMagnitude();
+            totalLength += waypoints.get(i+1).getPosition().subtract(waypoints.get(i).getPosition()).getMagnitude();
+            waypoints.get(i+1).setDistance(totalLength);
         }
-        return totalLength;
+        pathLength = totalLength;
     }
     
-    public Vector2d interpolatePosition(double t, InterpolationMethod meth) {
-        switch(meth) {
-            case LINEAR_SHARP:
-                
+    private void calculateRigidTransforms() {
+        waypointsRT2D = new ArrayList<RigidTransformation2d>(waypoints.size() -1);
+        for(int i = 0; i < waypoints.size() - 1; i++) {
+            RigidTransformation2d trans = new RigidTransformation2d(waypoints.get(i).getPosition(), waypoints.get(i+1).getPosition());
+            waypointsRT2D.set(i, trans);
+        } 
+    }
+    
+    /**
+     * 
+     * @param distance to interpolate along the path
+     * @return (x,y) point that is @pos units along the path
+     */
+    public Vector2d interpolatePosition(double distAlongPath) {
+        int nextPointIdx = 0;
+        for(int i = 0; i < waypoints.size(); i++) {
+            if(waypoints.get(i).getDistanceAlongPath() > distAlongPath) {
+                nextPointIdx = i;
+                break;
+            }
         }
+        Vector2d segment = waypoints.get(nextPointIdx).getPosition().subtract(waypoints.get(nextPointIdx - 1).getPosition());
+        double distDiff = waypoints.get(nextPointIdx).getDistanceAlongPath() - distAlongPath;
+        return waypoints.get(nextPointIdx).getPosition().subtract(segment.normalize(distDiff));
+    }
+    
+    public Vector2d getClosestPointOnPath(Vector2d otherPos) {
+        double minDist = Double.POSITIVE_INFINITY;
+        Vector2d closest = new Vector2d(Double.NaN, Double.NaN);
+        for(RigidTransformation2d wp : waypointsRT2D) {
+            RigidTransformation2d posToPath = new RigidTransformation2d(otherPos, wp.getNormalToRotation());
+            Vector2d intersect = posToPath.getIntersection(wp);
+            double shortestLocalDistance = intersect.subtract(otherPos).getMagnitude();
+            if(shortestLocalDistance < minDist) {
+                minDist = shortestLocalDistance;
+                closest = intersect;
+            }
+        }
+        return closest;
     }
 }
