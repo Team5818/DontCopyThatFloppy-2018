@@ -10,10 +10,10 @@ public class PurePursuitController {
         Vector2d midpoint = pose.getTranslation().add(diff.scale(.5));
         double normalAngle = midpoint.getNormal().getAngle();
         double normalFromPose = pose.getTranslation().getNormal().getAngle();
-        RigidTransformation2d peprBisector = new RigidTransformation2d(midpoint, normalAngle);
+        RigidTransformation2d perpBisector = new RigidTransformation2d(midpoint, normalAngle);
         RigidTransformation2d robotToCenter = new RigidTransformation2d(pose.getTranslation(), normalFromPose);
-        Vector2d centerPoint = 
-        
+        Vector2d centerPoint = perpBisector.getIntersection(robotToCenter);
+        return centerPoint;
     }
     
 }

@@ -82,7 +82,16 @@ public class RigidTransformation2d {
      * Treat RT2Ds as lines in point-slope-form, where translation is point & angle is slope
      * @return the intersection of the two lines
      */
-    public Vector2d getIntersection() {
+    public Vector2d getIntersection(RigidTransformation2d other) {
+        double x1 = getTranslation().getX();
+        double y1 = getTranslation().getY();
+        double m1 = Math.tan(getRotation());
+        double x2 = other.getTranslation().getX();
+        double y2 = other.getTranslation().getY();
+        double m2 = Math.tan(other.getRotation());
         
+        double xInter = (y2 - y1 + x1*m1 - x2*m2)/(m1 - m2);
+        double yInter = y1 + m1*(xInter - x1);
+        return new Vector2d(xInter, yInter);
     }
 }
