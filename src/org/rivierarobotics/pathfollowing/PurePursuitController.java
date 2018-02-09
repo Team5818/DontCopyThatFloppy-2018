@@ -41,8 +41,9 @@ public class PurePursuitController {
         return new Arc(centerPoint, radius, ang);
     }
     
-    public Arc
     
-    
+    public Arc getArcToPath(RigidTransformation2d pose) {
+        RigidTransformation2d intersection = path.getClosestPointOnPath(pose.getTranslation());
+    }
     
 }

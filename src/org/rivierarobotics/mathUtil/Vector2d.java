@@ -53,7 +53,14 @@ public class Vector2d {
     public double getAngle() {
         return MathUtil.wrapAngleRad(Math.atan2(y, x));
     }
-
+    
+    /**
+     * its the slope 
+     */
+    public double getSlope() {
+        return y/x;
+    }
+    
     /**
      * 
      * @param other
