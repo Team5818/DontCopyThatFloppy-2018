@@ -125,6 +125,15 @@ public class Vector2d {
     public double dot(Vector2d other) {
         return getX() * other.getX() + getY() * other.getY();
     }
+    
+    /**
+     * compute projection onto another vector
+     */
+    public Vector2d projectOntoOther(Vector2d other) {
+   
+        double magnitude = other.getMagnitude();
+        return other.scale(other.dot(this)/(magnitude*magnitude));
+    }
 
     /**
      * 

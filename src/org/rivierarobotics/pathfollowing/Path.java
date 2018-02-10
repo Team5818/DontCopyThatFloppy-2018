@@ -7,58 +7,26 @@ import org.rivierarobotics.mathUtil.Vector2d;
 
 public class Path {
 
-    public class Waypoint {
+    private ArrayList<PathSegment> segments;
+    private Vector2d startPoint;
+    private Vector2d endPoint;
+    private int numSegs;
+    private double pathLength;
 
-        private Vector2d position;
-        private double distanceAlongPath;
-
-        public Waypoint(Vector2d pos, double dist) {
-            position = pos;
-            distanceAlongPath = dist;
-        }
-
-        public Waypoint(Vector2d pos) {
-            this(pos, Double.NaN);
-        }
-
-        public Vector2d getPosition() {
-            return position;
-        }
-
-        public double getDistanceAlongPath() {
-            return distanceAlongPath;
-        }
-
-        public void setDistance(double dist) {
-            distanceAlongPath = dist;
-        }
-    }
-
-    private ArrayList<Waypoint> waypoints;
-    private ArrayList<RigidTransformation2d> waypointsRT2D;
-
-    public Path(ArrayList<Waypoint> wp, double rad) {
-        waypoints = wp;
+    public Path(ArrayList<PathSegment> segs) {
+        segments = segs;
+        numSegs = segs.size();
+        startPoint = segments.get(0).getBeginning();
+        endPoint = segments.get(numSegs).getEnd();
         calculatePathLength();
-        calculateRigidTransforms();
     }
 
     private void calculatePathLength() {
         double totalLength = 0;
-        waypoints.get(0).setDistance(0);
-        for (int i = 0; i < waypoints.size() - 1; i++) {
-            totalLength += waypoints.get(i + 1).getPosition().subtract(waypoints.get(i).getPosition()).getMagnitude();
-            waypoints.get(i + 1).setDistance(totalLength);
+        for (PathSegment seg : segments) {
+            totalLength += seg.getLength();
         }
-    }
-
-    private void calculateRigidTransforms() {
-        waypointsRT2D = new ArrayList<RigidTransformation2d>(waypoints.size() - 1);
-        for (int i = 0; i < waypoints.size() - 1; i++) {
-            RigidTransformation2d trans =
-                    new RigidTransformation2d(waypoints.get(i).getPosition(), waypoints.get(i + 1).getPosition());
-            waypointsRT2D.set(i, trans);
-        }
+        pathLength = totalLength;
     }
 
     /**
@@ -68,47 +36,69 @@ public class Path {
      * @return (x,y) point that is @pos units along the path
      */
     public Vector2d interpolatePosition(double distAlongPath) {
-        int nextPointIdx = 0;
-        for (int i = 0; i < waypoints.size(); i++) {
-            if (waypoints.get(i).getDistanceAlongPath() > distAlongPath) {
-                nextPointIdx = i;
-                break;
+        int totalDistance = 0;
+        for (int i = 0; i < numSegs; i++) {
+            if (totalDistance <= distAlongPath && distAlongPath <= totalDistance + segments.get(i).getLength()) {
+                return segments.get(i).getPositionByLength(distAlongPath - totalDistance);
             }
+            totalDistance += segments.get(i).getLength();
         }
-        Vector2d segment =
-                waypoints.get(nextPointIdx).getPosition().subtract(waypoints.get(nextPointIdx - 1).getPosition());
-        double distDiff = waypoints.get(nextPointIdx).getDistanceAlongPath() - distAlongPath;
-        return waypoints.get(nextPointIdx).getPosition().subtract(segment.normalize(distDiff));
+        return (totalDistance < 0 ? startPoint : endPoint);
     }
 
+    /**
+     * 
+     * @param otherPos
+     *            - an (x,y) position, probably not on the path
+     * @return the closest point to {@code otherPos} that is on the path
+     */
     public Vector2d getClosestPointOnPath(Vector2d otherPos) {
         double minDist = Double.POSITIVE_INFINITY;
-        Vector2d closest = new Vector2d(Double.NaN, Double.NaN);
-        for (RigidTransformation2d wp : waypointsRT2D) {
-            RigidTransformation2d posToPath = new RigidTransformation2d(otherPos, wp.getNormalToRotation());
-            Vector2d intersect = posToPath.getIntersection(wp);
-            double shortestLocalDistance = intersect.subtract(otherPos).getMagnitude();
-            if (shortestLocalDistance < minDist) {
-                minDist = shortestLocalDistance;
-                closest = intersect;
+        Vector2d closest = null;
+        for (PathSegment seg : segments) {
+            Vector2d localClosest = seg.getClosestPoint(otherPos);
+            if (localClosest.subtract(otherPos).getMagnitude() < minDist) {
+                closest = localClosest;
             }
         }
         return closest;
     }
 
-    public boolean isPointOnPath(Vector2d point) {
-        for (int i = 0; i < waypoints.size() - 1; i++) {
-            Vector2d beg = waypoints.get(i).getPosition();
-            Vector2d end = waypoints.get(i + 1).getPosition();
-            if (point.subtract(beg).getSlope() == end.subtract(point).getSlope() && point.getX() < end.getX()
-                    && point.getY() < end.getY() && point.getX() > beg.getX() && point.getY() > beg.getY()) {
-                return true;
+    /**
+     * 
+     * @param otherPos
+     *            - an (x,y) position, probably not on the path
+     * @return the closest segment of the closest point to {@code otherPos} that
+     *         is on the path
+     */
+    public PathSegment getClosestSegment(Vector2d otherPos) {
+        double minDist = Double.POSITIVE_INFINITY;
+        PathSegment closest = null;
+        for (PathSegment seg : segments) {
+            Vector2d localClosest = seg.getClosestPoint(otherPos);
+            if (localClosest.subtract(otherPos).getMagnitude() < minDist) {
+                closest = seg;
             }
         }
-        return false;
+        return closest;
     }
-    
-    public Vector2d advancePoint(Vector2d point, double slideDistance) {
-        
+    /**
+     * 
+     * @param point - point we want to advance
+     * @param lookahead - distance to move the point forward along the path
+     * @return the advanced point. Will return the endpoint if lookahead spills over.
+     */
+    public Vector2d advancePoint(Vector2d point, double lookahead) {
+        Vector2d closestPoint = getClosestPointOnPath(point);
+        PathSegment closestSeg = getClosestSegment(point);
+        double advanced = closestSeg.advancePoint(closestPoint, lookahead);
+        for (int i = segments.indexOf(getClosestSegment(point)); i < numSegs; i++) {
+            PathSegment currSeg = segments.get(i);
+            if (advanced < currSeg.getLength()) {
+                return currSeg.getPositionByLength(advanced);
+            }
+            advanced = advanced - currSeg.getLength();
+        }
+        return endPoint;
     }
 }
