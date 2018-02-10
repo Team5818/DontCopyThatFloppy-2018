@@ -22,8 +22,18 @@ public class PathSegment {
      * @return (x,y) location of point that is a given distance along segment
      */
     public Vector2d getPositionByLength(double dist) {
-        dist = Math.min(dist,length);
+        dist = (dist < 0 ? 0.0 : Math.min(dist,length));
         return startPoint.add(delta.normalize(dist));
+    }
+    
+    /**
+     * 
+     * @param point - an (x,y) location
+     * @return the distance along the path of the closest point to {@code point}. Inverse of {@code getPositionByLength}
+     */
+    public double getLengthByPosition(Vector2d point) {
+        Vector2d closest = getClosestPoint(point);
+        return closest.subtract(startPoint).getMagnitude();
     }
     
     /**
@@ -34,13 +44,9 @@ public class PathSegment {
     public Vector2d getClosestPoint(Vector2d other) {
         Vector2d diff = other.subtract(startPoint);
         Vector2d proj = diff.projectOntoOther(delta);
-        double d = proj.getY()/delta.getY();
-        if(0 <= d && 1 >= d){
-           return proj.add(startPoint); 
-        }
-        else {
-            return (d < 0.0 ? startPoint : endPoint);
-        }
+        double d = proj.getY()/delta.getY()*getLength();
+        return getPositionByLength(d);
+
     }
     
     /**
@@ -49,11 +55,11 @@ public class PathSegment {
      * @param lookahead - the distance to slide the point along the segment
      * @return the translated location (will not slide beyond endpoints)
      */
-    public double advancePoint(Vector2d other, double lookahead) {
+    public Vector2d advancePoint(Vector2d other, double lookahead) {
         Vector2d closest = getClosestPoint(other);
-        double d1 = closest.subtract(startPoint).getY()/delta.getY() * getLength();
+        double d1 = closest.subtract(startPoint).getY()/delta.getY()*getLength();
         double d2 = d1 + lookahead;
-        return d2;
+        return getPositionByLength(d2);
     }
     
     public double getLength() {

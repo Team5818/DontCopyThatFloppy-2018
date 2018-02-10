@@ -39,15 +39,31 @@ public class Path {
      *            to interpolate along the path
      * @return (x,y) point that is @pos units along the path
      */
-    public Vector2d interpolatePosition(double distAlongPath) {
+    public Vector2d getPositionByLength(double distAlongPath) {
         int totalDistance = 0;
         for (int i = 0; i < numSegs; i++) {
-            if (totalDistance <= distAlongPath && distAlongPath <= totalDistance + segments.get(i).getLength()) {
+            if (distAlongPath <= totalDistance + segments.get(i).getLength()) {
                 return segments.get(i).getPositionByLength(distAlongPath - totalDistance);
             }
             totalDistance += segments.get(i).getLength();
         }
-        return (totalDistance < 0 ? startPoint : endPoint);
+        return (distAlongPath <= 0 ? startPoint : endPoint);
+    }
+    
+    /**
+     * 
+     * @param point - an (x,y) location
+     * @return the distance along the path of the closest point to {@code point}. Inverse of {@code getPositionByLength}
+     */
+    public double getLengthByPosition(Vector2d point) {
+        Vector2d closestPoint = getClosestPointOnPath(point);
+        PathSegment closestSeg = getClosestSegment(point);
+        double totalLength = 0;
+        for (int i = 0; i < segments.indexOf(closestSeg); i++) {
+            totalLength += segments.get(i).getLength();
+        }
+        totalLength += closestSeg.getLengthByPosition(closestPoint);
+        return totalLength;
     }
 
     /**
@@ -82,8 +98,11 @@ public class Path {
         PathSegment closest = null;
         for (PathSegment seg : segments) {
             Vector2d localClosest = seg.getClosestPoint(otherPos);
-            if (localClosest.subtract(otherPos).getMagnitude() < minDist) {
+            double mag = localClosest.subtract(otherPos).getMagnitude();
+            if (mag < minDist) {
                 closest = seg;
+                minDist = mag;
+                
             }
         }
         return closest;
@@ -95,16 +114,8 @@ public class Path {
      * @return the advanced point. Will return the endpoint if lookahead spills over.
      */
     public Vector2d advancePoint(Vector2d point, double lookahead) {
-        Vector2d closestPoint = getClosestPointOnPath(point);
-        PathSegment closestSeg = getClosestSegment(point);
-        double advanced = closestSeg.advancePoint(closestPoint, lookahead);
-        for (int i = segments.indexOf(getClosestSegment(point)); i < numSegs; i++) {
-            PathSegment currSeg = segments.get(i);
-            if (advanced < currSeg.getLength()) {
-                return currSeg.getPositionByLength(advanced);
-            }
-            advanced = advanced - currSeg.getLength();
-        }
-        return endPoint;
+        double pos = getLengthByPosition(point);
+        //pos += lookahead;
+        return getPositionByLength(pos);
     }
 }
