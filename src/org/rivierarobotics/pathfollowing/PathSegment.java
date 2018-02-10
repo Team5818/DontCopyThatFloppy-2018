@@ -44,7 +44,13 @@ public class PathSegment {
     public Vector2d getClosestPoint(Vector2d other) {
         Vector2d diff = other.subtract(startPoint);
         Vector2d proj = diff.projectOntoOther(delta);
-        double d = proj.getY()/delta.getY()*getLength();
+        double d;
+        if(delta.getY() != 0) {
+            d = proj.getY()/delta.getY()*getLength();
+        }
+        else {
+            d = proj.getX()/delta.getX()*getLength();
+        }
         return getPositionByLength(d);
 
     }

@@ -39,10 +39,13 @@ public class Path {
      *            to interpolate along the path
      * @return (x,y) point that is @pos units along the path
      */
+    //HAS AN UNKNOWN BUG
     public Vector2d getPositionByLength(double distAlongPath) {
-        int totalDistance = 0;
+        double totalDistance = 0;
         for (int i = 0; i < numSegs; i++) {
             if (distAlongPath <= totalDistance + segments.get(i).getLength()) {
+                System.out.println("wrong prevLen = " + totalDistance);
+                System.out.println("wrong currLen = " + distAlongPath);
                 return segments.get(i).getPositionByLength(distAlongPath - totalDistance);
             }
             totalDistance += segments.get(i).getLength();
@@ -115,7 +118,7 @@ public class Path {
      */
     public Vector2d advancePoint(Vector2d point, double lookahead) {
         double pos = getLengthByPosition(point);
-        //pos += lookahead;
+        pos += lookahead;
         return getPositionByLength(pos);
     }
 }
