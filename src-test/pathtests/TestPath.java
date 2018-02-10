@@ -20,44 +20,36 @@ public class TestPath extends JFrame {
     public Path path;
     public Vector2d point1 = new Vector2d(0, 2);
     public Vector2d closest1;
-    //public Vector2d look1;
+    public Vector2d look1;
     public Vector2d point2 = new Vector2d(0, 5);
     public Vector2d closest2;
-    //public Vector2d look2;
-    public Vector2d point3 = new Vector2d(5, 7);
+    public Vector2d look2;
+    public Vector2d point3 = new Vector2d(5, 4);
     public Vector2d closest3;
     public Vector2d look3;
     public Vector2d point4 = new Vector2d(-3, -3);
     public Vector2d closest4;
-    //public Vector2d look4;
+    public Vector2d look4;
     public static final Vector2d ORIGIN = new Vector2d(225, 225);
     public static final double SCALE = 50;
 
     public TestPath() {
-        segs.add(new PathSegment(new Vector2d(0, 0), new Vector2d(0, 3)));
-        segs.add(new PathSegment(new Vector2d(0, 3), new Vector2d(3.88, 6)));
-        segs.add(new PathSegment(new Vector2d(3.88, 6), new Vector2d(8, 6)));
+        segs.add(new PathSegment(new Vector2d(0, 0), new Vector2d(-.55, 2.65)));
+        segs.add(new PathSegment(new Vector2d(-.55, 2.65), new Vector2d(3.88, 6)));
+        segs.add(new PathSegment(new Vector2d(3.88, 6), new Vector2d(8, 5.121)));
         path = new Path(segs);
         closest1 = path.getClosestPointOnPath(point1);
-        //look1 = path.advancePoint(point1, 0);
+        look1 = path.advancePoint(point1, 1);
         closest2 = path.getClosestPointOnPath(point2);
-        //look2 = path.advancePoint(point2, 0);
+        look2 = path.advancePoint(point2, 1);
         closest3 = path.getClosestPointOnPath(point3);
-        look3 = path.advancePoint(point3, 0);
+        look3 = path.advancePoint(point3, 1);
         closest4 = path.getClosestPointOnPath(point4);
-        //look4 = path.advancePoint(point4, 0);
+        look4 = path.advancePoint(point4, 1);
         JPanel panel = new JPanel();
         getContentPane().add(panel);
         setSize(450, 450);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        double prevLen = path.getSegs().get(0).getLength() + path.getSegs().get(1).getLength();
-        double currLen = path.getLengthByPosition(point3);
-        double diff = currLen - prevLen;
-        System.out.println("prevLen = " + prevLen);
-        System.out.println("currLen = " + currLen);
-        System.out.println("Right Answer: " + path.getSegs().get(2).getPositionByLength(diff));
-        System.out.println("Wrong Answer: " + path.getPositionByLength(path.getLengthByPosition(point3)));
     }
 
     public void drawPath(Path p, Graphics2D g2, Color col) {
@@ -99,29 +91,21 @@ public class TestPath extends JFrame {
         drawPath(path, g2, Color.BLACK);
         drawVectorAsPoint(point1, g2, Color.BLUE);
         drawVectorAsPoint(closest1, g2, Color.BLUE);
-       // drawVectorAsPoint(look1, g2, Color.BLUE, "O");
+        drawVectorAsPoint(look1, g2, Color.BLUE, "O");
         drawVectorAsPoint(point2, g2, Color.GREEN);
         drawVectorAsPoint(closest2, g2, Color.GREEN);
-      //  drawVectorAsPoint(look2, g2, Color.GREEN, "O");
+        drawVectorAsPoint(look2, g2, Color.GREEN, "O");
         drawVectorAsPoint(point3, g2, Color.RED);
         drawVectorAsPoint(closest3, g2, Color.RED);
         drawVectorAsPoint(look3, g2, Color.RED, "O");
         drawVectorAsPoint(point4, g2, Color.MAGENTA);
         drawVectorAsPoint(closest4, g2, Color.MAGENTA);
-       // drawVectorAsPoint(look4, g2, Color.MAGENTA, "O");
+        drawVectorAsPoint(look4, g2, Color.MAGENTA, "O");
     }
 
     public static void main(String[] args) {
         TestPath test = new TestPath();
         test.setVisible(true);
-//        ArrayList<PathSegment> segs = new ArrayList<PathSegment>();
-//        segs.add(new PathSegment(new Vector2d(0, 0), new Vector2d(0, 3)));
-//        segs.add(new PathSegment(new Vector2d(0, 3), new Vector2d(0, 6)));
-//        segs.add(new PathSegment(new Vector2d(0, 6), new Vector2d(5, 6)));
-//        Path p = new Path(segs);
-//        Vector2d point1 = new Vector2d(0, 2);
-//        Vector2d point2 = new Vector2d(0, 5);
-//        Vector2d point3 = new Vector2d(3, 6.1);
 
     }
 }
