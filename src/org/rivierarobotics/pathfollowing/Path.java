@@ -17,7 +17,7 @@ public class Path {
         segments = segs;
         numSegs = segs.size();
         startPoint = segments.get(0).getBeginning();
-        endPoint = segments.get(numSegs).getEnd();
+        endPoint = segments.get(numSegs-1).getEnd();
         calculatePathLength();
     }
 
@@ -29,6 +29,10 @@ public class Path {
         pathLength = totalLength;
     }
 
+    public ArrayList<PathSegment> getSegs(){
+        return segments;
+    }
+    
     /**
      * 
      * @param distance
@@ -57,8 +61,10 @@ public class Path {
         Vector2d closest = null;
         for (PathSegment seg : segments) {
             Vector2d localClosest = seg.getClosestPoint(otherPos);
-            if (localClosest.subtract(otherPos).getMagnitude() < minDist) {
+            double mag = localClosest.subtract(otherPos).getMagnitude();
+            if (mag < minDist) {
                 closest = localClosest;
+                minDist = mag;
             }
         }
         return closest;
