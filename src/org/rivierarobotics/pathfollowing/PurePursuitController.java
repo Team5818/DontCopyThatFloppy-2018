@@ -27,7 +27,12 @@ public class PurePursuitController {
         }
     }
     
-    
+    /**
+     * 
+     * @param pose - the robot pose
+     * @param target - the point we want to arc to 
+     * @return The arc that gets us there
+     */
     public Arc getArcToPoint(RigidTransformation2d pose, Vector2d target) {
         Vector2d diff = target.subtract(pose.getTranslation());
         Vector2d midpoint = pose.getTranslation().add(diff.scale(.5));
@@ -41,9 +46,14 @@ public class PurePursuitController {
         return new Arc(centerPoint, radius, ang);
     }
     
-    
+    /**
+     * 
+     * @param pose - the pose of the robot
+     * @return - the arc that will get us to the path
+     */
     public Arc getArcToPath(RigidTransformation2d pose) {
-        RigidTransformation2d intersection = path.getClosestPointOnPath(pose.getTranslation());
+        Vector2d target = path.advancePoint(pose.getTranslation(), lookahead);
+        return getArcToPoint(pose, target);
     }
     
 }

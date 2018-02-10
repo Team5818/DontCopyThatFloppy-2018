@@ -84,7 +84,7 @@ public class Path {
     }
     /**
      * 
-     * @param point - point we want to advance
+     * @param point - point we want to advance (if not on path, closest point on path is used)
      * @param lookahead - distance to move the point forward along the path
      * @return the advanced point. Will return the endpoint if lookahead spills over.
      */
