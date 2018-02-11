@@ -23,7 +23,7 @@ public class TestPurePursuitController extends JFrame{
     public ArrayList<PathSegment> segs = new ArrayList<PathSegment>();
     public PurePursuitController ppc;
     public Path path;
-    public RigidTransformation2d pose1 = new RigidTransformation2d(new Vector2d(0, 2), Math.PI/4);
+    public RigidTransformation2d pose1 = new RigidTransformation2d(new Vector2d(0, 2), -5*Math.PI/4);
     public Vector2d closest1;
     public Vector2d look1;
     public Arc arc1;
