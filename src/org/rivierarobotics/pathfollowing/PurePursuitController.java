@@ -49,21 +49,18 @@ public class PurePursuitController {
         RigidTransformation2d perpBisector = new RigidTransformation2d(midpoint, normalAngle);
         RigidTransformation2d robotToCenter = new RigidTransformation2d(pose.getTranslation(), normalFromPose);
         Vector2d centerPoint = perpBisector.getIntersection(robotToCenter);
-        double radius = centerPoint.subtract(target).getMagnitude();
+        double radius = centerPoint.subtract(pose.getTranslation()).getMagnitude();
         double ang = Math.abs(centerPoint.subtract(target).getAngle() - centerPoint.subtract(pose.getTranslation()).getAngle());
+        Vector2d radiusVec = pose.getTranslation().subtract(centerPoint);
         
-        double x1 = centerPoint.getX();
-        double x2 = pose.getTranslation().getX();
-        double x3 = target.getX();
+        double x1 = Math.cos(pose.getRotation());
+        double y1 = Math.sin(pose.getRotation());
         
-        double y1 = centerPoint.getY();
-        double y2 = pose.getTranslation().getY();
-        double y3 = target.getY();
+        double x2 = radiusVec.getX();
+        double y2 = radiusVec.getY();
         
         //Directionality test
-        double a = x2*y1 + x3*y2 + x1*y3;
-        double b = x1*y2 + x2*y3 + x3*y1;
-        if(a > b) {
+        if(x1*y2 > x2*y1) {
             return new Arc(centerPoint, radius, ang, pose.getTranslation(), target, Rotation.CLOCKWISE);
 
         }

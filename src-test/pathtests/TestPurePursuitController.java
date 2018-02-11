@@ -31,7 +31,7 @@ public class TestPurePursuitController extends JFrame{
     public Vector2d closest2;
     public Vector2d look2;
     public Arc arc2;
-    public RigidTransformation2d pose3 = new RigidTransformation2d(new Vector2d(5, 8), -Math.PI/12);
+    public RigidTransformation2d pose3 = new RigidTransformation2d(new Vector2d(5, 3), -Math.PI/12);
     public Vector2d closest3;
     public Vector2d look3;
     public Arc arc3;
@@ -82,7 +82,7 @@ public class TestPurePursuitController extends JFrame{
 
     public void drawRigidTransform(RigidTransformation2d rt2d, Graphics2D g2, Color col) {
         drawVectorAsPoint(rt2d.getTranslation(),g2,col,"o");
-        Vector2d beg = rt2d.getTranslation().scale(SCALE).add(ORIGIN).subtract(RT2D_OFFSET.rotate(rt2d.getRotation()));
+        Vector2d beg = rt2d.getTranslation().scale(SCALE).add(ORIGIN);
         Vector2d end = rt2d.getTranslation().scale(SCALE).add(ORIGIN).add(RT2D_OFFSET.rotate(rt2d.getRotation()));
         Line2D lin = new Line2D.Double(beg.getX(), beg.getY(), end.getX(), end.getY());
         g2.setColor(col);

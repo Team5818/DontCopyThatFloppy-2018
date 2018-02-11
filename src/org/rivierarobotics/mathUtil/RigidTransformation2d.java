@@ -38,7 +38,7 @@ public class RigidTransformation2d {
     public double getRotation() {
         return rotation;
     }
-   
+    
     /**
      * 
      * @param other - other rt2d
