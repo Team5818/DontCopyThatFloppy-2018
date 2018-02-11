@@ -22,31 +22,44 @@ public class TestPurePursuitController extends JFrame{
     public ArrayList<PathSegment> segs = new ArrayList<PathSegment>();
     public PurePursuitController ppc;
     public Path path;
-    public RigidTransformation2d pose1 = new RigidTransformation2d(new Vector2d(4, 2), Math.PI/2);
+    public RigidTransformation2d pose1 = new RigidTransformation2d(new Vector2d(0, 2), Math.PI/4);
     public Vector2d closest1;
     public Vector2d look1;
-    public Vector2d midpoint;
     public Arc arc1;
-    public RigidTransformation2d perpBi;
-    public RigidTransformation2d r2c;
-    public Vector2d center;
+    public RigidTransformation2d pose2 = new RigidTransformation2d(new Vector2d(0, 5), Math.PI/6);
+    public Vector2d closest2;
+    public Vector2d look2;
+    public Arc arc2;
+    public RigidTransformation2d pose3 = new RigidTransformation2d(new Vector2d(5, 4), Math.PI/12);
+    public Vector2d closest3;
+    public Vector2d look3;
+    public Arc arc3;
+    public RigidTransformation2d pose4 = new RigidTransformation2d(new Vector2d(2, -3), 7*Math.PI/6);
+    public Vector2d closest4;
+    public Vector2d look4;
+    public Arc arc4;
     public static final Vector2d ORIGIN = new Vector2d(225, 225);
-    public static final Vector2d RT2D_OFFSET = new Vector2d(150, 0);
+    public static final Vector2d RT2D_OFFSET = new Vector2d(20,0);
     public static final double SCALE = 50;
 
     public TestPurePursuitController() {
-        segs.add(new PathSegment(new Vector2d(0, 0), new Vector2d(0, 5)));
+        segs.add(new PathSegment(new Vector2d(0, 0), new Vector2d(-.55, 2.65)));
+        segs.add(new PathSegment(new Vector2d(-.55, 2.65), new Vector2d(3.88, 6)));
+        segs.add(new PathSegment(new Vector2d(3.88, 6), new Vector2d(8, 5.121)));
         path = new Path(segs);
         ppc = new PurePursuitController(path, 1);
         closest1 = path.getClosestPointOnPath(pose1.getTranslation());
         look1 = path.advancePoint(pose1.getTranslation(), 1);
-        Vector2d diff = look1.subtract(pose1.getTranslation());
-        midpoint = pose1.getTranslation().add(diff.scale(.5));
-        double normalAngle = diff.getNormal().getAngle();
-        double normalFromPose = pose1.getNormalToRotation();
-        perpBi = new RigidTransformation2d(midpoint, normalAngle);
-        r2c = new RigidTransformation2d(pose1.getTranslation(), normalFromPose);
-        center = perpBi.getIntersection(r2c);
+        arc1 = ppc.getArcToPath(pose1);
+        closest2 = path.getClosestPointOnPath(pose2.getTranslation());
+        look2 = path.advancePoint(pose2.getTranslation(), 1);
+        arc2 = ppc.getArcToPath(pose2);
+        closest3 = path.getClosestPointOnPath(pose3.getTranslation());
+        look3 = path.advancePoint(pose3.getTranslation(), 1);
+        arc3 = ppc.getArcToPath(pose3);
+        closest4 = path.getClosestPointOnPath(pose4.getTranslation());
+        look4 = path.advancePoint(pose4.getTranslation(), 1);
+        arc4 = ppc.getArcToPath(pose4);
         JPanel panel = new JPanel();
         getContentPane().add(panel);
         setSize(450, 450);
@@ -109,10 +122,22 @@ public class TestPurePursuitController extends JFrame{
         drawRigidTransform(pose1, g2, Color.BLUE);
         drawVectorAsPoint(closest1, g2, Color.BLUE);
         drawVectorAsPoint(look1, g2, Color.BLUE, "O");
-        drawVectorAsPoint(midpoint,g2,Color.BLUE, "M");
-        drawRigidTransform(perpBi, g2, Color.BLUE);
-        drawRigidTransform(r2c, g2, Color.BLUE);
-        drawVectorAsPoint(center, g2, Color.BLUE,"C");
+        drawArc(arc1, g2, Color.BLUE);
+        
+        drawRigidTransform(pose2, g2, Color.GREEN);
+        drawVectorAsPoint(closest2, g2, Color.GREEN);
+        drawVectorAsPoint(look2, g2, Color.GREEN, "O");
+        drawArc(arc2, g2, Color.GREEN);
+
+        drawRigidTransform(pose3, g2, Color.RED);
+        drawVectorAsPoint(closest3, g2, Color.RED);
+        drawVectorAsPoint(look3, g2, Color.RED, "O");
+        drawArc(arc3, g2, Color.RED);
+
+        drawRigidTransform(pose4, g2, Color.MAGENTA);
+        drawVectorAsPoint(closest4, g2, Color.MAGENTA);
+        drawVectorAsPoint(look4, g2, Color.MAGENTA, "O");
+        drawArc(arc4, g2, Color.MAGENTA);
     }
 
     public static void main(String[] args) {
