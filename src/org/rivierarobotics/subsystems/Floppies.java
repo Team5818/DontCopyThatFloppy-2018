@@ -1,13 +1,12 @@
 package org.rivierarobotics.subsystems;
 
+import org.rivierarobotics.commands.FloppyControlCommand;
+import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.robot.RobotMap;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Floppies extends Subsystem {
@@ -58,9 +57,7 @@ public class Floppies extends Subsystem {
 	    int leftSet = (getLeftPos() & 0xFFFFF000) + leftPos;
 	    int rightSet = (getRightPos() & 0xFFFFF000) + rightPos;
 	    left.set(ControlMode.Position, leftSet);
-	    DriverStation.reportError("LR: "+ left.getClosedLoopError(PID_IDX), false);
 	    right.set(ControlMode.Position, rightSet);
-	    DriverStation.reportError("RR: "+right.getClosedLoopError(PID_IDX), false);
 	}
 	
 	public int getLeftPos() {
@@ -81,7 +78,6 @@ public class Floppies extends Subsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-		//setDefaultCommand(new RollerControlCommand(Robot.runningRobot.driver.JS_ROLLERS));
+		setDefaultCommand(new FloppyControlCommand(Robot.runningRobot.driver.JS_FLOPPIES));
 	}
-
 }

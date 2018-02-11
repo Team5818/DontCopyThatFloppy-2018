@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
 	public DriveTrain driveTrain;
 	public Driver driver;
 	//public Arm arm;
-	//public Rollers rollers;
+	public Floppies floppies;
 	//public Clamp clamp;
 
 	public static Robot runningRobot;
@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
 	    driveTrain = new DriveTrain();
 	    //arm = new Arm();
 	    //clamp = new Clamp();
-	    //rollers = new Rollers();
+	    floppies = new Floppies();
 	    driver = new Driver();
 		m_chooser.addDefault("Default Auto", kDefaultAuto);
 		m_chooser.addObject("My Auto", kCustomAuto);
@@ -113,14 +113,14 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 	       printDash();
 	}
-	
+
 	public void printDash() {
 //	    SmartDashboard.putNumber("arm pos", arm.getPosition());
 //	    SmartDashboard.putNumber("arm vel", arm.getVelocity());
 //	    SmartDashboard.putNumber("arm pow", arm.getPower());
-//	    SmartDashboard.putNumber("Left Roller", rollers.getLeftPos());
-//	    SmartDashboard.putNumber("Right Roller", rollers.getRightPos());
-//	    SmartDashboard.putNumber("Left Roller Trunc", rollers.getLeftTrunc());
-//	    SmartDashboard.putNumber("Right Roller Trunc", rollers.getRightTrunc());
+	    SmartDashboard.putNumber("Left Roller", floppies.getLeftPos());
+	    SmartDashboard.putNumber("Right Roller", floppies.getRightPos());
+	    SmartDashboard.putNumber("Left Roller Trunc", floppies.getLeftTrunc());
+	    SmartDashboard.putNumber("Right Roller Trunc", floppies.getRightTrunc());
 	}
 }

@@ -20,9 +20,9 @@ public class RobotMap {
 
     public static final int ARM_TALON_3 = 0;
 
-    public static final int LEFT_ROLLER_TALON = 0;
+    public static final int LEFT_ROLLER_TALON = 1;
     
-    public static final int RIGHT_ROLLER_TALON = 0;
+    public static final int RIGHT_ROLLER_TALON = 3;
 
     public static final int BOT_CLAMP_PISTON_PORT_1 = 0;
     
