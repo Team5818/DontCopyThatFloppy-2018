@@ -53,7 +53,14 @@ public class Vector2d {
     public double getAngle() {
         return MathUtil.wrapAngleRad(Math.atan2(y, x));
     }
-
+    
+    /**
+     * its the slope 
+     */
+    public double getSlope() {
+        return y/x;
+    }
+    
     /**
      * 
      * @param other
@@ -62,6 +69,15 @@ public class Vector2d {
      */
     public Vector2d add(Vector2d other) {
         return new Vector2d(x + other.getX(), y + other.getY());
+    }
+    
+    /**
+     * 
+     * @param other - other vector
+     * @return difference
+     */
+    public Vector2d subtract(Vector2d other) {
+        return add(other.scale(-1));
     }
 
     /**
@@ -97,10 +113,26 @@ public class Vector2d {
     }
 
     /**
+     * @return normal vector
+     */
+    public Vector2d getNormal() {
+        return rotate(Math.PI/2);
+    }
+    
+    /**
      * compute dot product
      */
     public double dot(Vector2d other) {
         return getX() * other.getX() + getY() * other.getY();
+    }
+    
+    /**
+     * compute projection onto another vector
+     */
+    public Vector2d projectOntoOther(Vector2d other) {
+   
+        double magnitude = other.getMagnitude();
+        return other.scale(other.dot(this)/(magnitude*magnitude));
     }
 
     /**

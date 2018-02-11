@@ -7,7 +7,6 @@ public class ControlMap {
     
     public static final int TURN_JOYSTICK_PORT = 1;
         
-    
     public static final int ARM_JOYSTICK_PORT = 2;
     
     public static final int TBD_JOYSTICK_PORT = 3;
