@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.rivierarobotics.constants.Rotation;
 import org.rivierarobotics.mathUtil.RigidTransformation2d;
 import org.rivierarobotics.mathUtil.Vector2d;
 import org.rivierarobotics.pathfollowing.Path;
@@ -30,7 +31,7 @@ public class TestPurePursuitController extends JFrame{
     public Vector2d closest2;
     public Vector2d look2;
     public Arc arc2;
-    public RigidTransformation2d pose3 = new RigidTransformation2d(new Vector2d(5, 4), Math.PI/12);
+    public RigidTransformation2d pose3 = new RigidTransformation2d(new Vector2d(5, 8), -Math.PI/12);
     public Vector2d closest3;
     public Vector2d look3;
     public Arc arc3;
@@ -71,6 +72,12 @@ public class TestPurePursuitController extends JFrame{
             Vector2d center = arc.center.scale(SCALE).add(ORIGIN);
             g2.setColor(col);
             g2.drawOval((int)(center.getX() - radius), (int)(center.getY() - radius), radius*2, radius*2); 
+            if(arc.direction == Rotation.COUNTER_CLOCKWISE) {
+                g2.drawString("CCW", (int)center.getX(), (int)center.getY());
+            }
+            else {
+                g2.drawString("CW", (int)center.getX(), (int)center.getY());
+            }
     }   
 
     public void drawRigidTransform(RigidTransformation2d rt2d, Graphics2D g2, Color col) {
