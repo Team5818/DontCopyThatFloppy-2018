@@ -12,6 +12,7 @@ import org.rivierarobotics.subsystems.Clamp;
 import org.rivierarobotics.subsystems.DriveTrain;
 import org.rivierarobotics.subsystems.Floppies;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -56,6 +57,22 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Auto choices", m_chooser);
     }
 
+	public boolean[] getSide()
+	{
+		String gameSide = DriverStation.getInstance().getGameSpecificMessage();
+		
+		boolean[] side = new boolean[3];
+		
+		for(int x = 0; x < 3; x++)
+		{
+			if(gameSide.charAt(x) == 'L')
+				side[x] = true;
+			else
+				side[x] = false;
+		}
+		
+		return side;
+	}
     /**
      * This autonomous (along with the chooser code above) shows how to select
      * between different autonomous modes using the dashboard. The sendable

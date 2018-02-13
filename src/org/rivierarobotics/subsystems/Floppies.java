@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -43,6 +44,17 @@ public class Floppies extends Subsystem {
 	public void setPower(double leftPow, double rightPow) {
 		left.set(leftPow);
 		right.set(rightPow);
+	}
+	
+	public boolean cubeInPlace()
+	{
+		DigitalInput switch1 = new DigitalInput(1);
+		DigitalInput switch2 = new DigitalInput(1);
+		
+		if(switch1.get() && switch2.get())
+			return true;
+		else
+			return false;
 	}
 	
 	public void setBrakeMode(boolean on) {
