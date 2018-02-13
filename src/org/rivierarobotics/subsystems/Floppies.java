@@ -46,7 +46,7 @@ public class Floppies extends Subsystem {
 		right.set(rightPow);
 	}
 	
-	public boolean cubeInPlace()
+	public boolean cubeInPlace()//gets switch data
 	{
 		DigitalInput switch1 = new DigitalInput(1);
 		DigitalInput switch2 = new DigitalInput(1);
