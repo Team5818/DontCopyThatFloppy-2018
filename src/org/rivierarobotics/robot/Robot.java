@@ -7,6 +7,7 @@
 package org.rivierarobotics.robot;
 
 import org.rivierarobotics.driverinterface.Driver;
+import org.rivierarobotics.mathUtil.CSVLogger;
 import org.rivierarobotics.subsystems.Arm;
 import org.rivierarobotics.subsystems.Clamp;
 import org.rivierarobotics.subsystems.DriveTrain;
@@ -34,6 +35,8 @@ public class Robot extends TimedRobot {
 	public Driver driver;
 	public Arm arm;
 	public Floppies floppies;
+    String[] fields = {"Position","Velocity","Power"};
+	public CSVLogger logger = new CSVLogger("/media/sda1/FRCDrive/ARM_LOG.csv",fields);
 	//public Clamp clamp;
 
 	public static Robot runningRobot;
@@ -91,7 +94,7 @@ public class Robot extends TimedRobot {
 
 	@Override 
 	public void teleopInit() {
-	       //arm.stop();
+	       arm.stop();
 	}
 	/**
 	 * This function is called periodically during operator control.
@@ -99,6 +102,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		csvLog();
 		printDash();
 	}
 
@@ -110,17 +114,23 @@ public class Robot extends TimedRobot {
 	}
 	
 	@Override
+	public void disabledInit() {
+	}
+	
+	@Override
 	public void disabledPeriodic() {
 	       printDash();
 	}
 
 	public void printDash() {
-	    SmartDashboard.putNumber("arm pos", arm.getPosition());
-	    SmartDashboard.putNumber("arm vel", arm.getVelocity());
-	    SmartDashboard.putNumber("arm pow", arm.getPower());
 	    SmartDashboard.putNumber("Left Roller", floppies.getLeftPos());
 	    SmartDashboard.putNumber("Right Roller", floppies.getRightPos());
 	    SmartDashboard.putNumber("Left Roller Trunc", floppies.getLeftTrunc());
 	    SmartDashboard.putNumber("Right Roller Trunc", floppies.getRightTrunc());
+	}
+	
+	public void csvLog() {
+        double[] armVals = {arm.getPosition(), arm.getVelocity(),arm.getPower()};
+        logger.writeImmediately(armVals);
 	}
 }
