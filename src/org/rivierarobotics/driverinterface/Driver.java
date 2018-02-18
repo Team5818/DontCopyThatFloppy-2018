@@ -1,5 +1,6 @@
 package org.rivierarobotics.driverinterface;
 
+import org.rivierarobotics.commands.SetArmPower;
 import org.rivierarobotics.commands.SetFloppyPositions;
 import org.rivierarobotics.constants.ControlMap;
 import org.rivierarobotics.mathUtil.ArcadeDriveCalculator;
@@ -36,6 +37,7 @@ public class Driver {
 //        JoystickButton setArmAngleButtonMid = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_MID);
 //        JoystickButton setArmAngleButtonLow = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_LOW);
           JoystickButton zeroFlapsButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.ZERO_FLAPPYS_BUTTON);
+          JoystickButton setArmPowerButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_MID);
 //        
 //        //Bind Commands
 //        clampOn.whenPressed(new SetClampOpenCommand(false));
@@ -43,6 +45,7 @@ public class Driver {
 //        setArmAngleButtonHigh.whenPressed(new SetArmAngle(700));
 //        setArmAngleButtonMid.whenPressed(new SetArmAngle(485));
 //        setArmAngleButtonLow.whenPressed(new SetArmAngle(250));
+          setArmPowerButton.whileHeld(new SetArmPower(.2));
           zeroFlapsButton.whenPressed(new SetFloppyPositions(Floppies.LEFT_ZERO_POS, Floppies.RIGHT_ZERO_POS));
     }    
 }
