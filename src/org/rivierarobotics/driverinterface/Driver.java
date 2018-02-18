@@ -1,6 +1,7 @@
 package org.rivierarobotics.driverinterface;
 
 import org.rivierarobotics.commands.SetArmPower;
+import org.rivierarobotics.commands.SetClampOpen;
 import org.rivierarobotics.commands.SetFloppyPositions;
 import org.rivierarobotics.constants.ControlMap;
 import org.rivierarobotics.mathUtil.ArcadeDriveCalculator;
@@ -31,17 +32,17 @@ public class Driver {
         DRIVE_CALC = ArcadeDriveCalculator.getInstance();
         
         //Instantiate Buttons
-//        JoystickButton clampOn = new JoystickButton(JS_LEFT_BUTTONS,ControlMap.CLAMP_ON_BUTTON);
-//        JoystickButton clampOff = new JoystickButton(JS_LEFT_BUTTONS,ControlMap.CLAMP_OFF_BUTTON);
+        JoystickButton clampOn = new JoystickButton(JS_LEFT_BUTTONS,ControlMap.CLAMP_ON_BUTTON);
+        JoystickButton clampOff = new JoystickButton(JS_LEFT_BUTTONS,ControlMap.CLAMP_OFF_BUTTON);
 //        JoystickButton setArmAngleButtonHigh = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_HIGH);
 //        JoystickButton setArmAngleButtonMid = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_MID);
 //        JoystickButton setArmAngleButtonLow = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_LOW);
-          JoystickButton zeroFlapsButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.ZERO_FLAPPYS_BUTTON);
-          JoystickButton setArmPowerButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_MID);
+        JoystickButton zeroFlapsButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.ZERO_FLAPPYS_BUTTON);
+        JoystickButton setArmPowerButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_MID);
 //        
 //        //Bind Commands
-//        clampOn.whenPressed(new SetClampOpenCommand(false));
-//        clampOff.whenPressed(new SetClampOpenCommand(true));
+        clampOn.whenPressed(new SetClampOpen(false));
+        clampOff.whenPressed(new SetClampOpen(true));
 //        setArmAngleButtonHigh.whenPressed(new SetArmAngle(700));
 //        setArmAngleButtonMid.whenPressed(new SetArmAngle(485));
 //        setArmAngleButtonLow.whenPressed(new SetArmAngle(250));

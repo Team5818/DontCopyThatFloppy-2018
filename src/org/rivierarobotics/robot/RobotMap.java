@@ -24,9 +24,7 @@ public class RobotMap {
     
     public static final int RIGHT_ROLLER_TALON = 3;
 
-    public static final int BOT_CLAMP_PISTON_PORT_1 = 0;
-    
-    public static final int BOT_CLAMP_PISTON_PORT_2 = 0;
-    
-    public static final int TOP_CLAMP_PISTON_PORT = 0;
+    public static final int LEFT_CLAMP_PISTON_PORT = 4;
+        
+    public static final int RIGHT_CLAMP_PISTON_PORT = 5;
 }

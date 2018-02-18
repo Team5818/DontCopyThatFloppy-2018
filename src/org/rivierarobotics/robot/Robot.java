@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
 	public Floppies floppies;
     String[] fields = {"Position","Velocity","Power"};
 	public CSVLogger logger = new CSVLogger("/media/sda1/FRCDrive/ARM_LOG.csv",fields);
-	//public Clamp clamp;
+	public Clamp clamp;
 
 	public static Robot runningRobot;
 	/**
