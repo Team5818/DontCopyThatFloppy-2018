@@ -14,11 +14,11 @@ public class RobotMap {
     
     public static final int RIGHT_DRIVETRAIN_TALON_3 = 6;
 
-    public static final int ARM_TALON_1 = 0;
+    public static final int ARM_TALON_1 = 11;
 
-    public static final int ARM_TALON_2 = 0;
+    public static final int ARM_TALON_2 = 9;
 
-    public static final int ARM_TALON_3 = 0;
+    public static final int ARM_TALON_3 = 10;
 
     public static final int LEFT_ROLLER_TALON = 1;
     

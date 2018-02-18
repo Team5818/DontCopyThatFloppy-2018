@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
 
 	public DriveTrain driveTrain;
 	public Driver driver;
-	//public Arm arm;
+	public Arm arm;
 	public Floppies floppies;
 	//public Clamp clamp;
 
@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 	    runningRobot = this;
 	    driveTrain = new DriveTrain();
-	    //arm = new Arm();
+	    arm = new Arm();
 	    //clamp = new Clamp();
 	    floppies = new Floppies();
 	    driver = new Driver();
@@ -115,9 +115,9 @@ public class Robot extends TimedRobot {
 	}
 
 	public void printDash() {
-//	    SmartDashboard.putNumber("arm pos", arm.getPosition());
-//	    SmartDashboard.putNumber("arm vel", arm.getVelocity());
-//	    SmartDashboard.putNumber("arm pow", arm.getPower());
+	    SmartDashboard.putNumber("arm pos", arm.getPosition());
+	    SmartDashboard.putNumber("arm vel", arm.getVelocity());
+	    SmartDashboard.putNumber("arm pow", arm.getPower());
 	    SmartDashboard.putNumber("Left Roller", floppies.getLeftPos());
 	    SmartDashboard.putNumber("Right Roller", floppies.getRightPos());
 	    SmartDashboard.putNumber("Left Roller Trunc", floppies.getLeftTrunc());
