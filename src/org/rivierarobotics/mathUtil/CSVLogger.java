@@ -42,6 +42,7 @@ public class CSVLogger {
             header.append(s);
         }
         writer.println(header.toString());
+        writer.flush();
     }
     
     public String getValueLine(double...values) {
@@ -64,11 +65,13 @@ public class CSVLogger {
     public synchronized void flushToDisk() {
         for(String s : lineBuffer) {
             writer.println(s);
+            writer.flush();
         }
     }
     
     public void writeImmediately(double...values) {
         writer.println(getValueLine(values));
+        writer.flush();
     }
     
     public void close() {
