@@ -30,7 +30,7 @@ public class Arm extends Subsystem {
     
     public static final double KF_UP_WITH_CUBE = 1023.0/307.27;
     public static final double KF_UP_NO_CUBE = 1023.0/342.045;
-    public static final double KF_DOWN_WITH_CUBE = 1023.0/428.86;//TODO: change
+    public static final double KF_DOWN_WITH_CUBE = 1023.0/450.00;
     public static final double KF_DOWN_NO_CUBE = 1023.0/428.86;
 
     private WPI_TalonSRX masterTalon;
