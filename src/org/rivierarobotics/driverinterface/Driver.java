@@ -1,11 +1,13 @@
 package org.rivierarobotics.driverinterface;
 
+import org.rivierarobotics.commands.SetArmAngleGainScheduled;
 import org.rivierarobotics.commands.SetArmPower;
 import org.rivierarobotics.commands.SetClampOpen;
 import org.rivierarobotics.commands.SetFloppyPositions;
 import org.rivierarobotics.constants.ControlMap;
 import org.rivierarobotics.mathUtil.ArcadeDriveCalculator;
 import org.rivierarobotics.mathUtil.DriveCalculator;
+import org.rivierarobotics.subsystems.Arm;
 import org.rivierarobotics.subsystems.Floppies;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -34,20 +36,17 @@ public class Driver {
         //Instantiate Buttons
         JoystickButton clampOn = new JoystickButton(JS_LEFT_BUTTONS,ControlMap.CLAMP_ON_BUTTON);
         JoystickButton clampOff = new JoystickButton(JS_LEFT_BUTTONS,ControlMap.CLAMP_OFF_BUTTON);
-//        JoystickButton setArmAngleButtonHigh = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_HIGH);
-//        JoystickButton setArmAngleButtonMid = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_MID);
-//        JoystickButton setArmAngleButtonLow = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_LOW);
+        JoystickButton setArmAngleButtonHigh = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_HIGH);
+        JoystickButton setArmAngleButtonMid = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_MID);
+        JoystickButton setArmAngleButtonLow = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_LOW);
         JoystickButton zeroFlapsButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.ZERO_FLAPPYS_BUTTON);
-        JoystickButton setArmPowerButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_MID);
-//        
-//        //Bind Commands
+        
+        //Bind Commands
         clampOn.whenPressed(new SetClampOpen(false));
         clampOff.whenPressed(new SetClampOpen(true));
-//        setArmAngleButtonHigh.whenPressed(new SetArmAngle(700));
-//        setArmAngleButtonMid.whenPressed(new SetArmAngle(485));
-//        setArmAngleButtonLow.whenPressed(new SetArmAngle(250));
-          setArmPowerButton.whenPressed(new SetArmPower(-1.0));
-          setArmPowerButton.whenReleased(new SetArmPower(0.0));
-          zeroFlapsButton.whenPressed(new SetFloppyPositions(Floppies.LEFT_ZERO_POS, Floppies.RIGHT_ZERO_POS));
+        setArmAngleButtonHigh.whenPressed(new SetArmAngleGainScheduled(Arm.ARM_POSITION_SCALE_HIGH));
+        setArmAngleButtonMid.whenPressed(new SetArmAngleGainScheduled(Arm.ARM_POSITION_MID_SWITCH));
+        setArmAngleButtonLow.whenPressed(new SetArmAngleGainScheduled(Arm.ARM_POSITION_COLLECT_STANDBY));
+        zeroFlapsButton.whenPressed(new SetFloppyPositions(Floppies.LEFT_ZERO_POS, Floppies.RIGHT_ZERO_POS));
     }    
 }

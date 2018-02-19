@@ -5,42 +5,69 @@ import org.rivierarobotics.subsystems.Arm;
 import org.rivierarobotics.subsystems.Clamp;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class SetArmAngleGainScheduled extends Command{
-    Arm arm = Robot.runningRobot.arm;
-    Clamp clamp = Robot.runningRobot.clamp;
-    double target;
+public class SetArmAngleGainScheduled extends CommandGroup{
+    
+    public class StopArm extends Command{
+        Arm arm = Robot.runningRobot.arm;
+        
+        public StopArm(){
+            setTimeout(.1);
+        }
+
+        @Override
+        protected void initialize() {
+            arm.stop();
+        }
+        
+        @Override
+        protected boolean isFinished() {
+            return isTimedOut();
+        }
+
+    }
+    
+    public class MoveArm extends Command{
+        Arm arm = Robot.runningRobot.arm;
+        Clamp clamp = Robot.runningRobot.clamp;
+        double target;
+        
+        public MoveArm(double ang) {
+            target = ang;
+            requires(arm);
+        }
+        
+        @Override
+        protected void initialize() {
+            Arm.ArmMotionState motionState;
+            if(target > arm.getPosition()) {
+                if(!clamp.isOpen()) {
+                    motionState = Arm.ArmMotionState.UP_WITH_CUBE;
+                }
+                else {
+                    motionState = Arm.ArmMotionState.UP_NO_CUBE;
+                }
+            }
+            else {
+                if(!clamp.isOpen()) {
+                    motionState = Arm.ArmMotionState.DOWN_WITH_CUBE;
+                }
+                else {
+                    motionState = Arm.ArmMotionState.DOWN_NO_CUBE;
+                }
+            }
+            arm.setAngle(target,motionState);
+        }
+    
+        @Override
+        protected boolean isFinished() {
+            return true;
+        }
+    }
     
     public SetArmAngleGainScheduled(double ang) {
-        target = ang;
-        requires(arm);
-        setTimeout(3);
-    }
-    
-    @Override
-    protected void initialize() {
-        Arm.ArmMotionState motionState;
-        if(target > arm.getPosition()) {
-            if(!clamp.isOpen()) {
-                motionState = Arm.ArmMotionState.UP_WITH_CUBE;
-            }
-            else {
-                motionState = Arm.ArmMotionState.UP_NO_CUBE;
-            }
-        }
-        else {
-            if(!clamp.isOpen()) {
-                motionState = Arm.ArmMotionState.DOWN_WITH_CUBE;
-            }
-            else {
-                motionState = Arm.ArmMotionState.DOWN_NO_CUBE;
-            }
-        }
-        arm.setAngle(target,motionState);
-    }
-
-    @Override
-    protected boolean isFinished() {
-        return isTimedOut();
+        this.addSequential(new StopArm());
+        this.addSequential(new MoveArm(ang));
     }
 }

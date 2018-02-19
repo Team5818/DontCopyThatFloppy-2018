@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -54,9 +55,9 @@ public class Arm extends Subsystem {
         masterTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, TIMEOUT);
         masterTalon.selectProfileSlot(SLOT_IDX, MOTION_MAGIC_IDX);
         masterTalon.config_kF(SLOT_IDX, KF_UP_NO_CUBE, TIMEOUT);
-        masterTalon.config_kP(SLOT_IDX, 0.0, TIMEOUT);//0.006 * 1023, TIMEOUT);
+        masterTalon.config_kP(SLOT_IDX, 0.0, TIMEOUT);// 0.002 * 1023, TIMEOUT);
         masterTalon.config_kI(SLOT_IDX, 0.0, TIMEOUT);
-        masterTalon.config_kD(SLOT_IDX, 0.0, TIMEOUT);//0.04 * 1023, TIMEOUT);
+        masterTalon.config_kD(SLOT_IDX, 0.0, TIMEOUT);//1*1023, TIMEOUT);
         masterTalon.configMotionCruiseVelocity(MAX_REASONABLE_VELOCITY/ 2, TIMEOUT);
         masterTalon.configMotionAcceleration(MAX_REASONABLE_VELOCITY, TIMEOUT);//accelerate in .5 sec
         setBrakeMode();
@@ -130,5 +131,9 @@ public class Arm extends Subsystem {
     public void setAngle(double angle, ArmMotionState state) {
         configureMotionState(state);
         setAngle(angle);
+    }
+    
+    public int getClosedLoopOutput() {
+        return masterTalon.getActiveTrajectoryPosition();
     }
 }

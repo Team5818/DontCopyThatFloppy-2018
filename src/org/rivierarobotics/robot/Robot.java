@@ -102,7 +102,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		csvLog();
+		//csvLog();
 		printDash();
 	}
 
@@ -128,6 +128,7 @@ public class Robot extends TimedRobot {
 	    SmartDashboard.putNumber("Left Roller Trunc", floppies.getLeftTrunc());
 	    SmartDashboard.putNumber("Right Roller Trunc", floppies.getRightTrunc());
 	    SmartDashboard.putNumber("Arm Position", arm.getPosition());
+	    SmartDashboard.putNumber("Arm Target", arm.getClosedLoopOutput());
 	}
 	
 	public void csvLog() {
