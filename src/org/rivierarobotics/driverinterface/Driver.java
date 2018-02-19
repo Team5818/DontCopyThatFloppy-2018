@@ -46,7 +46,8 @@ public class Driver {
 //        setArmAngleButtonHigh.whenPressed(new SetArmAngle(700));
 //        setArmAngleButtonMid.whenPressed(new SetArmAngle(485));
 //        setArmAngleButtonLow.whenPressed(new SetArmAngle(250));
-          setArmPowerButton.whileHeld(new SetArmPower(.2));
+          setArmPowerButton.whenPressed(new SetArmPower(-1.0));
+          setArmPowerButton.whenReleased(new SetArmPower(0.0));
           zeroFlapsButton.whenPressed(new SetFloppyPositions(Floppies.LEFT_ZERO_POS, Floppies.RIGHT_ZERO_POS));
     }    
 }

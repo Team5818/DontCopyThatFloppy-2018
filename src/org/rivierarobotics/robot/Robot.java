@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
 	public Arm arm;
 	public Floppies floppies;
     String[] fields = {"Position","Velocity","Power"};
-	public CSVLogger logger = new CSVLogger("/media/sda1/FRCDrive/ARM_LOG.csv",fields);
+	public CSVLogger logger = new CSVLogger("/media/sdc1/FRCDrive/ARM_LOG.csv",fields);
 	public Clamp clamp;
 
 	public static Robot runningRobot;
@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
 	    runningRobot = this;
 	    driveTrain = new DriveTrain();
 	    arm = new Arm();
-	    //clamp = new Clamp();
+	    clamp = new Clamp();
 	    floppies = new Floppies();
 	    driver = new Driver();
 		m_chooser.addDefault("Default Auto", kDefaultAuto);
@@ -127,6 +127,7 @@ public class Robot extends TimedRobot {
 	    SmartDashboard.putNumber("Right Roller", floppies.getRightPos());
 	    SmartDashboard.putNumber("Left Roller Trunc", floppies.getLeftTrunc());
 	    SmartDashboard.putNumber("Right Roller Trunc", floppies.getRightTrunc());
+	    SmartDashboard.putNumber("Arm Position", arm.getPosition());
 	}
 	
 	public void csvLog() {

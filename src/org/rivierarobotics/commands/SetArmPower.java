@@ -3,6 +3,7 @@ package org.rivierarobotics.commands;
 import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.subsystems.Arm;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class SetArmPower extends Command{
@@ -17,15 +18,13 @@ public class SetArmPower extends Command{
     @Override
     protected void initialize() {
         arm.setPower(power);
+        DriverStation.reportError("hi", false);
     }
 
     @Override
     protected boolean isFinished() {
+        DriverStation.reportError("hi", false);
         return true;
     }
     
-    @Override
-    protected void interrupted() {
-        arm.stop();
-    }
 }
