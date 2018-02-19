@@ -1,10 +1,7 @@
 package org.rivierarobotics.subsystems;
 
-import org.rivierarobotics.commands.ArmControlCommand;
-import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.robot.RobotMap;
 
-import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -20,7 +17,7 @@ public class Arm extends Subsystem {
         UP_WITH_CUBE, UP_NO_CUBE, DOWN_WITH_CUBE, DOWN_NO_CUBE
     }
     
-    private static final int MAX_VELOCITY = 135;
+    private static final int MAX_REASONABLE_VELOCITY = 400;
     private static final int MOTION_MAGIC_IDX = 0;
     private static final int SLOT_IDX = 0;
     private static final int TIMEOUT = 10;
@@ -56,12 +53,12 @@ public class Arm extends Subsystem {
         masterTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, TIMEOUT);
         masterTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, TIMEOUT);
         masterTalon.selectProfileSlot(SLOT_IDX, MOTION_MAGIC_IDX);
-        masterTalon.config_kF(SLOT_IDX, 0.0, TIMEOUT);// 1023 / MAX_VELOCITY, TIMEOUT);
+        masterTalon.config_kF(SLOT_IDX, KF_UP_NO_CUBE, TIMEOUT);
         masterTalon.config_kP(SLOT_IDX, 0.0, TIMEOUT);//0.006 * 1023, TIMEOUT);
         masterTalon.config_kI(SLOT_IDX, 0.0, TIMEOUT);
         masterTalon.config_kD(SLOT_IDX, 0.0, TIMEOUT);//0.04 * 1023, TIMEOUT);
-        masterTalon.configMotionCruiseVelocity(MAX_VELOCITY / 2, TIMEOUT);
-        masterTalon.configMotionAcceleration(MAX_VELOCITY / 2, TIMEOUT);
+        masterTalon.configMotionCruiseVelocity(MAX_REASONABLE_VELOCITY/ 2, TIMEOUT);
+        masterTalon.configMotionAcceleration(MAX_REASONABLE_VELOCITY, TIMEOUT);//accelerate in .5 sec
         setBrakeMode();
         
         ptoSolenoid = new Solenoid(RobotMap.ARM_PTO_SOLENOID);

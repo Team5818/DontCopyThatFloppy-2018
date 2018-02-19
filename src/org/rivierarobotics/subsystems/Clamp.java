@@ -12,15 +12,22 @@ public class Clamp extends Subsystem {
 
     private Solenoid leftPiston;
     private Solenoid rightPiston;
+    private boolean isOpen;
 
     public Clamp() {
         leftPiston = new Solenoid(RobotMap.LEFT_CLAMP_PISTON_PORT);
         rightPiston = new Solenoid(RobotMap.RIGHT_CLAMP_PISTON_PORT);
+        isOpen = false;
     }
 
     public void setOpen(boolean open) {
+        isOpen = open;
         leftPiston.set(!open);
         rightPiston.set(!open);
+    }
+    
+    public boolean isOpen() {
+        return isOpen;
     }
 
     @Override
