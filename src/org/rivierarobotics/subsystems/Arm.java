@@ -22,11 +22,11 @@ public class Arm extends Subsystem {
     private static final int SLOT_IDX = 0;
     private static final int TIMEOUT = 10;
     
-    public static final int ARM_POSITION_SCALE_HIGH = 0;
-    public static final int ARM_POSIITON_SCALE_LOW = 0;
-    public static final int ARM_POSITION_MID = 0;
-    public static final int ARM_POSITION_COLLECT_STANDBY = 0;
-    public static final int ARM_POSITION_GRABBING = 0;
+    public static final int ARM_POSITION_SCALE_HIGH = 1300;
+    public static final int ARM_POSIITON_SCALE_LOW = 980;
+    public static final int ARM_POSITION_MID_SWITCH = 490;
+    public static final int ARM_POSITION_COLLECT_STANDBY = 250;
+    public static final int ARM_POSITION_GRABBING = -80;
     
     public static final double KF_UP_WITH_CUBE = 1023.0/307.27;
     public static final double KF_UP_NO_CUBE = 1023.0/342.045;
@@ -49,7 +49,7 @@ public class Arm extends Subsystem {
         slaveTalon1.setInverted(true);
         slaveTalon2.setInverted(true);
         masterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, MOTION_MAGIC_IDX, TIMEOUT);
-        masterTalon.setSensorPhase(true);
+        masterTalon.setSensorPhase(false);
         masterTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, TIMEOUT);
         masterTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, TIMEOUT);
         masterTalon.selectProfileSlot(SLOT_IDX, MOTION_MAGIC_IDX);
