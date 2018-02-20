@@ -3,6 +3,7 @@ package org.rivierarobotics.subsystems;
 import org.rivierarobotics.commands.FloppyControlCommand;
 import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.robot.RobotMap;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
