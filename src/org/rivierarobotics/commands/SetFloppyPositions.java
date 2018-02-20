@@ -16,7 +16,7 @@ public class SetFloppyPositions extends Command{
         targetL = left;
         targetR = right;
         requires(floppies);
-        setTimeout(3);
+        setTimeout(1);
     }
     
     @Override

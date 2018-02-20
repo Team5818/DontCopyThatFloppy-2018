@@ -10,27 +10,30 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Clamp extends Subsystem {
 
-	private Solenoid topPiston;
-	private DoubleSolenoid bottomPiston;
-	
-	public Clamp() {
-		bottomPiston = new DoubleSolenoid(0, 1);
-		topPiston = new Solenoid(2);
-	}
+    private Solenoid leftPiston;
+    private Solenoid rightPiston;
+    private boolean isOpen;
 
-	public void setOpen(boolean open) {
-		if (open) {
-		    bottomPiston.set(Value.kForward);
-			topPiston.set(true);
-		} else {
-			bottomPiston.set(Value.kReverse);
-			topPiston.set(false);
-		}
-	}
-	@Override
-	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
+    public Clamp() {
+        leftPiston = new Solenoid(RobotMap.LEFT_CLAMP_PISTON_PORT);
+        rightPiston = new Solenoid(RobotMap.RIGHT_CLAMP_PISTON_PORT);
+        isOpen = false;
+    }
 
-	}
+    public void setOpen(boolean open) {
+        DriverStation.reportError("yo", false);
+        isOpen = open;
+        leftPiston.set(!open);
+        rightPiston.set(!open);
+    }
+    
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    @Override
+    protected void initDefaultCommand() {
+        // TODO Auto-generated method stub
+    }
 
 }

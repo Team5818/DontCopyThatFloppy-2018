@@ -25,102 +25,110 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
-	private static final String kDefaultAuto = "Default";
-	private static final String kCustomAuto = "My Auto";
-	private String m_autoSelected;
-	private SendableChooser<String> m_chooser = new SendableChooser<>();
 
-	public DriveTrain driveTrain;
-	public Driver driver;
-	//public Arm arm;
-	public Floppies floppies;
-	//public Clamp clamp;
+    private static final String kDefaultAuto = "Default";
+    private static final String kCustomAuto = "My Auto";
+    private String m_autoSelected;
+    private SendableChooser<String> m_chooser = new SendableChooser<>();
 
-	public static Robot runningRobot;
-	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
-	 */
-	@Override
-	public void robotInit() {
-	    runningRobot = this;
-	    driveTrain = new DriveTrain();
-	    //arm = new Arm();
-	    //clamp = new Clamp();
-	    floppies = new Floppies();
-	    driver = new Driver();
-		m_chooser.addDefault("Default Auto", kDefaultAuto);
-		m_chooser.addObject("My Auto", kCustomAuto);
-		SmartDashboard.putData("Auto choices", m_chooser);
-	}
+    public DriveTrain driveTrain;
+    public Driver driver;
+    public Arm arm;
+    public Floppies floppies;
+    public Clamp clamp;
 
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString line to get the auto name from the text box below the Gyro
-	 *
-	 * <p>You can add additional auto modes by adding additional comparisons to
-	 * the switch structure below with additional strings. If using the
-	 * SendableChooser make sure to add them to the chooser code above as well.
-	 */
-	@Override
-	public void autonomousInit() {
-		m_autoSelected = m_chooser.getSelected();
-		// m_autoSelected = SmartDashboard.getString("Auto Selector",
-		// 		kDefaultAuto);
-		System.out.println("Auto selected: " + m_autoSelected);
-	}
+    public static Robot runningRobot;
 
-	/**
-	 * This function is called periodically during autonomous.
-	 */
-	@Override
-	public void autonomousPeriodic() {
-		switch (m_autoSelected) {
-			case kCustomAuto:
-				// Put custom auto code here
-				break;
-			case kDefaultAuto:
-			default:
-				// Put default auto code here
-				break;
-		}
-	}
+    /**
+     * This function is run when the robot is first started up and should be
+     * used for any initialization code.
+     */
+    @Override
+    public void robotInit() {
+        runningRobot = this;
+        driveTrain = new DriveTrain();
+        arm = new Arm();
+        clamp = new Clamp();
+        floppies = new Floppies();
+        driver = new Driver();
+        m_chooser.addDefault("Default Auto", kDefaultAuto);
+        m_chooser.addObject("My Auto", kCustomAuto);
+        SmartDashboard.putData("Auto choices", m_chooser);
+    }
 
-	@Override 
-	public void teleopInit() {
-	       //arm.stop();
-	}
-	/**
-	 * This function is called periodically during operator control.
-	 */
-	@Override
-	public void teleopPeriodic() {
-		Scheduler.getInstance().run();
-		printDash();
-	}
+    /**
+     * This autonomous (along with the chooser code above) shows how to select
+     * between different autonomous modes using the dashboard. The sendable
+     * chooser code works with the Java SmartDashboard. If you prefer the
+     * LabVIEW Dashboard, remove all of the chooser code and uncomment the
+     * getString line to get the auto name from the text box below the Gyro
+     *
+     * <p>
+     * You can add additional auto modes by adding additional comparisons to the
+     * switch structure below with additional strings. If using the
+     * SendableChooser make sure to add them to the chooser code above as well.
+     */
+    @Override
+    public void autonomousInit() {
+        m_autoSelected = m_chooser.getSelected();
+        // m_autoSelected = SmartDashboard.getString("Auto Selector",
+        // kDefaultAuto);
+        System.out.println("Auto selected: " + m_autoSelected);
+    }
 
-	/**
-	 * This function is called periodically during test mode.
-	 */
-	@Override
-	public void testPeriodic() {
-	}
-	
-	@Override
-	public void disabledPeriodic() {
-	       printDash();
-	}
+    /**
+     * This function is called periodically during autonomous.
+     */
+    @Override
+    public void autonomousPeriodic() {
+        switch (m_autoSelected) {
+            case kCustomAuto:
+                // Put custom auto code here
+                break;
+            case kDefaultAuto:
+            default:
+                // Put default auto code here
+                break;
+        }
+    }
 
-	public void printDash() {
-//	    SmartDashboard.putNumber("arm pos", arm.getPosition());
-//	    SmartDashboard.putNumber("arm vel", arm.getVelocity());
-//	    SmartDashboard.putNumber("arm pow", arm.getPower());
-	    SmartDashboard.putNumber("Left Roller", floppies.getLeftPos());
-	    SmartDashboard.putNumber("Right Roller", floppies.getRightPos());
-	    SmartDashboard.putNumber("Left Roller Trunc", floppies.getLeftTrunc());
-	    SmartDashboard.putNumber("Right Roller Trunc", floppies.getRightTrunc());
-	}
+    @Override
+    public void teleopInit() {
+        arm.stop();
+    }
+
+    /**
+     * This function is called periodically during operator control.
+     */
+    @Override
+    public void teleopPeriodic() {
+        Scheduler.getInstance().run();
+        printDash();
+    }
+
+    /**
+     * This function is called periodically during test mode.
+     */
+    @Override
+    public void testPeriodic() {
+    }
+
+    @Override
+    public void disabledInit() {
+    }
+
+    @Override
+    public void disabledPeriodic() {
+        printDash();
+    }
+
+    public void printDash() {
+        SmartDashboard.putNumber("Arm Pos", arm.getPosition());
+        SmartDashboard.putNumber("Left Roller", floppies.getLeftPos());
+        SmartDashboard.putNumber("Right Roller", floppies.getRightPos());
+        SmartDashboard.putNumber("Left Roller Trunc", floppies.getLeftTrunc());
+        SmartDashboard.putNumber("Right Roller Trunc", floppies.getRightTrunc());
+        SmartDashboard.putNumber("Arm Position", arm.getPosition());
+        SmartDashboard.putNumber("Arm Target", arm.getClosedLoopOutput());
+    }
 }
