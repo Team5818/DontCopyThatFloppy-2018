@@ -16,8 +16,8 @@ public class Floppies extends Subsystem {
 	private static int PID_IDX = 0;
 	private static int SLOT_IDX = 0;
 	private static int TIMEOUT = 10;
-	public static int LEFT_ZERO_POS = 1282;
-	public static int RIGHT_ZERO_POS = 3605;
+	public static int LEFT_ZERO_POS = 3886;
+	public static int RIGHT_ZERO_POS = 939;
 	
 	public Floppies() {
 		left = new WPI_TalonSRX(RobotMap.LEFT_ROLLER_TALON);
