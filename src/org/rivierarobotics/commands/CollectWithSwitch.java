@@ -8,43 +8,38 @@ import edu.wpi.first.wpilibj.command.Command;
 public class CollectWithSwitch extends Command{
 	
 	private Floppies flop;
-	private double leftPow;
-	private double rightPow;
+	private double power;
 	
-	public CollectWithSwitch()
+	public CollectWithSwitch(double pow)
 	{
 		flop = Robot.runningRobot.floppies;
-	}
-	
-	public void getLeftPower(double left)
-	{
-		leftPow = left;
-	}
-	
-	public void getRightPower(double right)
-	{
-		rightPow = right;
+		power = pow;
 	}
 	
 	@Override
 	public void initialize()
 	{
-		flop.setPower(leftPow, rightPow);
+		flop.setPower(power, power);
 	}
 	
-	@Override
-	public void execute()
-	{
-		if(flop.cubeInPlace())
-		{
-			flop.setPower(0,0);
-		}
-	}
 	
 	@Override
 	public boolean isFinished()
 	{
-		return false;
+		if(flop.cubeInPlace())
+		 {
+			return true;
+		 }
+		else
+		{
+			return false;
+		}
+	}
+	
+	@Override
+	protected void end() 
+	{
+		flop.setPower(0,0);
 	}
 
 }
