@@ -60,10 +60,6 @@ public class Floppies extends Subsystem {
 	    int rightSet = (getRightPos() & 0xFFFFF000) + rightPos;
 	    left.set(ControlMode.Position, leftSet);
 	    right.set(ControlMode.Position, rightSet);
-	    DriverStation.reportError("" + getLeftPos() + " " + leftSet, false);
-	    DriverStation.reportError("" + getRightPos() + " " + rightSet, false);
-	    DriverStation.reportError("" + left.getClosedLoopError(0), false);
-	    DriverStation.reportError("" + right.getClosedLoopError(0), false);
 	}
 	
 	public int getLeftPos() {

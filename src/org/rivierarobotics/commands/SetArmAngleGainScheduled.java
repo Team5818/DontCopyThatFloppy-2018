@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class SetArmAngleGainScheduled extends CommandGroup{
     
     public class StopArm extends Command{
-        Arm arm = Robot.runningRobot.arm;
+        private Arm arm = Robot.runningRobot.arm;
         
         public StopArm(){
             setTimeout(.1);
@@ -29,9 +29,9 @@ public class SetArmAngleGainScheduled extends CommandGroup{
     }
     
     public class MoveArm extends Command{
-        Arm arm = Robot.runningRobot.arm;
-        Clamp clamp = Robot.runningRobot.clamp;
-        double target;
+        private Arm arm = Robot.runningRobot.arm;
+        private Clamp clamp = Robot.runningRobot.clamp;
+        private double target;
         
         public MoveArm(double ang) {
             target = ang;
@@ -42,19 +42,19 @@ public class SetArmAngleGainScheduled extends CommandGroup{
         protected void initialize() {
             Arm.ArmMotionState motionState;
             if(target > arm.getPosition()) {
-                if(!clamp.isOpen()) {
-                    motionState = Arm.ArmMotionState.UP_WITH_CUBE;
+                if(clamp.isOpen()) {
+                    motionState = Arm.ArmMotionState.UP_NO_CUBE;
                 }
                 else {
-                    motionState = Arm.ArmMotionState.UP_NO_CUBE;
+                    motionState = Arm.ArmMotionState.UP_WITH_CUBE;
                 }
             }
             else {
-                if(!clamp.isOpen()) {
-                    motionState = Arm.ArmMotionState.DOWN_WITH_CUBE;
+                if(clamp.isOpen()) {
+                    motionState = Arm.ArmMotionState.DOWN_NO_CUBE;
                 }
                 else {
-                    motionState = Arm.ArmMotionState.DOWN_NO_CUBE;
+                    motionState = Arm.ArmMotionState.DOWN_WITH_CUBE;
                 }
             }
             arm.setAngle(target,motionState);

@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class SetArmPower extends Command{
-    Arm arm = Robot.runningRobot.arm;
-    double power;
+    private Arm arm = Robot.runningRobot.arm;
+    private double power;
     
     public SetArmPower(double pow) {
         power = pow;
@@ -18,12 +18,10 @@ public class SetArmPower extends Command{
     @Override
     protected void initialize() {
         arm.setPower(power);
-        DriverStation.reportError("hi", false);
     }
 
     @Override
     protected boolean isFinished() {
-        DriverStation.reportError("hi", false);
         return true;
     }
     
