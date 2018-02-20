@@ -26,20 +26,13 @@ public class CollectWithSwitch extends Command{
 	@Override
 	public boolean isFinished()
 	{
-		if(flop.cubeInPlace())
-		 {
-			return true;
-		 }
-		else
-		{
-			return false;
-		}
+		return flop.cubeInPlace();
 	}
 	
 	@Override
 	protected void end() 
 	{
-		flop.setPower(0,0);
+		flop.setPosition(Floppies.LEFT_ZERO_POS, Floppies.RIGHT_ZERO_POS);
 	}
 
 }

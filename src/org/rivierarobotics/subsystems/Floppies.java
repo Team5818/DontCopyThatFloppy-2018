@@ -10,7 +10,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Floppies extends Subsystem {
@@ -22,8 +21,8 @@ public class Floppies extends Subsystem {
     private static int TIMEOUT = 10;
     public static int LEFT_ZERO_POS = 3886;
     public static int RIGHT_ZERO_POS = 3254;
-	public DigitalInput leftSwitch;
-	public DigitalInput rightSwitch;
+    public DigitalInput leftSwitch;
+    public DigitalInput rightSwitch;
 
     public Floppies() {
         left = new WPI_TalonSRX(RobotMap.LEFT_ROLLER_TALON);
@@ -37,13 +36,13 @@ public class Floppies extends Subsystem {
         right.selectProfileSlot(SLOT_IDX, PID_IDX);
 
         left.config_kP(SLOT_IDX, 0.0006 * 1023, TIMEOUT);
-        left.config_kI(SLOT_IDX, 0.0, TIMEOUT);
+        left.config_kI(SLOT_IDX, 0.000004 * 1023, TIMEOUT);
         left.config_kD(SLOT_IDX, 0.0, TIMEOUT);
 
         right.config_kP(SLOT_IDX, 0.0006 * 1023, TIMEOUT);
-        right.config_kI(SLOT_IDX, 0.0, TIMEOUT);
+        right.config_kI(SLOT_IDX, 0.000004 * 1023, TIMEOUT);
         right.config_kD(SLOT_IDX, 0.0, TIMEOUT);
-        
+
         leftSwitch = new DigitalInput(RobotMap.LEFT_LIMIT_SWITCH_PORT);
         rightSwitch = new DigitalInput(RobotMap.RIGHT_LIMIT_SWITCH_PORT);
     }
@@ -54,16 +53,8 @@ public class Floppies extends Subsystem {
     }
 
     public boolean cubeInPlace()// gets switch data
-	{	
-		if(leftSwitch.get() && rightSwitch.get())
-		{
-			return true;
-		}	
-		else
-		{
-            return false;
-		}
-	
+    {
+        return (leftSwitch.get() && rightSwitch.get());
     }
 
     public void setBrakeMode(boolean on) {
