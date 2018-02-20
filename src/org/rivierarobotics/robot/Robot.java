@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 package org.rivierarobotics.robot;
 
+import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.driverinterface.Driver;
 import org.rivierarobotics.subsystems.Arm;
 import org.rivierarobotics.subsystems.Clamp;
@@ -57,18 +58,18 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Auto choices", m_chooser);
     }
 
-	public boolean[] getSide()
+	public Side[] getSide()
 	{
 		String gameSide = DriverStation.getInstance().getGameSpecificMessage();
 		
-		boolean[] side = new boolean[3];
+		Side[] side = new Side[3];
 		
 		for(int x = 0; x < 3; x++)
 		{
 			if(gameSide.charAt(x) == 'L')
-				side[x] = true;
+				side[x] = Side.LEFT;
 			else
-				side[x] = false;
+				side[x] = Side.RIGHT;
 		}
 		
 		return side;

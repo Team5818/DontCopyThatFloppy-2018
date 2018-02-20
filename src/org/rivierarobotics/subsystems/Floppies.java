@@ -21,6 +21,8 @@ public class Floppies extends Subsystem {
     private static int TIMEOUT = 10;
     public static int LEFT_ZERO_POS = 3886;
     public static int RIGHT_ZERO_POS = 3254;
+	public DigitalInput leftSwitch;
+	public DigitalInput rightSwitch;
 
     public Floppies() {
         left = new WPI_TalonSRX(RobotMap.LEFT_ROLLER_TALON);
@@ -40,6 +42,9 @@ public class Floppies extends Subsystem {
         right.config_kP(SLOT_IDX, 0.0006 * 1023, TIMEOUT);
         right.config_kI(SLOT_IDX, 0.0, TIMEOUT);
         right.config_kD(SLOT_IDX, 0.0, TIMEOUT);
+        
+        leftSwitch = new DigitalInput(RobotMap.LEFT_LIMIT_SWITCH_PORT);
+        rightSwitch = new DigitalInput(RobotMap.RIGHT_LIMIT_SWITCH_PORT);
     }
 
     public void setPower(double leftPow, double rightPow) {
@@ -48,14 +53,16 @@ public class Floppies extends Subsystem {
     }
 
     public boolean cubeInPlace()// gets switch data
-    {
-        DigitalInput switch1 = new DigitalInput(1);
-        DigitalInput switch2 = new DigitalInput(1);
-
-        if (switch1.get() && switch2.get())
-            return true;
-        else
+	{	
+		if(leftSwitch.get() && rightSwitch.get())
+		{
+			return true;
+		}	
+		else
+		{
             return false;
+		}
+	
     }
 
     public void setBrakeMode(boolean on) {
