@@ -28,7 +28,7 @@ public class FloppyControlCommand extends Command {
 		Vector2d jsVec = MathUtil.adjustDeadband(js, DEADBAND, false);
 		double inOut = jsVec.getY();
 		double twist = jsVec.getX();
-		Floppies.setPower(inOut - .5 * twist, -inOut - .5 * twist);
+		Floppies.setPower(inOut - .5 * twist, inOut + .5 * twist);
 	}
 
 	@Override
