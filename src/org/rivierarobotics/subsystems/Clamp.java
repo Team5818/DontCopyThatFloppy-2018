@@ -21,6 +21,7 @@ public class Clamp extends Subsystem {
     }
 
     public void setOpen(boolean open) {
+        DriverStation.reportError("yo", false);
         isOpen = open;
         leftPiston.set(!open);
         rightPiston.set(!open);

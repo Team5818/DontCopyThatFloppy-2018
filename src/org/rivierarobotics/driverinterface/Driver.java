@@ -46,7 +46,7 @@ public class Driver {
         clampOff.whenPressed(new SetClampOpen(true));
         setArmAngleButtonHigh.whenPressed(new SetArmAngleGainScheduled(Arm.ARM_POSITION_SCALE_HIGH));
         setArmAngleButtonMid.whenPressed(new SetArmAngleGainScheduled(Arm.ARM_POSITION_MID_SWITCH));
-        setArmAngleButtonLow.whenPressed(new SetArmAngleGainScheduled(Arm.ARM_POSITION_COLLECT_STANDBY));
+        setArmAngleButtonLow.whenPressed(new SetArmAngleGainScheduled(Arm.ARM_POSITION_GRABBING));
         zeroFlapsButton.whenPressed(new SetFloppyPositions(Floppies.LEFT_ZERO_POS, Floppies.RIGHT_ZERO_POS));
     }    
 }

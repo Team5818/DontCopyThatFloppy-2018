@@ -26,13 +26,16 @@ public class Arm extends Subsystem {
     public static final int ARM_POSITION_SCALE_HIGH = 1300;
     public static final int ARM_POSIITON_SCALE_LOW = 980;
     public static final int ARM_POSITION_MID_SWITCH = 490;
-    public static final int ARM_POSITION_COLLECT_STANDBY = 250;
-    public static final int ARM_POSITION_GRABBING = -80;
+    public static final int ARM_POSITION_COLLECT_STANDBY = 150;
+    public static final int ARM_POSITION_GRABBING = -55;
     
     public static final double KF_UP_WITH_CUBE = 1023.0/307.27;
     public static final double KF_UP_NO_CUBE = 1023.0/342.045;
-    public static final double KF_DOWN_WITH_CUBE = 1023.0/450.00;
-    public static final double KF_DOWN_NO_CUBE = 1023.0/428.86;
+    public static final double KF_DOWN_WITH_CUBE = 1023.0/470.00;
+    public static final double KF_DOWN_NO_CUBE = 1023.0/465.86;
+    
+    public static final double KP_UP = 0.002 * 1023;
+    public static final double KP_DOWN = .005 * 1023;
 
     private WPI_TalonSRX masterTalon;
     private WPI_TalonSRX slaveTalon1;
@@ -55,11 +58,11 @@ public class Arm extends Subsystem {
         masterTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, TIMEOUT);
         masterTalon.selectProfileSlot(SLOT_IDX, MOTION_MAGIC_IDX);
         masterTalon.config_kF(SLOT_IDX, KF_UP_NO_CUBE, TIMEOUT);
-        masterTalon.config_kP(SLOT_IDX, 0.0, TIMEOUT);// 0.002 * 1023, TIMEOUT);
+        masterTalon.config_kP(SLOT_IDX, KP_UP, TIMEOUT);
         masterTalon.config_kI(SLOT_IDX, 0.0, TIMEOUT);
-        masterTalon.config_kD(SLOT_IDX, 0.0, TIMEOUT);//1*1023, TIMEOUT);
-        masterTalon.configMotionCruiseVelocity(MAX_REASONABLE_VELOCITY/ 2, TIMEOUT);
-        masterTalon.configMotionAcceleration(MAX_REASONABLE_VELOCITY, TIMEOUT);//accelerate in .5 sec
+        masterTalon.config_kD(SLOT_IDX, 0.015*1023, TIMEOUT);
+        masterTalon.configMotionCruiseVelocity((int)(MAX_REASONABLE_VELOCITY / 2.5), TIMEOUT);
+        masterTalon.configMotionAcceleration((int)(MAX_REASONABLE_VELOCITY / 1.5), TIMEOUT);//accelerate in .5 sec
         setBrakeMode();
         
         ptoSolenoid = new Solenoid(RobotMap.ARM_PTO_SOLENOID);
@@ -112,15 +115,19 @@ public class Arm extends Subsystem {
         switch(state) {
             case UP_WITH_CUBE:
                 masterTalon.config_kF(SLOT_IDX, KF_UP_WITH_CUBE, TIMEOUT);
+                masterTalon.config_kP(SLOT_IDX, KP_UP, TIMEOUT);
                 break;
             case UP_NO_CUBE:
                 masterTalon.config_kF(SLOT_IDX, KF_UP_NO_CUBE, TIMEOUT);
+                masterTalon.config_kP(SLOT_IDX, KP_UP, TIMEOUT);
                 break;
             case DOWN_WITH_CUBE:
                 masterTalon.config_kF(SLOT_IDX, KF_DOWN_WITH_CUBE, TIMEOUT);
+                masterTalon.config_kP(SLOT_IDX, KP_DOWN, TIMEOUT);
                 break;
             case DOWN_NO_CUBE:
                 masterTalon.config_kF(SLOT_IDX, KF_DOWN_NO_CUBE, TIMEOUT);
+                masterTalon.config_kP(SLOT_IDX, KP_DOWN, TIMEOUT);
         }
     }
 
