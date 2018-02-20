@@ -14,6 +14,7 @@ public class CollectWithSwitch extends Command{
 	{
 		flop = Robot.runningRobot.floppies;
 		power = pow;
+		setTimeout(10);
 	}
 	
 	@Override
@@ -26,7 +27,7 @@ public class CollectWithSwitch extends Command{
 	@Override
 	public boolean isFinished()
 	{
-		return flop.cubeInPlace();
+		return flop.cubeInPlace() || isTimedOut();
 	}
 	
 	@Override
