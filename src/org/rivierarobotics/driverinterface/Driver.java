@@ -47,6 +47,7 @@ public class Driver {
         JoystickButton shiftLow = new JoystickButton(JS_FW_BACK, ControlMap.SHIFT_LOW_BUTTON);
         JoystickButton shiftHigh = new JoystickButton(JS_FW_BACK, ControlMap.SHIFT_HIGH_BUTTON);
         JoystickButton collectSequenceButton = new JoystickButton(JS_TURN, ControlMap.COLLECT_SEQUENCE_BUTTON);
+        JoystickButton startWinchingButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.CLIMB_MODE_BUTTON);
         
         
         //Bind Commands

@@ -34,5 +34,7 @@ public class ControlMap {
     public static final int SHIFT_HIGH_BUTTON = 2;
     
     public static final int COLLECT_SEQUENCE_BUTTON = 1;
+    
+    public static final int CLIMB_MODE_BUTTON = 6;
 
 }
