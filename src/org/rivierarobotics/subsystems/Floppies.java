@@ -92,6 +92,6 @@ public class Floppies extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        //setDefaultCommand(new FloppyControlCommand(Robot.runningRobot.driver.JS_FLOPPIES));
+        setDefaultCommand(new FloppyControlCommand(Robot.runningRobot.driver.JS_FLOPPIES));
     }
 }

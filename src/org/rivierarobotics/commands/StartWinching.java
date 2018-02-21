@@ -11,7 +11,6 @@ public class StartWinching extends Command{
     
     public StartWinching() {
         arm = Robot.runningRobot.arm;
-        requires(arm);
     }
     
     @Override
@@ -23,7 +22,7 @@ public class StartWinching extends Command{
     @Override
     protected boolean isFinished() {
         // TODO Auto-generated method stub
-        return false;
+        return true;
     }
     
 }

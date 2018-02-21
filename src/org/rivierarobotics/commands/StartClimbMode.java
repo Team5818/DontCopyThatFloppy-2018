@@ -2,14 +2,15 @@ package org.rivierarobotics.commands;
 
 import org.rivierarobotics.robot.Robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class StartClimbMode extends CommandGroup{
-    public StartClimbMode() {
+    
+    public StartClimbMode(Joystick js) {
         this.addSequential(new StartWinching());
-        this.addSequential(new ArmControlCommand(Robot.runningRobot.driver.JS_ARM));
-        
-        setInterruptible(false);
+        //this.addSequential(new ArmControlCommand(js));
+        //setInterruptible(false);
     }
     
     @Override

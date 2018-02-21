@@ -68,6 +68,7 @@ public class Arm extends Subsystem {
         ptoSolenoid.set(engaged);
     }
     
+    
     public void setPower(double pow) {
         masterTalon.set(ControlMode.PercentOutput, pow);
     }
@@ -107,7 +108,7 @@ public class Arm extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-    	setDefaultCommand(new ArmControlCommand(Robot.runningRobot.driver.JS_ARM));
+        setDefaultCommand(new ArmControlCommand(Robot.runningRobot.driver.JS_ARM));
     }
 
     public void configureMotionState(ArmMotionState state) {
