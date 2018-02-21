@@ -1,13 +1,17 @@
 package org.rivierarobotics.driverinterface;
 
+import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
 import org.rivierarobotics.commands.SetArmPower;
 import org.rivierarobotics.commands.SetClampOpen;
 import org.rivierarobotics.commands.SetFloppyPositions;
+import org.rivierarobotics.commands.ShiftGear;
 import org.rivierarobotics.constants.ControlMap;
+import org.rivierarobotics.constants.RobotDependentConstants;
 import org.rivierarobotics.mathUtil.ArcadeDriveCalculator;
 import org.rivierarobotics.mathUtil.DriveCalculator;
 import org.rivierarobotics.subsystems.Arm;
+import org.rivierarobotics.subsystems.DriveTrain;
 import org.rivierarobotics.subsystems.Floppies;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -40,15 +44,21 @@ public class Driver {
         JoystickButton setArmAngleButtonMid = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_MID);
         JoystickButton setArmAngleButtonLow = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_LOW);
         JoystickButton setArmAngleButtonBack = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_BACK);
-        JoystickButton zeroFlapsButton = new JoystickButton(JS_FLOPPIES, ControlMap.ZERO_FLAPPYS_BUTTON);
+        JoystickButton shiftLow = new JoystickButton(JS_FW_BACK, ControlMap.SHIFT_LOW_BUTTON);
+        JoystickButton shiftHigh = new JoystickButton(JS_FW_BACK, ControlMap.SHIFT_HIGH_BUTTON);
+        JoystickButton collectSequenceButton = new JoystickButton(JS_TURN, ControlMap.COLLECT_SEQUENCE_BUTTON);
+        
         
         //Bind Commands
         clampOn.whenPressed(new SetClampOpen(false));
         clampOff.whenPressed(new SetClampOpen(true));
-        setArmAngleButtonHigh.whenPressed(new SetArmAngleGainScheduled(Arm.ARM_POSITION_SCALE_HIGH));
-        setArmAngleButtonMid.whenPressed(new SetArmAngleGainScheduled(Arm.ARM_POSITION_MID_SWITCH));
-        setArmAngleButtonLow.whenPressed(new SetArmAngleGainScheduled(Arm.ARM_POSITION_GRABBING));
+        setArmAngleButtonHigh.whenPressed(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh()));
+        setArmAngleButtonMid.whenPressed(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
+        setArmAngleButtonLow.whenPressed(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionGrabbing()));
         setArmAngleButtonBack.whenPressed(new SetArmAngleGainScheduled(Arm.ARM_POSITION_BACK));
         zeroFlapsButton.whenPressed(new SetFloppyPositions(Floppies.LEFT_ZERO_POS, Floppies.RIGHT_ZERO_POS));
+        shiftLow.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_LOW));
+        shiftHigh.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_HIGH));
+        collectSequenceButton.whenPressed(new CollectGrabRaise());
     }    
 }

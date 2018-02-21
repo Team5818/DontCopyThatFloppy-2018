@@ -1,10 +1,12 @@
 package org.rivierarobotics.subsystems;
 
 import org.rivierarobotics.commands.DriveControlCommand;
+import org.rivierarobotics.constants.RobotMap;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.mathUtil.Vector2d;
 import org.rivierarobotics.robot.Robot;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -14,13 +16,28 @@ public class DriveTrain extends Subsystem {
 
     public DriveTrainSide left;
     public DriveTrainSide right;
+    public Solenoid shifter;
 
+    public enum DriveGear{
+        GEAR_LOW, GEAR_HIGH
+    }
+    
     public DriveTrain() {
         left = new DriveTrainSide(Side.LEFT);
         right = new DriveTrainSide(Side.RIGHT);
+        shifter = new Solenoid(RobotMap.SHIFTER_SOLENOID);
         setBrakeMode();
     }
 
+    public void shiftGear(DriveGear gear) {
+        if(gear == DriveGear.GEAR_LOW) {
+            shifter.set(true);
+        }
+        else {
+            shifter.set(false);
+        }
+    }
+    
     public void setPowerLeftRight(double lpow, double rpow) {
         left.setPower(lpow);
         right.setPower(rpow);

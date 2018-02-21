@@ -1,6 +1,6 @@
 package org.rivierarobotics.commands;
 
-import org.rivierarobotics.subsystems.Arm;
+import org.rivierarobotics.constants.RobotDependentConstants;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -8,12 +8,13 @@ public class CollectGrabRaise extends CommandGroup{
         
     public CollectGrabRaise() {
         CommandGroup lowerGroup = new CommandGroup();
-        lowerGroup.addParallel(new SetArmAngleGainScheduled(Arm.ARM_POSITION_COLLECT_STANDBY));
-        lowerGroup.addParallel(new CollectWithSwitch(.8));
+        lowerGroup.addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionCollectStandby()));
+        lowerGroup.addParallel(new CollectSwitchStop());
         this.addSequential(new SetClampOpen(true));
         this.addSequential(lowerGroup);
+        this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionGrabbing(),.6));
         this.addSequential(new SetClampOpen(false));
-        this.addSequential(new SetArmAngleGainScheduled(Arm.ARM_POSITION_MID_SWITCH));
+        this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
     }
     
 }

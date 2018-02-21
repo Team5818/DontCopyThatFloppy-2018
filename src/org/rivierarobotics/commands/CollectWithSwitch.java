@@ -10,11 +10,11 @@ public class CollectWithSwitch extends Command{
 	private Floppies flop;
 	private double power;
 	
-	public CollectWithSwitch(double pow)
+	public CollectWithSwitch(double pow, double time)
 	{
 		flop = Robot.runningRobot.floppies;
 		power = pow;
-		setTimeout(10);
+		setTimeout(time);
 	}
 	
 	@Override
@@ -30,10 +30,4 @@ public class CollectWithSwitch extends Command{
 		return flop.cubeInPlace() || isTimedOut();
 	}
 	
-	@Override
-	protected void end() 
-	{
-		flop.setPosition(Floppies.LEFT_ZERO_POS, Floppies.RIGHT_ZERO_POS);
-	}
-
 }

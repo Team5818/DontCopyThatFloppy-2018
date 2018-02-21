@@ -1,8 +1,8 @@
 package org.rivierarobotics.subsystems;
 
 import org.rivierarobotics.commands.FloppyControlCommand;
+import org.rivierarobotics.constants.RobotMap;
 import org.rivierarobotics.robot.Robot;
-import org.rivierarobotics.robot.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -54,7 +54,7 @@ public class Floppies extends Subsystem {
 
     public boolean cubeInPlace()// gets switch data
     {
-        return (leftSwitch.get() && rightSwitch.get());
+        return (!leftSwitch.get() && !rightSwitch.get());
     }
 
     public void setBrakeMode(boolean on) {
@@ -92,6 +92,6 @@ public class Floppies extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new FloppyControlCommand(Robot.runningRobot.driver.JS_FLOPPIES));
+        //setDefaultCommand(new FloppyControlCommand(Robot.runningRobot.driver.JS_FLOPPIES));
     }
 }

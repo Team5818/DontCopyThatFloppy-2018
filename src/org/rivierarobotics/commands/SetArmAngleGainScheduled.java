@@ -9,11 +9,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class SetArmAngleGainScheduled extends CommandGroup{
-    
+        
     public class StopArm extends Command{
         private Arm arm = Robot.runningRobot.arm;
         
         public StopArm(){
+            requires(arm);
             setTimeout(.1);
         }
 
@@ -34,8 +35,9 @@ public class SetArmAngleGainScheduled extends CommandGroup{
         private Clamp clamp = Robot.runningRobot.clamp;
         private double target;
         
-        public MoveArm(double ang) {
+        public MoveArm(double ang, double time) {
             target = ang;
+            setTimeout(time);
             requires(arm);
         }
         
@@ -63,12 +65,16 @@ public class SetArmAngleGainScheduled extends CommandGroup{
     
         @Override
         protected boolean isFinished() {
-            return true;
+            return isTimedOut();
         }
     }
     
-    public SetArmAngleGainScheduled(double ang) {
+    public SetArmAngleGainScheduled(double ang, double time) {
         this.addSequential(new StopArm());
-        this.addSequential(new MoveArm(ang));
+        this.addSequential(new MoveArm(ang, time));
+    }
+    
+    public SetArmAngleGainScheduled(double ang) {
+        this(ang, 0);
     }
 }

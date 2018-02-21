@@ -1,8 +1,8 @@
 package org.rivierarobotics.subsystems;
 
 import org.rivierarobotics.constants.RobotConstants;
+import org.rivierarobotics.constants.RobotMap;
 import org.rivierarobotics.constants.Side;
-import org.rivierarobotics.robot.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
