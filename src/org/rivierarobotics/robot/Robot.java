@@ -112,7 +112,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        arm.setPTOEngaged(false);
+        arm.setArmEngaged(true);
         arm.stop();
     }
 
@@ -148,5 +148,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Left Roller Trunc", floppies.getLeftTrunc());
         SmartDashboard.putNumber("Right Roller Trunc", floppies.getRightTrunc());
         SmartDashboard.putBoolean("Cube ready",floppies.cubeInPlace());
+        SmartDashboard.putNumber("Left Enc", driveTrain.getDistance().getX());
+        SmartDashboard.putNumber("Right Enc", driveTrain.getDistance().getY());
     }
 }

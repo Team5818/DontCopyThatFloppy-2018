@@ -28,7 +28,9 @@ public class RobotMap {
         
     public static final int RIGHT_CLAMP_PISTON_PORT = 5;
     
-    public static final int ARM_PTO_SOLENOID = 3;
+    public static final int ARM_ENGAGER_SOLENOID = 3;
+    
+    public static final int ARM_PTO_SOLENOID = 2; 
     
     public static final int SHIFTER_SOLENOID = 1;
     
