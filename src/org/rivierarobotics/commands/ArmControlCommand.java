@@ -19,7 +19,6 @@ public class ArmControlCommand extends Command {
         arm = Robot.runningRobot.arm;
         armJoy = joy;
         requires(arm);
-        setInterruptible(true);
     }
 
     @Override
