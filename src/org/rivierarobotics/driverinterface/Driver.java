@@ -57,8 +57,7 @@ public class Driver {
         setArmAngleButtonHigh.whenPressed(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh()));
         setArmAngleButtonMid.whenPressed(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
         setArmAngleButtonLow.whenPressed(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionGrabbing()));
-        setArmAngleButtonBack.whenPressed(new SetArmAngleGainScheduled(Arm.ARM_POSITION_BACK));
-        zeroFlapsButton.whenPressed(new SetFloppyPositions(Floppies.LEFT_ZERO_POS, Floppies.RIGHT_ZERO_POS));
+        setArmAngleButtonBack.whenPressed(new SetArmAngleGainScheduled());
         shiftLow.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_LOW));
         shiftHigh.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_HIGH));
         collectSequenceButton.whenPressed(new CollectGrabRaise());

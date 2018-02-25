@@ -4,7 +4,7 @@ public class PracticeRobotSpecificConstants extends RobotDependentConstants {
 
     @Override
     public double getArmPositionScaleHigh() {
-        return 1300;
+        return 3712;
     }
 
     @Override
@@ -14,7 +14,7 @@ public class PracticeRobotSpecificConstants extends RobotDependentConstants {
 
     @Override
     public double getArmPositionSwitchMid() {
-        return 490;
+        return 2881;
     }
 
     @Override
@@ -24,7 +24,12 @@ public class PracticeRobotSpecificConstants extends RobotDependentConstants {
 
     @Override
     public double getArmPositionGrabbing() {
-        return -55;
+        return 4087;
+    }
+
+    @Override
+    public double getArmPositionBack() {
+        return 2390;
     }
 
 }

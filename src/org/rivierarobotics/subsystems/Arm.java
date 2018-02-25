@@ -2,7 +2,7 @@ package org.rivierarobotics.subsystems;
 
 import org.rivierarobotics.commands.ArmControlCommand;
 import org.rivierarobotics.robot.Robot;
-import org.rivierarobotics.robot.RobotMap;
+import org.rivierarobotics.constants.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;

@@ -35,4 +35,6 @@ public abstract class RobotDependentConstants {
     public abstract double getArmPositionCollectStandby();
 
     public abstract double getArmPositionGrabbing();
+    
+    public abstract double getArmPositionBack();
 }
