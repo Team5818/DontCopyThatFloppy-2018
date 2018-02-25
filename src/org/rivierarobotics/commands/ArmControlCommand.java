@@ -27,7 +27,9 @@ public class ArmControlCommand extends Command {
             double powerVal = MathUtil.adjustDeadband(armJoy, DEADBAND, true).getY();
             arm.setPower(powerVal);
         } else {
-            arm.stop();
+            if(!arm.isProfileInProgress()) {
+                arm.stop();
+            }
         }
     }
 

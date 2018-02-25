@@ -135,6 +135,10 @@ public class Arm extends Subsystem {
     public void setAngle(double angle) {
         masterTalon.set(ControlMode.MotionMagic, angle);
     }
+    
+    public boolean isProfileInProgress() {
+        return masterTalon.getControlMode().equals(ControlMode.MotionMagic); 
+    }
 
     public void setAngle(double angle, ArmMotionState state) {
         configureMotionState(state);
