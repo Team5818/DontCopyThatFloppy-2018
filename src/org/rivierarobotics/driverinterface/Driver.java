@@ -34,12 +34,13 @@ public class Driver {
         DRIVE_CALC = ArcadeDriveCalculator.getInstance();
         
         //Instantiate Buttons
-        JoystickButton clampOn = new JoystickButton(JS_LEFT_BUTTONS,ControlMap.CLAMP_ON_BUTTON);
-        JoystickButton clampOff = new JoystickButton(JS_LEFT_BUTTONS,ControlMap.CLAMP_OFF_BUTTON);
+        JoystickButton clampOn = new JoystickButton(JS_ARM,ControlMap.CLAMP_ON_BUTTON);
+        JoystickButton clampOff = new JoystickButton(JS_ARM,ControlMap.CLAMP_OFF_BUTTON);
         JoystickButton setArmAngleButtonHigh = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_HIGH);
         JoystickButton setArmAngleButtonMid = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_MID);
         JoystickButton setArmAngleButtonLow = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_LOW);
-        JoystickButton zeroFlapsButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.ZERO_FLAPPYS_BUTTON);
+        JoystickButton setArmAngleButtonBack = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_BACK);
+        JoystickButton zeroFlapsButton = new JoystickButton(JS_FLOPPIES, ControlMap.ZERO_FLAPPYS_BUTTON);
         
         //Bind Commands
         clampOn.whenPressed(new SetClampOpen(false));
@@ -47,6 +48,7 @@ public class Driver {
         setArmAngleButtonHigh.whenPressed(new SetArmAngleGainScheduled(Arm.ARM_POSITION_SCALE_HIGH));
         setArmAngleButtonMid.whenPressed(new SetArmAngleGainScheduled(Arm.ARM_POSITION_MID_SWITCH));
         setArmAngleButtonLow.whenPressed(new SetArmAngleGainScheduled(Arm.ARM_POSITION_GRABBING));
+        setArmAngleButtonBack.whenPressed(new SetArmAngleGainScheduled(Arm.ARM_POSITION_BACK));
         zeroFlapsButton.whenPressed(new SetFloppyPositions(Floppies.LEFT_ZERO_POS, Floppies.RIGHT_ZERO_POS));
     }    
 }

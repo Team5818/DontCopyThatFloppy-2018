@@ -4,6 +4,7 @@ import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.subsystems.Arm;
 import org.rivierarobotics.subsystems.Clamp;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
