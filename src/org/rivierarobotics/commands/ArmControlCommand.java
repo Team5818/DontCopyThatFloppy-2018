@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ArmControlCommand extends Command {
 
-    public static final Vector2d DEADBAND = new Vector2d(.2, .2);
+    public static final Vector2d DEADBAND = new Vector2d(.02, .02);
 
     private Arm arm;
     private Joystick armJoy;
@@ -19,6 +19,7 @@ public class ArmControlCommand extends Command {
         arm = Robot.runningRobot.arm;
         armJoy = joy;
         requires(arm);
+        setInterruptible(true);
     }
 
     @Override

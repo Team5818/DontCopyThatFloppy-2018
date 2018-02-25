@@ -1,5 +1,7 @@
 package org.rivierarobotics.subsystems;
 
+import org.rivierarobotics.commands.ArmControlCommand;
+import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.robot.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -16,17 +18,17 @@ public class Arm extends Subsystem {
     public enum ArmMotionState {
         UP_WITH_CUBE, UP_NO_CUBE, DOWN_WITH_CUBE, DOWN_NO_CUBE
     }
-
     private static final int MAX_POSSIBLE_VELOCITY = 400;
     private static final int MOTION_MAGIC_IDX = 0;
     private static final int SLOT_IDX = 0;
     private static final int TIMEOUT = 10;
 
-    public static final int ARM_POSITION_SCALE_HIGH = 1300;
+    public static final int ARM_POSITION_SCALE_HIGH = 3712;
     public static final int ARM_POSIITON_SCALE_LOW = 980;
-    public static final int ARM_POSITION_MID_SWITCH = 490;
+    public static final int ARM_POSITION_MID_SWITCH = 2881;
     public static final int ARM_POSITION_COLLECT_STANDBY = 150;
-    public static final int ARM_POSITION_GRABBING = -55;
+    public static final int ARM_POSITION_BACK = 4087;
+    public static final int ARM_POSITION_GRABBING = 2390;
 
     public static final double KF_UP_WITH_CUBE = 1023.0 / 307.27;
     public static final double KF_UP_NO_CUBE = 1023.0 / 342.045;
@@ -107,6 +109,7 @@ public class Arm extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
+    	setDefaultCommand(new ArmControlCommand(Robot.runningRobot.driver.JS_ARM));
     }
 
     public void configureMotionState(ArmMotionState state) {
