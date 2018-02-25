@@ -5,12 +5,13 @@ import org.rivierarobotics.mathUtil.Vector2d;
 import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.subsystems.Arm;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ArmControlCommand extends Command {
 
-    public static final Vector2d DEADBAND = new Vector2d(.02, .02);
+    public static final Vector2d DEADBAND = new Vector2d(.05, .05);
 
     private Arm arm;
     private Joystick armJoy;
