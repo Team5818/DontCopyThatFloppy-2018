@@ -47,12 +47,11 @@ public class Driver {
                 new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_BACK);
         JoystickButton shiftLow = new JoystickButton(JS_FW_BACK, ControlMap.SHIFT_LOW_BUTTON);
         JoystickButton shiftHigh = new JoystickButton(JS_FW_BACK, ControlMap.SHIFT_HIGH_BUTTON);
-        JoystickButton collectSequenceButton = new JoystickButton(JS_TURN, ControlMap.COLLECT_SEQUENCE_BUTTON);
         JoystickButton startWinchingButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.CLIMB_MODE_BUTTON);
         JoystickButton climbLockButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.CLIMB_LOCK_BUTTON);
         JoystickButton climbUnlockButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.CLIMB_UNLOCK_BUTTON);
-        JoystickButton backCamButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.BACK_CAM_BUTTON);
-        JoystickButton collectCamButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.COLLECT_CAM_BUTTON);
+        JoystickButton backCamButton = new JoystickButton(JS_TURN, ControlMap.BACK_CAM_BUTTON);
+        JoystickButton collectCamButton = new JoystickButton(JS_TURN, ControlMap.COLLECT_CAM_BUTTON);
 
         // Bind Commands
         clampOn.whenPressed(new SetClampOpen(false));
@@ -67,7 +66,6 @@ public class Driver {
                 .whenPressed(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionBack()));
         shiftLow.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_LOW));
         shiftHigh.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_HIGH));
-        collectSequenceButton.whenPressed(new CollectGrabRaise());
         startWinchingButton.whenPressed(new StartWinching());
         climbUnlockButton.whenPressed(new SetArmBrake(false));
         climbLockButton.whenPressed(new SetArmBrake(true));

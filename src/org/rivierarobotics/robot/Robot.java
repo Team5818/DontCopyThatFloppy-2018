@@ -14,6 +14,7 @@ import org.rivierarobotics.subsystems.DriveTrain;
 import org.rivierarobotics.subsystems.Floppies;
 
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -42,6 +43,7 @@ public class Robot extends TimedRobot {
     public Clamp clamp;
     public UsbCamera camCollect;
     public UsbCamera camBack;
+    public VideoSink camServer;
     public static Robot runningRobot;
 
     /**
@@ -58,6 +60,7 @@ public class Robot extends TimedRobot {
         driver = new Driver();
         camCollect = CameraServer.getInstance().startAutomaticCapture(0);
         camBack = CameraServer.getInstance().startAutomaticCapture(1);
+        camServer = CameraServer.getInstance().getServer();
         m_chooser.addDefault("Default Auto", kDefaultAuto);
         m_chooser.addObject("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);

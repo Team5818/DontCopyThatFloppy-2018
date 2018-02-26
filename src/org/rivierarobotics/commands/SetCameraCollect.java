@@ -2,8 +2,8 @@ package org.rivierarobotics.commands;
 
 import org.rivierarobotics.robot.Robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SetCameraCollect extends Command{
     
@@ -13,15 +13,14 @@ public class SetCameraCollect extends Command{
         collect = c;
     }
     
-    protected void initalize() {
-        String camName;
+    @Override
+    protected void initialize() {
         if(collect) {
-            camName = Robot.runningRobot.camCollect.getName();
+            Robot.runningRobot.camServer.setSource(Robot.runningRobot.camCollect);
         }
         else {
-            camName = Robot.runningRobot.camBack.getName();
+            Robot.runningRobot.camServer.setSource(Robot.runningRobot.camBack);
         }
-        SmartDashboard.putString("Cmaera Selection", camName);
     }
 
     @Override

@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveControlCommand extends Command {
 
-    public static final Vector2d DEADBAND = new Vector2d(.2, .2);
+    public static final Vector2d DEADBAND = new Vector2d(.05, .05);
 
     private DriveTrain dt;
     private Joystick fbStick;

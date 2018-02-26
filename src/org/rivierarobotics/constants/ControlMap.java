@@ -41,7 +41,7 @@ public class ControlMap {
     
     public static final int CLIMB_UNLOCK_BUTTON = 4;
     
-    public static final int BACK_CAM_BUTTON = 3;
+    public static final int BACK_CAM_BUTTON = 1;
     
     public static final int COLLECT_CAM_BUTTON = 2;
 

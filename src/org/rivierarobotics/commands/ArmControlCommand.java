@@ -43,7 +43,6 @@ public class ArmControlCommand extends Command {
                 powerVal =
                         Math.min(powerVal, (RobotDependentConstants.Constant.getUpperArmSoftLimit() - arm.getPosition())
                                 / UPPER_RAMP_ZONE_WIDTH);
-                DriverStation.reportError("ramping", false);
             } else if (arm.getPosition()
                     - RobotDependentConstants.Constant.getLowerArmSoftLimit() < LOWER_RAMP_ZONE_WIDTH) {
                 powerVal = Math.max(powerVal,
