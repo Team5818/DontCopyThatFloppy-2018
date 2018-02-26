@@ -36,5 +36,10 @@ public class ControlMap {
     public static final int COLLECT_SEQUENCE_BUTTON = 1;
     
     public static final int CLIMB_MODE_BUTTON = 6;
+    
+    public static final int CLIMB_LOCK_BUTTON = 5;
+    
+    public static final int CLIMB_UNLOCK_BUTTON = 4;
+
 
 }
