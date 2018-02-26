@@ -58,22 +58,21 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Auto choices", m_chooser);
     }
 
-	public Side[] getSide()
-	{
-		String gameSide = DriverStation.getInstance().getGameSpecificMessage();
-		
-		Side[] side = new Side[3];
-		
-		for(int x = 0; x < 3; x++)
-		{
-			if(gameSide.charAt(x) == 'L')
-				side[x] = Side.LEFT;
-			else
-				side[x] = Side.RIGHT;
-		}
-		
-		return side;
-	}
+    public Side[] getSide() {
+        String gameSide = DriverStation.getInstance().getGameSpecificMessage();
+
+        Side[] side = new Side[3];
+
+        for (int x = 0; x < 3; x++) {
+            if (gameSide.charAt(x) == 'L')
+                side[x] = Side.LEFT;
+            else
+                side[x] = Side.RIGHT;
+        }
+
+        return side;
+    }
+
     /**
      * This autonomous (along with the chooser code above) shows how to select
      * between different autonomous modes using the dashboard. The sendable
@@ -146,7 +145,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Right Roller", floppies.getRightPos());
         SmartDashboard.putNumber("Left Roller Trunc", floppies.getLeftTrunc());
         SmartDashboard.putNumber("Right Roller Trunc", floppies.getRightTrunc());
-        SmartDashboard.putBoolean("Cube ready",floppies.cubeInPlace());
+        SmartDashboard.putBoolean("Cube ready", floppies.cubeInPlace());
         SmartDashboard.putNumber("Left Enc", driveTrain.getDistance().getX());
         SmartDashboard.putNumber("Right Enc", driveTrain.getDistance().getY());
     }
