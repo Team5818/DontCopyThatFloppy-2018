@@ -2,7 +2,7 @@ package org.rivierarobotics.subsystems;
 
 import org.rivierarobotics.commands.ArmControlCommand;
 import org.rivierarobotics.robot.Robot;
-import org.rivierarobotics.robot.RobotMap;
+import org.rivierarobotics.constants.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -10,7 +10,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -24,26 +23,18 @@ public class Arm extends Subsystem {
     private static final int SLOT_IDX = 0;
     private static final int TIMEOUT = 10;
 
-    public static final int ARM_POSITION_SCALE_HIGH = 3712;
-    public static final int ARM_POSIITON_SCALE_LOW = 980;
-    public static final int ARM_POSITION_MID_SWITCH = 2881;
-    public static final int ARM_POSITION_COLLECT_STANDBY = 150;
-    public static final int ARM_POSITION_BACK = 4087;
-    public static final int ARM_POSITION_GRABBING = 2390;
-
     public static final double KF_UP_WITH_CUBE = 1023.0 / 307.27;
     public static final double KF_UP_NO_CUBE = 1023.0 / 342.045;
-    public static final double KF_DOWN_WITH_CUBE = 1023.0 / 470.00;
-    public static final double KF_DOWN_NO_CUBE = 1023.0 / 465.86;
-
-    public static final double KP_UP = 0.002 * 1023;
-    public static final double KP_DOWN = .005 * 1023;
+    public static final double KF_DOWN_WITH_CUBE = 1023.0 / 450.00;
+    public static final double KF_DOWN_NO_CUBE = 1023.0 / 428.86;
 
     private WPI_TalonSRX masterTalon;
     private WPI_TalonSRX slaveTalon1;
     private WPI_TalonSRX slaveTalon2;
 
-    private Solenoid ptoSolenoid;
+    private Solenoid armPTOSolenoid;
+    private Solenoid armEngagerSolenoid;
+    private Solenoid armBrakeSolenoid;
 
     public Arm() {
         masterTalon = new WPI_TalonSRX(RobotMap.ARM_TALON_1);
@@ -60,17 +51,29 @@ public class Arm extends Subsystem {
         masterTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, TIMEOUT);
         masterTalon.selectProfileSlot(SLOT_IDX, MOTION_MAGIC_IDX);
         masterTalon.config_kF(SLOT_IDX, KF_UP_NO_CUBE, TIMEOUT);
-        masterTalon.config_kP(SLOT_IDX, KP_UP, TIMEOUT);
+        masterTalon.config_kP(SLOT_IDX, 0.002 * 1023, TIMEOUT);
         masterTalon.config_kI(SLOT_IDX, 0.0, TIMEOUT);
         masterTalon.config_kD(SLOT_IDX, 0.015 * 1023, TIMEOUT);
         masterTalon.configMotionCruiseVelocity((int) (MAX_POSSIBLE_VELOCITY / 2.5), TIMEOUT);
         masterTalon.configMotionAcceleration((int) (MAX_POSSIBLE_VELOCITY / 1.5), TIMEOUT);
         setBrakeMode();
-
-        ptoSolenoid = new Solenoid(RobotMap.ARM_PTO_SOLENOID);
-        ptoSolenoid.set(false);
+        armPTOSolenoid = new Solenoid(RobotMap.ARM_PTO_SOLENOID);
+        armEngagerSolenoid = new Solenoid(RobotMap.ARM_ENGAGER_SOLENOID);
+        armBrakeSolenoid = new Solenoid(RobotMap.ARM_BRAKE_SOLENOID);
     }
 
+    public void setArmEngaged(boolean engaged) {
+        armEngagerSolenoid.set(!engaged);
+    }
+    
+    public void setPTOEngaged(boolean engaged) {
+        armPTOSolenoid.set(engaged);
+    }
+    
+    public void setBrakeEngaged(boolean engaged) {
+        armBrakeSolenoid.set(!engaged);;
+    }
+    
     public void setPower(double pow) {
         masterTalon.set(ControlMode.PercentOutput, pow);
     }
@@ -110,26 +113,22 @@ public class Arm extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-    	setDefaultCommand(new ArmControlCommand(Robot.runningRobot.driver.JS_ARM));
+        setDefaultCommand(new ArmControlCommand(Robot.runningRobot.driver.JS_ARM));
     }
 
     public void configureMotionState(ArmMotionState state) {
         switch (state) {
             case UP_WITH_CUBE:
                 masterTalon.config_kF(SLOT_IDX, KF_UP_WITH_CUBE, TIMEOUT);
-                masterTalon.config_kP(SLOT_IDX, KP_UP, TIMEOUT);
                 break;
             case UP_NO_CUBE:
                 masterTalon.config_kF(SLOT_IDX, KF_UP_NO_CUBE, TIMEOUT);
-                masterTalon.config_kP(SLOT_IDX, KP_UP, TIMEOUT);
                 break;
             case DOWN_WITH_CUBE:
                 masterTalon.config_kF(SLOT_IDX, KF_DOWN_WITH_CUBE, TIMEOUT);
-                masterTalon.config_kP(SLOT_IDX, KP_DOWN, TIMEOUT);
                 break;
             case DOWN_NO_CUBE:
                 masterTalon.config_kF(SLOT_IDX, KF_DOWN_NO_CUBE, TIMEOUT);
-                masterTalon.config_kP(SLOT_IDX, KP_DOWN, TIMEOUT);
         }
     }
 
@@ -146,7 +145,11 @@ public class Arm extends Subsystem {
         setAngle(angle);
     }
 
-    public int getClosedLoopOutput() {
+    public int getClosedLoopTarget() {
         return masterTalon.getActiveTrajectoryPosition();
+    }
+    
+    public int getClosedLoopError() {
+        return masterTalon.getClosedLoopError(MOTION_MAGIC_IDX);
     }
 }

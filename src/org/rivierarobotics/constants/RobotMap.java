@@ -1,4 +1,4 @@
-package org.rivierarobotics.robot;
+package org.rivierarobotics.constants;
 
 public class RobotMap {
 
@@ -28,5 +28,15 @@ public class RobotMap {
         
     public static final int RIGHT_CLAMP_PISTON_PORT = 5;
     
-    public static final int ARM_PTO_SOLENOID = 1;
+    public static final int ARM_ENGAGER_SOLENOID = 3;
+    
+    public static final int ARM_PTO_SOLENOID = 2; 
+    
+    public static final int ARM_BRAKE_SOLENOID = 0;
+    
+    public static final int SHIFTER_SOLENOID = 1;
+    
+    public static final int LEFT_LIMIT_SWITCH_PORT = 0;
+    
+    public static final int RIGHT_LIMIT_SWITCH_PORT = 1;
 }

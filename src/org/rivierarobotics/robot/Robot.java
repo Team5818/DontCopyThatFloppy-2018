@@ -6,12 +6,14 @@
 /*----------------------------------------------------------------------------*/
 package org.rivierarobotics.robot;
 
+import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.driverinterface.Driver;
 import org.rivierarobotics.subsystems.Arm;
 import org.rivierarobotics.subsystems.Clamp;
 import org.rivierarobotics.subsystems.DriveTrain;
 import org.rivierarobotics.subsystems.Floppies;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -54,6 +56,21 @@ public class Robot extends TimedRobot {
         m_chooser.addDefault("Default Auto", kDefaultAuto);
         m_chooser.addObject("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
+    }
+
+    public Side[] getSide() {
+        String gameSide = DriverStation.getInstance().getGameSpecificMessage();
+
+        Side[] side = new Side[3];
+
+        for (int x = 0; x < 3; x++) {
+            if (gameSide.charAt(x) == 'L')
+                side[x] = Side.LEFT;
+            else
+                side[x] = Side.RIGHT;
+        }
+
+        return side;
     }
 
     /**
@@ -128,7 +145,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Right Roller", floppies.getRightPos());
         SmartDashboard.putNumber("Left Roller Trunc", floppies.getLeftTrunc());
         SmartDashboard.putNumber("Right Roller Trunc", floppies.getRightTrunc());
-        SmartDashboard.putNumber("Arm Position", arm.getPosition());
-        SmartDashboard.putNumber("Arm Target", arm.getClosedLoopOutput());
+        SmartDashboard.putBoolean("Cube ready", floppies.cubeInPlace());
+        SmartDashboard.putNumber("Left Enc", driveTrain.getDistance().getX());
+        SmartDashboard.putNumber("Right Enc", driveTrain.getDistance().getY());
     }
 }
