@@ -32,8 +32,9 @@ public class Arm extends Subsystem {
     private WPI_TalonSRX slaveTalon1;
     private WPI_TalonSRX slaveTalon2;
 
-    private Solenoid ptoSolenoid;
+    private Solenoid armPTOSolenoid;
     private Solenoid armEngagerSolenoid;
+    private Solenoid armBrakeSolenoid;
 
     public Arm() {
         masterTalon = new WPI_TalonSRX(RobotMap.ARM_TALON_1);
@@ -56,8 +57,9 @@ public class Arm extends Subsystem {
         masterTalon.configMotionCruiseVelocity((int) (MAX_POSSIBLE_VELOCITY / 2.5), TIMEOUT);
         masterTalon.configMotionAcceleration((int) (MAX_POSSIBLE_VELOCITY / 1.5), TIMEOUT);
         setBrakeMode();
-        ptoSolenoid = new Solenoid(RobotMap.ARM_PTO_SOLENOID);
+        armPTOSolenoid = new Solenoid(RobotMap.ARM_PTO_SOLENOID);
         armEngagerSolenoid = new Solenoid(RobotMap.ARM_ENGAGER_SOLENOID);
+        armBrakeSolenoid = new Solenoid(RobotMap.ARM_BRAKE_SOLENOID);
     }
 
     public void setArmEngaged(boolean engaged) {
@@ -65,9 +67,12 @@ public class Arm extends Subsystem {
     }
     
     public void setPTOEngaged(boolean engaged) {
-        ptoSolenoid.set(engaged);
+        armPTOSolenoid.set(engaged);
     }
     
+    public void setBrakeEngaged(boolean engaged) {
+        armBrakeSolenoid.set(!engaged);;
+    }
     
     public void setPower(double pow) {
         masterTalon.set(ControlMode.PercentOutput, pow);

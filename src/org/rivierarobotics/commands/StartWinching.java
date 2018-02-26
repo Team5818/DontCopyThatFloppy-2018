@@ -17,11 +17,11 @@ public class StartWinching extends Command{
     protected void initialize() {
         arm.setArmEngaged(false);
         arm.setPTOEngaged(true);
+        arm.setBrakeEngaged(false);
     }
     
     @Override
     protected boolean isFinished() {
-        // TODO Auto-generated method stub
         return true;
     }
     

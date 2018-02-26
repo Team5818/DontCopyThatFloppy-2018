@@ -4,7 +4,7 @@ import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
 import org.rivierarobotics.commands.SetClampOpen;
 import org.rivierarobotics.commands.ShiftGear;
-import org.rivierarobotics.commands.StartClimbMode;
+import org.rivierarobotics.commands.StartWinching;
 import org.rivierarobotics.constants.ControlMap;
 import org.rivierarobotics.constants.RobotDependentConstants;
 import org.rivierarobotics.mathUtil.ArcadeDriveCalculator;
@@ -62,6 +62,6 @@ public class Driver {
         shiftLow.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_LOW));
         shiftHigh.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_HIGH));
         collectSequenceButton.whenPressed(new CollectGrabRaise());
-        startWinchingButton.whenPressed(new StartClimbMode(JS_ARM));
+        startWinchingButton.whenPressed(new StartWinching());
     }
 }

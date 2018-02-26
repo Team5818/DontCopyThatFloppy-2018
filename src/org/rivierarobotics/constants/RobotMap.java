@@ -32,6 +32,8 @@ public class RobotMap {
     
     public static final int ARM_PTO_SOLENOID = 2; 
     
+    public static final int ARM_BRAKE_SOLENOID = 0;
+    
     public static final int SHIFTER_SOLENOID = 1;
     
     public static final int LEFT_LIMIT_SWITCH_PORT = 0;
