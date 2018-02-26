@@ -34,7 +34,7 @@ public class PracticeRobotSpecificConstants extends RobotDependentConstants {
 
     @Override
     public double getUpperArmSoftLimit() {
-        return 4296;
+        return 4170;
     }
 
     @Override

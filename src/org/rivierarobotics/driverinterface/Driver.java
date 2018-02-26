@@ -3,6 +3,7 @@ package org.rivierarobotics.driverinterface;
 import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
 import org.rivierarobotics.commands.SetArmBrake;
+import org.rivierarobotics.commands.SetCameraCollect;
 import org.rivierarobotics.commands.SetClampOpen;
 import org.rivierarobotics.commands.ShiftGear;
 import org.rivierarobotics.commands.StartWinching;
@@ -50,6 +51,8 @@ public class Driver {
         JoystickButton startWinchingButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.CLIMB_MODE_BUTTON);
         JoystickButton climbLockButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.CLIMB_LOCK_BUTTON);
         JoystickButton climbUnlockButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.CLIMB_UNLOCK_BUTTON);
+        JoystickButton backCamButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.BACK_CAM_BUTTON);
+        JoystickButton collectCamButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.COLLECT_CAM_BUTTON);
 
         // Bind Commands
         clampOn.whenPressed(new SetClampOpen(false));
@@ -68,5 +71,8 @@ public class Driver {
         startWinchingButton.whenPressed(new StartWinching());
         climbUnlockButton.whenPressed(new SetArmBrake(false));
         climbLockButton.whenPressed(new SetArmBrake(true));
+        backCamButton.whenPressed(new SetCameraCollect(false));
+        collectCamButton.whenPressed(new SetCameraCollect(true));
+
     }
 }
