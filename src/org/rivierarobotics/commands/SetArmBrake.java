@@ -11,6 +11,7 @@ public class SetArmBrake extends Command{
     
     public SetArmBrake(boolean l) {
         arm = Robot.runningRobot.arm;
+        requires(arm);
         locked = l;
     }
     
