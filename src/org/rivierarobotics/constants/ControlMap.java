@@ -23,9 +23,9 @@ public class ControlMap {
     
     public static final int SET_ARM_ANGLE_BUTTON_MID = 5;
     
-    public static final int SET_ARM_ANGLE_BUTTON_LOW = 3;
+    public static final int SET_ARM_ANGLE_BUTTON_LOW = 6;
 
-    public static final int SET_ARM_ANGLE_BUTTON_BACK = 6;
+    public static final int SET_ARM_ANGLE_BUTTON_BACK = 3;
     
     public static final int ZERO_FLAPPYS_BUTTON = 1;
     

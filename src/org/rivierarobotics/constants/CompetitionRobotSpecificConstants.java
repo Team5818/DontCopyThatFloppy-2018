@@ -33,4 +33,14 @@ public class CompetitionRobotSpecificConstants extends RobotDependentConstants{
         return 4500;//guess
     }
 
+    @Override
+    public double getUpperArmSoftLimit() {
+        return getArmPositionBack();
+    }
+
+    @Override
+    public double getLowerArmSoftLimit() {
+        return getArmPositionGrabbing();
+    }
+
 }
