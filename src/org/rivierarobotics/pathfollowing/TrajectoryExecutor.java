@@ -1,12 +1,14 @@
 package org.rivierarobotics.pathfollowing;
 
 import org.rivierarobotics.constants.RobotConstants;
+import org.rivierarobotics.mathUtil.MathUtil;
 import org.rivierarobotics.mathUtil.Vector2d;
 import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.subsystems.DriveTrain;
 import org.rivierarobotics.subsystems.DriveTrainSide;
 
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.Timer;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -17,7 +19,9 @@ public class TrajectoryExecutor implements Runnable{
 
     private DriveTrain driveTrain;
     private boolean running = false;
+    private boolean isFinished = false;
     private double timeout;
+    private double endTime;
     private Trajectory leftTraj;
     private Trajectory rightTraj;
     private EncoderFollower leftFollow;
@@ -39,6 +43,7 @@ public class TrajectoryExecutor implements Runnable{
     private static final double KD = 0.0;
     private static final double KV = 0.0;
     private static final double KA = 0.0;
+    private static final double K_HEADING = 0.0;
 
     
     private static final Trajectory.Config DEFAULT_CONFIG = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
@@ -50,8 +55,8 @@ public class TrajectoryExecutor implements Runnable{
         TankModifier mod = new TankModifier(master).modify(RobotConstants.WHEEL_BASE_WIDTH);
         leftTraj = mod.getLeftTrajectory();
         rightTraj = mod.getRightTrajectory();
-        
         currentPos = driveTrain.getDistance();
+        dt = config.dt;
         
         leftFollow = new EncoderFollower(leftTraj);
         rightFollow = new EncoderFollower(rightTraj);
@@ -60,6 +65,8 @@ public class TrajectoryExecutor implements Runnable{
         leftFollow.configureEncoder((int)currentPos.getX(), DriveTrainSide.ENCODER_CODES_PER_REV, RobotConstants.WHEEL_DIAMETER);
         rightFollow.configureEncoder((int)currentPos.getY(), DriveTrainSide.ENCODER_CODES_PER_REV, RobotConstants.WHEEL_DIAMETER);
         timeout = time;
+        
+        runner = new Notifier(this);
     }
 
     public TrajectoryExecutor(Waypoint[] waypoints, double time) {
@@ -73,11 +80,35 @@ public class TrajectoryExecutor implements Runnable{
     
     @Override
     public void run() {
-        currentPos = driveTrain.getDistance();
-        
-        double left = leftFollow.calculate((int)currentPos.getX());
-        double right = rightFollow.calculate((int)currentPos.getY());
-        
-        driveTrain.setPowerLeftRight(left, right);
+        if(!leftFollow.isFinished() && !rightFollow.isFinished() && Timer.getFPGATimestamp() < endTime){
+            double targetHead = leftFollow.getHeading();
+            double left = leftFollow.calculate((int)currentPos.getX());
+            double right = rightFollow.calculate((int)currentPos.getY());
+            double headDiff = MathUtil.wrapAngleRad(currentHeading - targetHead);
+            driveTrain.setPowerLeftRight(left - K_HEADING*headDiff, right + K_HEADING*headDiff);
+        }
+        else {
+            isFinished = true;
+            stop();
+        }
+    }
+    
+    public void start() {
+        runner.startPeriodic(dt);
+        endTime = Timer.getFPGATimestamp() + timeout;
+        running = true;
+    }
+    
+    public void stop() {
+        runner.stop();
+        running = false;
+    }
+    
+    public boolean isRunning() {
+        return running;
+    }
+    
+    public boolean isFinished() {
+        return isFinished;
     }
 }
