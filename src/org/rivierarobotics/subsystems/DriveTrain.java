@@ -5,7 +5,7 @@ import org.rivierarobotics.constants.RobotMap;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.mathUtil.Vector2d;
 import org.rivierarobotics.robot.Robot;
-import org.rivierarobotics.robot.RobotMap;
+import org.rivierarobotics.constants.RobotMap;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 
