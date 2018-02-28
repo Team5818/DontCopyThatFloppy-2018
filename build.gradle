@@ -1,3 +1,7 @@
+dependencies{
+    compile file('libs/Pathfinder-Java.jar') 
+}
+
 plugins {
     id "org.rivierarobotics.frcgrantle" version "0.1.4"
 }
