@@ -45,5 +45,5 @@ public class ControlMap {
     
     public static final int COLLECT_CAM_BUTTON = 2;
 
-
+    public static final int FORCE_COMPRESSOR_ON_BUTTON = 2;
 }

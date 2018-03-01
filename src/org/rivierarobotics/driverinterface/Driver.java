@@ -24,6 +24,7 @@ public class Driver {
     public Joystick JS_FLOPPIES;
     public Joystick JS_LEFT_BUTTONS;
     public Joystick JS_RIGHT_BUTTONS;
+    public JoystickButton forceCompressorOn;
     public DriveCalculator DRIVE_CALC;
 
     public Driver() {
@@ -52,6 +53,7 @@ public class Driver {
         JoystickButton climbUnlockButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.CLIMB_UNLOCK_BUTTON);
         JoystickButton backCamButton = new JoystickButton(JS_TURN, ControlMap.BACK_CAM_BUTTON);
         JoystickButton collectCamButton = new JoystickButton(JS_TURN, ControlMap.COLLECT_CAM_BUTTON);
+        forceCompressorOn = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.FORCE_COMPRESSOR_ON_BUTTON);
 
         // Bind Commands
         clampOn.whenPressed(new SetClampOpen(false));
