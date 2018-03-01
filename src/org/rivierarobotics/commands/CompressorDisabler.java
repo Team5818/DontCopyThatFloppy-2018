@@ -7,14 +7,15 @@ import edu.wpi.first.wpilibj.command.Command;
 public class CompressorDisabler extends Command {
 
 	private static double minVoltage;
-	private static double actuations;
+	private static double maxActuations;
 
-	public CompressorDisabler(double voltage) {
+	public CompressorDisabler(double voltage, int actuations) {
 		minVoltage = voltage;
+		maxActuations = actuations;
 	}
 	
 	public CompressorDisabler() {
-		this(10.0);
+		this(10.0, 15);
 	}
 
 	protected void execute() {
@@ -25,7 +26,7 @@ public class CompressorDisabler extends Command {
 	}
 
 	private boolean determineCompressorOn() {
-		if (Robot.runningRobot.clamp.getActuations() > actuations)
+		if (Robot.runningRobot.clamp.getActuations() > maxActuations)
 			return true;
 		if (Robot.runningRobot.driver.forceCompressorOn.get())
 			return true;
