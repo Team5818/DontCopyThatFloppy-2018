@@ -56,6 +56,11 @@ public class Driver {
         JoystickButton disengageArmButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.DISENGAGE_ARM_BUTTON);
         JoystickButton lockWinchButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.LOCK_WINCH_BUTTON);
 
+        JoystickButton enterClimbButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.CLIMB_MODE_BUTTON);
+        JoystickButton reengageArmButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.REENGAGE_ARM_BUTTON);
+        JoystickButton disengageArmButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.DISENGAGE_ARM_BUTTON);
+        JoystickButton lockWinchButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.LOCK_WINCH_BUTTON);
+
         // Bind Commands
         clampOn.whenPressed(new SetClampOpen(false));
         clampOff.whenPressed(new SetClampOpen(true));

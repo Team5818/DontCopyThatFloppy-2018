@@ -45,4 +45,10 @@ public class ControlMap {
     public static final int DISENGAGE_ARM_BUTTON = 4;
 
     public static final int LOCK_WINCH_BUTTON = 3;
+
+    public static final int REENGAGE_ARM_BUTTON = 5;
+
+    public static final int DISENGAGE_ARM_BUTTON = 4;
+
+    public static final int LOCK_WINCH_BUTTON = 3;
 }
