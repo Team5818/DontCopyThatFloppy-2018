@@ -51,6 +51,9 @@ public class Robot extends TimedRobot {
     public PowerDistributionPanel pdp;
     public Compressor compressor;
 
+    public PowerDistributionPanel pdp;
+    public Compressor compressor;
+
     public static Robot runningRobot;
 
     private CompressorDisabler compDisable;
