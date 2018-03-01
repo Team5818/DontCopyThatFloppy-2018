@@ -13,7 +13,9 @@ import org.rivierarobotics.subsystems.Clamp;
 import org.rivierarobotics.subsystems.DriveTrain;
 import org.rivierarobotics.subsystems.Floppies;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -39,6 +41,9 @@ public class Robot extends TimedRobot {
     public Floppies floppies;
     public Clamp clamp;
 
+    public PowerDistributionPanel pdp;
+    public Compressor compressor;
+
     public static Robot runningRobot;
 
     /**
@@ -52,6 +57,8 @@ public class Robot extends TimedRobot {
         arm = new Arm();
         clamp = new Clamp();
         floppies = new Floppies();
+        pdp = new PowerDistributionPanel();
+        compressor = new Compressor();
         driver = new Driver();
         m_chooser.addDefault("Default Auto", kDefaultAuto);
         m_chooser.addObject("My Auto", kCustomAuto);
