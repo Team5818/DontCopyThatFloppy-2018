@@ -16,7 +16,9 @@ import org.rivierarobotics.subsystems.Floppies;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -44,6 +46,10 @@ public class Robot extends TimedRobot {
     public UsbCamera camCollect;
     public UsbCamera camBack;
     public VideoSink camServer;
+
+    public PowerDistributionPanel pdp;
+    public Compressor compressor;
+
     public static Robot runningRobot;
 
     /**
@@ -57,6 +63,8 @@ public class Robot extends TimedRobot {
         arm = new Arm();
         clamp = new Clamp();
         floppies = new Floppies();
+        pdp = new PowerDistributionPanel();
+        compressor = new Compressor();
         driver = new Driver();
         camCollect = CameraServer.getInstance().startAutomaticCapture(0);
         camBack = CameraServer.getInstance().startAutomaticCapture(1);
