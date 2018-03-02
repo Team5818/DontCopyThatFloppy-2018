@@ -19,8 +19,10 @@ public class CollectWithSwitch extends Command{
 	
 	@Override
 	public void initialize()
-	{
-		flop.setPower(power, power);
+	{  
+	    if(!Double.isNaN(power)){
+	        flop.setPower(power, power);
+	    }
 	}
 	
 	

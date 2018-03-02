@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 package org.rivierarobotics.robot;
 
+import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.driverinterface.Driver;
 import org.rivierarobotics.subsystems.Arm;
@@ -13,7 +14,12 @@ import org.rivierarobotics.subsystems.Clamp;
 import org.rivierarobotics.subsystems.DriveTrain;
 import org.rivierarobotics.subsystems.Floppies;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSink;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -38,9 +44,16 @@ public class Robot extends TimedRobot {
     public Arm arm;
     public Floppies floppies;
     public Clamp clamp;
+    public UsbCamera camCollect;
+    public UsbCamera camBack;
+    public VideoSink camServer;
 
+    public PowerDistributionPanel pdp;
+    public Compressor compressor;
+    
     public static Robot runningRobot;
 
+    private CompressorControlCommand compDisable;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -52,10 +65,17 @@ public class Robot extends TimedRobot {
         arm = new Arm();
         clamp = new Clamp();
         floppies = new Floppies();
+        pdp = new PowerDistributionPanel();
+        compressor = new Compressor();
         driver = new Driver();
+        camCollect = CameraServer.getInstance().startAutomaticCapture(0);
+        camBack = CameraServer.getInstance().startAutomaticCapture(1);
+        camServer = CameraServer.getInstance().getServer();
         m_chooser.addDefault("Default Auto", kDefaultAuto);
         m_chooser.addObject("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
+        compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
+        Scheduler.getInstance().add(compDisable);
     }
 
     public Side[] getSide() {
