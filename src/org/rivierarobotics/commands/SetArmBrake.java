@@ -5,16 +5,16 @@ import org.rivierarobotics.subsystems.Arm;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class SetArmBrake extends Command{
+public class SetArmBrake extends Command {
+
     Arm arm;
     boolean locked;
-    
+
     public SetArmBrake(boolean l) {
         arm = Robot.runningRobot.arm;
-        requires(arm);
         locked = l;
     }
-    
+
     @Override
     protected void initialize() {
         arm.setBrakeEngaged(locked);
@@ -24,7 +24,5 @@ public class SetArmBrake extends Command{
     protected boolean isFinished() {
         return true;
     }
-    
-    
-    
+
 }

@@ -3,6 +3,7 @@ package org.rivierarobotics.commands;
 import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.subsystems.Arm;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class SetArmEngaged extends Command{
@@ -11,7 +12,6 @@ public class SetArmEngaged extends Command{
     
     public SetArmEngaged(boolean l) {
         arm = Robot.runningRobot.arm;
-        requires(arm);
         locked = l;
     }
     

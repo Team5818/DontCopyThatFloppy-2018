@@ -50,7 +50,6 @@ public class Driver {
         JoystickButton shiftHigh = new JoystickButton(JS_FW_BACK, ControlMap.SHIFT_HIGH_BUTTON);
         JoystickButton backCamButton = new JoystickButton(JS_TURN, ControlMap.BACK_CAM_BUTTON);
         JoystickButton collectCamButton = new JoystickButton(JS_TURN, ControlMap.COLLECT_CAM_BUTTON);
-        JoystickButton forceCompressorOn = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.FORCE_COMPRESSOR_ON_BUTTON);
 
         JoystickButton enterClimbButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.CLIMB_MODE_BUTTON);
         JoystickButton reengageArmButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.REENGAGE_ARM_BUTTON);
