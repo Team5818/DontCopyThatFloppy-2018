@@ -1,7 +1,9 @@
 package org.rivierarobotics.driverinterface;
 
+import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
 import org.rivierarobotics.commands.SetArmBrake;
+import org.rivierarobotics.commands.SetArmEngaged;
 import org.rivierarobotics.commands.SetCameraCollect;
 import org.rivierarobotics.commands.SetClampOpen;
 import org.rivierarobotics.commands.ShiftGear;
@@ -23,7 +25,6 @@ public class Driver {
     public Joystick JS_FLOPPIES;
     public Joystick JS_LEFT_BUTTONS;
     public Joystick JS_RIGHT_BUTTONS;
-    public JoystickButton forceCompressorOn;
     public DriveCalculator DRIVE_CALC;
 
     public Driver() {
@@ -49,12 +50,7 @@ public class Driver {
         JoystickButton shiftHigh = new JoystickButton(JS_FW_BACK, ControlMap.SHIFT_HIGH_BUTTON);
         JoystickButton backCamButton = new JoystickButton(JS_TURN, ControlMap.BACK_CAM_BUTTON);
         JoystickButton collectCamButton = new JoystickButton(JS_TURN, ControlMap.COLLECT_CAM_BUTTON);
-        forceCompressorOn = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.FORCE_COMPRESSOR_ON_BUTTON);
-
-        JoystickButton enterClimbButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.CLIMB_MODE_BUTTON);
-        JoystickButton reengageArmButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.REENGAGE_ARM_BUTTON);
-        JoystickButton disengageArmButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.DISENGAGE_ARM_BUTTON);
-        JoystickButton lockWinchButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.LOCK_WINCH_BUTTON);
+        JoystickButton forceCompressorOn = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.FORCE_COMPRESSOR_ON_BUTTON);
 
         JoystickButton enterClimbButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.CLIMB_MODE_BUTTON);
         JoystickButton reengageArmButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.REENGAGE_ARM_BUTTON);
@@ -80,7 +76,6 @@ public class Driver {
         enterClimbButton.whenPressed(new StartClimbMode(JS_ARM));//engage PTO + disengage arm
         reengageArmButton.whenPressed(new SetArmEngaged(true));//reengage + lower arm, winching at same time
         disengageArmButton.whenPressed(new SetArmEngaged(false));//disengage arm when it hits bottom
-        lockWinchButton.whenPressed(new SetArmBrake(true));//lock robot in place after climb
-
+        lockWinchButton.whenPressed(new SetArmBrake(true));//lock robot in place after climb        
     }
 }

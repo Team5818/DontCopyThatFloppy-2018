@@ -6,7 +6,7 @@
 /*----------------------------------------------------------------------------*/
 package org.rivierarobotics.robot;
 
-import org.rivierarobotics.commands.CompressorDisabler;
+import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.driverinterface.Driver;
 import org.rivierarobotics.subsystems.Arm;
@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
     
     public static Robot runningRobot;
 
-    private CompressorDisabler compDisable;
+    private CompressorControlCommand compDisable;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -74,7 +74,7 @@ public class Robot extends TimedRobot {
         m_chooser.addDefault("Default Auto", kDefaultAuto);
         m_chooser.addObject("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
-        compDisable = new CompressorDisabler();
+        compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
         Scheduler.getInstance().add(compDisable);
     }
 

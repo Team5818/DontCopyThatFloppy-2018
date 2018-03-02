@@ -30,7 +30,7 @@ public class ControlMap {
 
     public static final int SHIFT_LOW_BUTTON = 1;
 
-    public static final int SHIFT_HIGH_BUTTON = 2;s
+    public static final int SHIFT_HIGH_BUTTON = 2;
 
     public static final int COLLECT_SEQUENCE_BUTTON = 1;
 
@@ -46,9 +46,5 @@ public class ControlMap {
 
     public static final int LOCK_WINCH_BUTTON = 3;
 
-    public static final int REENGAGE_ARM_BUTTON = 5;
-
-    public static final int DISENGAGE_ARM_BUTTON = 4;
-
-    public static final int LOCK_WINCH_BUTTON = 3;
+    public static final int FORCE_COMPRESSOR_ON_BUTTON = 2;
 }
