@@ -19,7 +19,7 @@ public class PracticeRobotSpecificConstants extends RobotDependentConstants {
 
     @Override
     public double getArmPositionCollectStandby() {
-        return -254;//wrong
+        return 3630;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.rivierarobotics.driverinterface;
 
+import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
 import org.rivierarobotics.commands.SetArmBrake;
@@ -55,6 +56,8 @@ public class Driver {
         JoystickButton reengageArmButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.REENGAGE_ARM_BUTTON);
         JoystickButton disengageArmButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.DISENGAGE_ARM_BUTTON);
         JoystickButton lockWinchButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.LOCK_WINCH_BUTTON);
+        
+        JoystickButton autoCollectButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.COLLECT_SEQUENCE_BUTTON);
 
         // Bind Commands
         clampOn.whenPressed(new SetClampOpen(false));
@@ -71,6 +74,7 @@ public class Driver {
         shiftHigh.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_HIGH));
         backCamButton.whenPressed(new SetCameraCollect(false));
         collectCamButton.whenPressed(new SetCameraCollect(true));
+        autoCollectButton.whenPressed(new CollectGrabRaise());
 
         enterClimbButton.whenPressed(new StartClimbMode(JS_ARM));//engage PTO + disengage arm
         reengageArmButton.whenPressed(new SetArmEngaged(true));//reengage + lower arm, winching at same time
