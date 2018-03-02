@@ -3,6 +3,7 @@ package org.rivierarobotics.commands;
 import org.rivierarobotics.constants.ControlMap;
 import org.rivierarobotics.robot.Robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -28,10 +29,12 @@ public class CompressorControlCommand extends Command {
     }
 
     private boolean determineCompressorOn() {
-        if (joy.getRawButton(ControlMap.FORCE_COMPRESSOR_ON_BUTTON))
+        if (joy.getRawButton(ControlMap.FORCE_COMPRESSOR_ON_BUTTON)) {
             return true;
-        if (Robot.runningRobot.pdp.getVoltage() > minVoltage)
+        }
+        if (Robot.runningRobot.pdp.getVoltage() > minVoltage) {
             return true;
+        }
         return false;
     }
 
