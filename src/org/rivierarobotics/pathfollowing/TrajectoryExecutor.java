@@ -35,10 +35,10 @@ public class TrajectoryExecutor implements Runnable{
     private Vector2d currentPos;
     private double currentHeading;
 
-    public static final double DEFAULT_DT = .005;
-    public static final double DEFAULT_MAX_VEL = 100;
-    public static final double DEFAULT_MAX_ACCEL = 200;
-    public static final double DEFAULT_MAX_JERK = 1000;
+    public static final double DEFAULT_DT = .01;
+    public static final double DEFAULT_MAX_VEL = 60;
+    public static final double DEFAULT_MAX_ACCEL = 60;
+    public static final double DEFAULT_MAX_JERK = 500;
     private static final double DEFAULT_TIMEOUT = Double.POSITIVE_INFINITY;
     
     private static final double KP = 0.0;
@@ -50,8 +50,8 @@ public class TrajectoryExecutor implements Runnable{
     private static final double K_HEADING = 0.0;
 
     
-    private static final Trajectory.Config DEFAULT_CONFIG = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-            Trajectory.Config.SAMPLES_HIGH, DEFAULT_DT, DEFAULT_MAX_VEL, DEFAULT_MAX_ACCEL, DEFAULT_MAX_JERK);
+    public static final Trajectory.Config DEFAULT_CONFIG = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+            Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, DEFAULT_MAX_VEL, DEFAULT_MAX_ACCEL, DEFAULT_MAX_JERK);
 
     public TrajectoryExecutor(Waypoint[] waypoints, Trajectory.Config config, double time) {
         driveTrain = Robot.runningRobot.driveTrain;
@@ -89,7 +89,7 @@ public class TrajectoryExecutor implements Runnable{
         if(!leftFollow.isFinished() && !rightFollow.isFinished() && Timer.getFPGATimestamp() < endTime){
             Segment seg = leftFollow.getSegment();
             double left = leftFollow.calculate((int)currentPos.getX()) + K_OFFSET*Math.signum(seg.velocity);
-            double right = rightFollow.calculate((int)currentPos.getY());
+            double right = rightFollow.calculate((int)currentPos.getY()) + K_OFFSET*Math.signum(seg.velocity);
             double headDiff = MathUtil.wrapAngleRad(currentHeading - seg.heading);
             driveTrain.setPowerLeftRight(left - K_HEADING*headDiff, right + K_HEADING*headDiff);
             SmartDashboard.putNumber("target pos", seg.position);
