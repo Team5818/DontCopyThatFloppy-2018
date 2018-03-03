@@ -30,14 +30,14 @@ public class DriveControlCommand extends Command {
     @Override
     public void execute() {
         if (MathUtil.outOfDeadband(fbStick, DEADBAND) || MathUtil.outOfDeadband(turnStick, DEADBAND)) {
-            double forwardVal = MathUtil.adjustDeadband(fbStick, DEADBAND, false).getY();
+            double forwardVal = MathUtil.adjustDeadband(fbStick, DEADBAND, true).getY();
             double spinVal = MathUtil.adjustDeadband(turnStick, DEADBAND, false).getX();
             boolean driveButtons[] = new boolean[4];
             driveButtons[0] = fbStick.getRawButton(1);
             driveButtons[1] = fbStick.getRawButton(2);
             driveButtons[2] = turnStick.getRawButton(1);
             driveButtons[3] = turnStick.getRawButton(2);
-            Vector2d driveVec = driver.DRIVE_CALC.compute(new Vector2d(forwardVal, spinVal), driveButtons);
+            Vector2d driveVec = driver.DRIVE_CALC.compute(new Vector2d(forwardVal, -spinVal), driveButtons);
             dt.setPowerLeftRight(driveVec);
         } else {
             dt.stop();

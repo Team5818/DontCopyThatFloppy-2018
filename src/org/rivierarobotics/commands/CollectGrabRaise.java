@@ -16,5 +16,4 @@ public class CollectGrabRaise extends CommandGroup{
         this.addSequential(new SetClampOpen(false));
         this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
     }
-    
 }

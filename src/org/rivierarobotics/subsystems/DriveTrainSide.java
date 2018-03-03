@@ -15,7 +15,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 public class DriveTrainSide {
 
     public static final double DIST_PER_REV = RobotConstants.WHEEL_DIAMETER * Math.PI;
-    public static final int ENCODER_CODES_PER_REV = 1024;
+    public static final int ENCODER_CODES_PER_REV = 360;
     private WPI_TalonSRX slaveTalon1;
     private WPI_TalonSRX slaveTalon2;
     private WPI_TalonSRX masterTalon;
@@ -31,20 +31,21 @@ public class DriveTrainSide {
             masterTalon = new WPI_TalonSRX(RobotMap.RIGHT_DRIVETRAIN_TALON_1);
             slaveTalon1 = new WPI_TalonSRX(RobotMap.RIGHT_DRIVETRAIN_TALON_2);
             slaveTalon2 = new WPI_TalonSRX(RobotMap.RIGHT_DRIVETRAIN_TALON_3);
-            masterTalon.setInverted(true);
-            slaveTalon1.setInverted(false);
-            slaveTalon2.setInverted(false);
+            masterTalon.setInverted(false);
+            slaveTalon1.setInverted(true);
+            slaveTalon2.setInverted(true);
 
         } else {
             masterID = RobotMap.LEFT_DRIVETRAIN_TALON_1;
             masterTalon = new WPI_TalonSRX(RobotMap.LEFT_DRIVETRAIN_TALON_1);
             slaveTalon1 = new WPI_TalonSRX(RobotMap.LEFT_DRIVETRAIN_TALON_2);
             slaveTalon2 = new WPI_TalonSRX(RobotMap.LEFT_DRIVETRAIN_TALON_3);
-            masterTalon.setInverted(false);
-            slaveTalon1.setInverted(true);
-            slaveTalon2.setInverted(true);
+            masterTalon.setInverted(true);
+            slaveTalon1.setInverted(false);
+            slaveTalon2.setInverted(false);
         }
         masterTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+        resetEnc();
         masterTalon.set(ControlMode.PercentOutput, 0.0);
         slaveTalon1.set(ControlMode.Follower, masterID);
         slaveTalon2.set(ControlMode.Follower, masterID);
@@ -58,6 +59,10 @@ public class DriveTrainSide {
     public double getSidePosition() {
         return masterTalon.getSelectedSensorPosition(0);
     }
+    
+    public double getSidePositionInches() {
+        return masterTalon.getSelectedSensorPosition(0)/ENCODER_CODES_PER_REV*DIST_PER_REV;
+    }
 
     public double getRawPos() {
         return masterTalon.getSensorCollection().getQuadraturePosition();
@@ -70,7 +75,11 @@ public class DriveTrainSide {
     public double getRawSpeed() {
         return masterTalon.getSensorCollection().getQuadratureVelocity();
     }
-
+    
+    public void resetEnc() {
+        masterTalon.setSelectedSensorPosition(0, 0, 10);
+    }
+    
     public void setCoastMode() {
         masterTalon.setNeutralMode(NeutralMode.Coast);
         slaveTalon1.setNeutralMode(NeutralMode.Coast);

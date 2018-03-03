@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 public class CSVLogger {
 
     private PrintWriter writer;
@@ -24,7 +26,8 @@ public class CSVLogger {
         try {
             csvFile.createNewFile();
         } catch (IOException e) {
-            e.printStackTrace();
+            String s = e.getMessage();
+            DriverStation.reportError(s, false);
         }
         try {
             writer = new PrintWriter(csvFile);

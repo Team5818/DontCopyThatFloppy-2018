@@ -7,6 +7,7 @@ import org.rivierarobotics.commands.SetArmBrake;
 import org.rivierarobotics.commands.SetArmEngaged;
 import org.rivierarobotics.commands.SetCameraCollect;
 import org.rivierarobotics.commands.SetClampOpen;
+import org.rivierarobotics.commands.SetDrivePower;
 import org.rivierarobotics.commands.ShiftGear;
 import org.rivierarobotics.commands.StartClimbMode;
 import org.rivierarobotics.constants.ControlMap;
@@ -58,7 +59,7 @@ public class Driver {
         JoystickButton lockWinchButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.LOCK_WINCH_BUTTON);
         
         JoystickButton autoCollectButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.COLLECT_SEQUENCE_BUTTON);
-
+        
         // Bind Commands
         clampOn.whenPressed(new SetClampOpen(false));
         clampOff.whenPressed(new SetClampOpen(true));
@@ -79,6 +80,6 @@ public class Driver {
         enterClimbButton.whenPressed(new StartClimbMode(JS_ARM));//engage PTO + disengage arm
         reengageArmButton.whenPressed(new SetArmEngaged(true));//reengage + lower arm, winching at same time
         disengageArmButton.whenPressed(new SetArmEngaged(false));//disengage arm when it hits bottom
-        lockWinchButton.whenPressed(new SetArmBrake(true));//lock robot in place after climb        
+        lockWinchButton.whenPressed(new SetArmBrake(true));//lock robot in place after climb   
     }
 }

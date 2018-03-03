@@ -7,8 +7,12 @@
 package org.rivierarobotics.robot;
 
 import org.rivierarobotics.commands.CompressorControlCommand;
+import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
+import org.rivierarobotics.commands.SetArmAngleGainScheduled;
+import org.rivierarobotics.constants.RobotDependentConstants;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.driverinterface.Driver;
+import org.rivierarobotics.mathUtil.CSVLogger;
 import org.rivierarobotics.subsystems.Arm;
 import org.rivierarobotics.subsystems.Clamp;
 import org.rivierarobotics.subsystems.DriveTrain;
@@ -21,9 +25,13 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.Waypoint;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -47,13 +55,15 @@ public class Robot extends TimedRobot {
     public UsbCamera camCollect;
     public UsbCamera camBack;
     public VideoSink camServer;
+    public CSVLogger logger;
 
     public PowerDistributionPanel pdp;
     public Compressor compressor;
-    
+
     public static Robot runningRobot;
 
     private CompressorControlCommand compDisable;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -68,9 +78,11 @@ public class Robot extends TimedRobot {
         pdp = new PowerDistributionPanel();
         compressor = new Compressor();
         driver = new Driver();
-        camCollect = CameraServer.getInstance().startAutomaticCapture(0);
-        camBack = CameraServer.getInstance().startAutomaticCapture(1);
-        camServer = CameraServer.getInstance().getServer();
+        // camCollect = CameraServer.getInstance().startAutomaticCapture(0);
+        // camBack = CameraServer.getInstance().startAutomaticCapture(1);
+        // camServer = CameraServer.getInstance().getServer();
+        String[] fields = { "Pos", "Vel", "Time" };
+        logger = new CSVLogger("/home/lvuser/templogs/DRIVE_LOG", fields);
         m_chooser.addDefault("Default Auto", kDefaultAuto);
         m_chooser.addObject("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
@@ -107,10 +119,21 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        m_autoSelected = m_chooser.getSelected();
-        // m_autoSelected = SmartDashboard.getString("Auto Selector",
-        // kDefaultAuto);
-        System.out.println("Auto selected: " + m_autoSelected);
+        DriverStation.reportError("what the hell?", false);
+        Waypoint[] points = new Waypoint[] { new Waypoint(-4, -1, Pathfinder.d2r(-45)), // Waypoint
+                new Waypoint(-2, -2, 0), // Waypoint @ x=-2, y=-2, exit angle=0
+                new Waypoint(0, 0, 0) // Waypoint @ x=0, y=0, exit angle=0
+        };
+        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+        Trajectory.Config.SAMPLES_HIGH, 0.05, 1.7, 2.0, 60.0);
+        Trajectory trajectory = Pathfinder.generate(points, config);
+        DriverStation.reportError("Done!", false);
+        // Waypoint[] wp = new Waypoint[3];
+        // wp[0] = new Waypoint(0,0,0);
+        // wp[1] = new Waypoint(0,30,0);
+        // wp[1] = new Waypoint(0,60,0);
+        // ExecuteTrajectoryCommand ex = new ExecuteTrajectoryCommand(wp);
+        // ex.start();
     }
 
     /**
@@ -118,15 +141,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
-        switch (m_autoSelected) {
-            case kCustomAuto:
-                // Put custom auto code here
-                break;
-            case kDefaultAuto:
-            default:
-                // Put default auto code here
-                break;
-        }
+        Scheduler.getInstance().run();
+        printDash();
     }
 
     @Override
@@ -141,6 +157,7 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         printDash();
+        logCSV();
     }
 
     /**
@@ -168,5 +185,11 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Cube ready", floppies.cubeInPlace());
         SmartDashboard.putNumber("Left Enc", driveTrain.getDistance().getX());
         SmartDashboard.putNumber("Right Enc", driveTrain.getDistance().getY());
+        SmartDashboard.putNumber("Avg Inches", driveTrain.getAvgSidePositionInches());
+    }
+
+    public void logCSV() {
+        double[] vals = { driveTrain.getAvgSidePosition(), driveTrain.getAvgSideVelocity(), Timer.getFPGATimestamp() };
+        logger.writeImmediately(vals);
     }
 }

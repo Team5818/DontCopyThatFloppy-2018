@@ -73,6 +73,23 @@ public class DriveTrain extends Subsystem {
     public Vector2d getDistance() {
         return new Vector2d(left.getSidePosition(), right.getSidePosition());
     }
+    
+    public Vector2d getVelocity() {
+        return new Vector2d(left.getSideVelocity(), right.getSideVelocity());
+    }
+    
+    public double getAvgSidePosition() {
+        return (left.getSidePosition() + right.getSidePosition()) / 2;
+    }
+    
+    public double getAvgSidePositionInches() {
+        return (left.getSidePositionInches() + right.getSidePositionInches())/2;
+    }
+    
+    public double getAvgSideVelocity() {
+        return (left.getSideVelocity() + right.getSideVelocity()) / 2;
+    }
+    
 
     public void setCoastMode() {
         left.setCoastMode();
@@ -87,10 +104,6 @@ public class DriveTrain extends Subsystem {
     public void setPowerStraight(double numIn) {
         left.setPower(numIn);
         right.setPower(numIn);
-    }
-
-    public double getAvgSidePosition() {
-        return (left.getSidePosition() + right.getSidePosition()) / 2;
     }
 
     public void stop() {

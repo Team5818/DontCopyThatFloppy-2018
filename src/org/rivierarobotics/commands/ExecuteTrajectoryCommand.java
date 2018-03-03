@@ -4,6 +4,7 @@ import org.rivierarobotics.pathfollowing.TrajectoryExecutor;
 import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.subsystems.DriveTrain;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import jaci.pathfinder.Waypoint;
 
@@ -19,6 +20,7 @@ public class ExecuteTrajectoryCommand extends Command{
     
     @Override
     protected void initialize() {
+        DriverStation.reportError("are we doing this?", false);
         trajEx.start();
     }
 
