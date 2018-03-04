@@ -35,6 +35,8 @@ public class TrajectoryExecutor implements Runnable {
     private Notifier runner;
     private Vector2d currentPos;
     private double currentHeading;
+    private boolean reversed;
+    private int directionMultiplier;
 
     public static final double DEFAULT_DT = .01;
     public static final double DEFAULT_MAX_VEL = 60;
@@ -53,14 +55,21 @@ public class TrajectoryExecutor implements Runnable {
     public static final Trajectory.Config DEFAULT_CONFIG = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
             Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, DEFAULT_MAX_VEL, DEFAULT_MAX_ACCEL, DEFAULT_MAX_JERK);
 
-    public TrajectoryExecutor(Waypoint[] waypoints, Trajectory.Config config, double time) {
+    public TrajectoryExecutor(Waypoint[] waypoints, Trajectory.Config config, double time, boolean rev) {
         driveTrain = Robot.runningRobot.driveTrain;
+        reversed = rev;
+        directionMultiplier = reversed ? -1:1;
         DriverStation.reportError("starting generation...", false);
         master = Pathfinder.generate(waypoints, config);
         DriverStation.reportError("done!", false);
         TankModifier mod = new TankModifier(master).modify(RobotConstants.WHEEL_BASE_WIDTH);
-        leftTraj = mod.getLeftTrajectory();
-        rightTraj = mod.getRightTrajectory();
+        if(reversed) {
+            leftTraj = mod.getRightTrajectory();
+            rightTraj = mod.getLeftTrajectory();
+        }else {
+            leftTraj = mod.getLeftTrajectory();
+            rightTraj = mod.getRightTrajectory();
+        }
         currentPos = driveTrain.getDistance();
         dt = config.dt;
 
@@ -80,12 +89,12 @@ public class TrajectoryExecutor implements Runnable {
         runner = new Notifier(this);
     }
 
-    public TrajectoryExecutor(Waypoint[] waypoints, double time) {
-        this(waypoints, DEFAULT_CONFIG, time);
+    public TrajectoryExecutor(Waypoint[] waypoints, double time, boolean rev) {
+        this(waypoints, DEFAULT_CONFIG, time, rev);
     }
 
-    public TrajectoryExecutor(Waypoint[] waypoints) {
-        this(waypoints, DEFAULT_CONFIG, DEFAULT_TIMEOUT);
+    public TrajectoryExecutor(Waypoint[] waypoints, boolean rev) {
+        this(waypoints, DEFAULT_CONFIG, DEFAULT_TIMEOUT,rev);
     }
 
     @Override
@@ -95,8 +104,8 @@ public class TrajectoryExecutor implements Runnable {
             currentPos = driveTrain.getDistance();
             currentHeading = driveTrain.getYaw();
             Segment seg = leftFollow.getSegment();
-            double left = leftFollow.calculate((int) currentPos.getX()) + K_OFFSET * Math.signum(seg.velocity);
-            double right = rightFollow.calculate((int) currentPos.getY()) + K_OFFSET * Math.signum(seg.velocity);
+            double left = directionMultiplier*(leftFollow.calculate(directionMultiplier*(int) currentPos.getX()) + K_OFFSET * Math.signum(seg.velocity));
+            double right = directionMultiplier*(rightFollow.calculate(directionMultiplier*(int) currentPos.getY()) + K_OFFSET * Math.signum(seg.velocity));
             double err = dummy.calculate((int) currentPos.getY());
             double headDiff = MathUtil.wrapAngleRad(currentHeading - Pathfinder.r2d(seg.heading));
             driveTrain.setPowerLeftRight(left + K_HEADING * headDiff, right - K_HEADING * headDiff);

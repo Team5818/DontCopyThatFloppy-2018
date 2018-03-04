@@ -101,14 +101,14 @@ public class Robot extends TimedRobot {
         
         Waypoint[] points2 = new Waypoint[] {
                 new Waypoint(0, 0, 0),
-                new Waypoint(-40, 0, 0), 
-                new Waypoint(-80, 24, Pathfinder.d2r(-45)),
-                new Waypoint(-130, 48, 0), 
-                new Waypoint(-160, 48, 0)
+                new Waypoint(40, 0, 0), 
+                new Waypoint(80, -24, Pathfinder.d2r(-45)),
+                new Waypoint(130, -48, 0),
+                new Waypoint(160, -48, 0)
             };
          ex = new CommandGroup();
-         ex.addSequential(new ExecuteTrajectoryCommand(points1));
-         ex.addSequential(new ExecuteTrajectoryCommand(points2));
+         ex.addSequential(new ExecuteTrajectoryCommand(points1,false));
+         ex.addSequential(new ExecuteTrajectoryCommand(points2,true));
     }
 
     public Side[] getSide() {
