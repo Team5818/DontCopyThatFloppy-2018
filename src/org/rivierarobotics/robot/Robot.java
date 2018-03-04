@@ -6,6 +6,8 @@
 /*----------------------------------------------------------------------------*/
 package org.rivierarobotics.robot;
 
+import org.rivierarobotics.commands.DriveControlCommand;
+import org.rivierarobotics.commands.LEDCycleCommand;
 import org.rivierarobotics.driverinterface.Driver;
 import org.rivierarobotics.subsystems.Arm;
 import org.rivierarobotics.subsystems.Clamp;
@@ -14,6 +16,7 @@ import org.rivierarobotics.subsystems.Floppies;
 import org.rivierarobotics.subsystems.RSSerialPort;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -38,6 +41,7 @@ public class Robot extends TimedRobot {
     public Floppies floppies;
     public Clamp clamp;
     public RSSerialPort serialPort;
+    CommandGroup ex;
 
     public static Robot runningRobot;
 
@@ -57,6 +61,7 @@ public class Robot extends TimedRobot {
         m_chooser.addDefault("Default Auto", kDefaultAuto);
         m_chooser.addObject("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
+        
     }
 
     /**
@@ -98,6 +103,10 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         arm.stop();
+        ex = new CommandGroup();
+        ex.addParallel(new DriveControlCommand(driver.JS_FW_BACK, driver.JS_TURN));
+        ex.addParallel(new LEDCycleCommand(10));
+        ex.start();
     }
 
     /**
