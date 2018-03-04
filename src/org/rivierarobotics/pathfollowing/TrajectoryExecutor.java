@@ -109,6 +109,7 @@ public class TrajectoryExecutor implements Runnable {
             synchronized(lock) {
                 isFinished = true;
                 stop();
+                DriverStation.reportError("Trajectory complete", false);
             }
         }
     }
@@ -119,7 +120,7 @@ public class TrajectoryExecutor implements Runnable {
             driveTrain.resetEnc();
             endTime = Timer.getFPGATimestamp() + timeout;
             running = true;
-            DriverStation.reportError("are we doing this?", false);
+            DriverStation.reportError("Starting Trajectory...", false);
         }
     }
 

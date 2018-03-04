@@ -20,7 +20,6 @@ public class ExecuteTrajectoryCommand extends Command{
     
     @Override
     protected void initialize() {
-        DriverStation.reportError("are we doing this?", false);
         trajEx.start();
     }
 
