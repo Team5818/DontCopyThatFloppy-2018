@@ -92,7 +92,11 @@ public class Robot extends TimedRobot {
         Waypoint[] points = new Waypoint[] {
                 //new Waypoint(-4, -1, 0),      // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
                 new Waypoint(0, 0, 0),                        // Waypoint @ x=-2, y=-2, exit angle=0 radians
-                new Waypoint(72, 0, 0)       
+                new Waypoint(30, 0, 0), 
+                new Waypoint(80, -24, Pathfinder.d2r(-45)),
+                new Waypoint(120, -48, 0),
+                new Waypoint(160, -48, 0)
+
             };
          DriverStation.reportError("lets doo dis", false);
          Pathfinder.generate(points, TrajectoryExecutor.DEFAULT_CONFIG);
