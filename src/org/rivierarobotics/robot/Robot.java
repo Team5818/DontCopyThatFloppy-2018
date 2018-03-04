@@ -11,6 +11,7 @@ import org.rivierarobotics.subsystems.Arm;
 import org.rivierarobotics.subsystems.Clamp;
 import org.rivierarobotics.subsystems.DriveTrain;
 import org.rivierarobotics.subsystems.Floppies;
+import org.rivierarobotics.subsystems.RSSerialPort;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -36,6 +37,7 @@ public class Robot extends TimedRobot {
     public Arm arm;
     public Floppies floppies;
     public Clamp clamp;
+    public RSSerialPort serialPort;
 
     public static Robot runningRobot;
 
@@ -51,6 +53,7 @@ public class Robot extends TimedRobot {
         clamp = new Clamp();
         floppies = new Floppies();
         driver = new Driver();
+        serialPort = new RSSerialPort();
         m_chooser.addDefault("Default Auto", kDefaultAuto);
         m_chooser.addObject("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
