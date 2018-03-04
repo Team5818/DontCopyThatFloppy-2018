@@ -10,7 +10,6 @@ public class LEDCycleCommand extends CommandGroup {
 	
 	private double delay;
 	public LEDCycleCommand(double del) {
-		DriverStation.reportError("i'm running", false);
 		delay = del;
 		this.addSequential(new LEDControlCommand(LightState.BLINKING_BLUE));
 		this.addSequential(new WaitCommand(delay));
@@ -35,6 +34,14 @@ public class LEDCycleCommand extends CommandGroup {
 		this.addSequential(new LEDControlCommand(LightState.SOLID_RED));
 		this.addSequential(new WaitCommand(delay));
 		this.addSequential(new LEDControlCommand(LightState.SOLID_YELLOW));
+		this.addSequential(new WaitCommand(delay));
+		this.addSequential(new LEDControlCommand(LightState.ZAP_BLUE));
+		this.addSequential(new WaitCommand(delay));
+		this.addSequential(new LEDControlCommand(LightState.ZAP_GREEN));
+		this.addSequential(new WaitCommand(delay));
+		this.addSequential(new LEDControlCommand(LightState.ZAP_RED));
+		this.addSequential(new WaitCommand(delay));
+		this.addSequential(new LEDControlCommand(LightState.ZAP_YELLOW));
 		this.addSequential(new WaitCommand(delay));
 	}
 }
