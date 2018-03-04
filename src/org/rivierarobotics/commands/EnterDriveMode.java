@@ -1,8 +1,8 @@
 package org.rivierarobotics.commands;
 
 import org.rivierarobotics.driverinterface.Driver;
-import org.rivierarobotics.mathUtil.DriveCalculator;
 import org.rivierarobotics.robot.Robot;
+import org.rivierarobotics.util.DriveCalculator;
 
 import edu.wpi.first.wpilibj.command.Command;
 

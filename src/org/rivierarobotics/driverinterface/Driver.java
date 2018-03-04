@@ -12,9 +12,9 @@ import org.rivierarobotics.commands.ShiftGear;
 import org.rivierarobotics.commands.StartClimbMode;
 import org.rivierarobotics.constants.ControlMap;
 import org.rivierarobotics.constants.RobotDependentConstants;
-import org.rivierarobotics.mathUtil.ArcadeDriveCalculator;
-import org.rivierarobotics.mathUtil.DriveCalculator;
 import org.rivierarobotics.subsystems.DriveTrain;
+import org.rivierarobotics.util.ArcadeDriveCalculator;
+import org.rivierarobotics.util.DriveCalculator;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;

@@ -2,8 +2,8 @@ package org.rivierarobotics.pathfollowing;
 
 import java.util.ArrayList;
 
-import org.rivierarobotics.mathUtil.RigidTransformation2d;
-import org.rivierarobotics.mathUtil.Vector2d;
+import org.rivierarobotics.util.RigidTransformation2d;
+import org.rivierarobotics.util.Vector2d;
 
 public class Path {
 

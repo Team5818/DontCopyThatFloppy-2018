@@ -10,28 +10,26 @@ import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.driverinterface.Driver;
-import org.rivierarobotics.mathUtil.CSVLogger;
-import org.rivierarobotics.pathfollowing.TrajectoryExecutor;
 import org.rivierarobotics.subsystems.Arm;
 import org.rivierarobotics.subsystems.Clamp;
 import org.rivierarobotics.subsystems.DriveTrain;
 import org.rivierarobotics.subsystems.DriveTrain.DriveGear;
 import org.rivierarobotics.subsystems.Floppies;
+import org.rivierarobotics.util.CSVLogger;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
-import jaci.pathfinder.modifiers.SwerveModifier;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -79,11 +77,10 @@ public class Robot extends TimedRobot {
         pdp = new PowerDistributionPanel();
         compressor = new Compressor();
         driver = new Driver();
-        // camCollect = CameraServer.getInstance().startAutomaticCapture(0);
-        // camBack = CameraServer.getInstance().startAutomaticCapture(1);
-        // camServer = CameraServer.getInstance().getServer();
-        String[] fields = { "Pos", "Vel", "Set Pos","Set Vel","Err","Time"};
+
+        String[] fields = { "Pos", "Vel", "Set Pos","Set Vel","Heading","Set Heading","Time"};
         logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG", fields);
+        
         m_chooser.addDefault("Default Auto", kDefaultAuto);
         m_chooser.addObject("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
@@ -156,6 +153,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        camCollect = CameraServer.getInstance().startAutomaticCapture(0);
+        camBack = CameraServer.getInstance().startAutomaticCapture(1);
+        camServer = CameraServer.getInstance().getServer();
         arm.stop();
     }
 

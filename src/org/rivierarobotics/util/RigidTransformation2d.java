@@ -1,4 +1,4 @@
-package org.rivierarobotics.mathUtil;
+package org.rivierarobotics.util;
 
 /**
  *represents a 3 DOF pose in 2d space

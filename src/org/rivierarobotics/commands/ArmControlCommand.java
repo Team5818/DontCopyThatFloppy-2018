@@ -1,10 +1,10 @@
 package org.rivierarobotics.commands;
 
 import org.rivierarobotics.constants.RobotDependentConstants;
-import org.rivierarobotics.mathUtil.MathUtil;
-import org.rivierarobotics.mathUtil.Vector2d;
 import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.subsystems.Arm;
+import org.rivierarobotics.util.MathUtil;
+import org.rivierarobotics.util.Vector2d;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;

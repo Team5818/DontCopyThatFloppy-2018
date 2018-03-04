@@ -1,9 +1,9 @@
 package org.rivierarobotics.pathfollowing;
 
 import org.rivierarobotics.constants.Rotation;
-import org.rivierarobotics.mathUtil.MathUtil;
-import org.rivierarobotics.mathUtil.RigidTransformation2d;
-import org.rivierarobotics.mathUtil.Vector2d;
+import org.rivierarobotics.util.MathUtil;
+import org.rivierarobotics.util.RigidTransformation2d;
+import org.rivierarobotics.util.Vector2d;
 
 public class PurePursuitController {
     

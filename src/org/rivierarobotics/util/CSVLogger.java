@@ -1,4 +1,4 @@
-package org.rivierarobotics.mathUtil;
+package org.rivierarobotics.util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -62,7 +62,7 @@ public class CSVLogger {
         return line.toString();
     }
 
-    public void storeValue(double... values) {
+    public synchronized void storeValue(double... values) {
         lineBuffer.add(getValueLine(values));
     }
 

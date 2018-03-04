@@ -1,11 +1,11 @@
 package org.rivierarobotics.commands;
 
 import org.rivierarobotics.driverinterface.Driver;
-import org.rivierarobotics.mathUtil.DriveCalculator;
-import org.rivierarobotics.mathUtil.MathUtil;
-import org.rivierarobotics.mathUtil.Vector2d;
 import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.subsystems.DriveTrain;
+import org.rivierarobotics.util.DriveCalculator;
+import org.rivierarobotics.util.MathUtil;
+import org.rivierarobotics.util.Vector2d;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
