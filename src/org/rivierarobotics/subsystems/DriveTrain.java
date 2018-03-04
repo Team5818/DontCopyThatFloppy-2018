@@ -70,6 +70,11 @@ public class DriveTrain extends Subsystem {
         gyro.setYaw(0.0, 10);
     }
     
+    public void resetEnc() {
+        left.resetEnc();
+        right.resetEnc();
+    }
+    
     public Vector2d getDistance() {
         return new Vector2d(left.getSidePosition(), right.getSidePosition());
     }

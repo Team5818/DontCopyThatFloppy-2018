@@ -70,14 +70,13 @@ public class TrajectoryExecutor implements Runnable {
         leftFollow.configurePIDVA(KP, KI, KD, KV, KA);
         rightFollow.configurePIDVA(KP, KI, KD, KV, KA);
         dummy.configurePIDVA(1, 0, 0, 0, 0);
-        leftFollow.configureEncoder((int) currentPos.getX(), DriveTrainSide.ENCODER_CODES_PER_REV*4,
+        leftFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV*4,
                 RobotConstants.WHEEL_DIAMETER);
-        rightFollow.configureEncoder((int) currentPos.getY(), DriveTrainSide.ENCODER_CODES_PER_REV*4,
+        rightFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV*4,
                 RobotConstants.WHEEL_DIAMETER);
-        dummy.configureEncoder((int) currentPos.getY(), DriveTrainSide.ENCODER_CODES_PER_REV*4,
+        dummy.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV*4,
                 RobotConstants.WHEEL_DIAMETER);
         timeout = time;
-
         runner = new Notifier(this);
     }
 
@@ -111,6 +110,7 @@ public class TrajectoryExecutor implements Runnable {
 
     public void start() {
         runner.startPeriodic(dt);
+        driveTrain.resetEnc();
         endTime = Timer.getFPGATimestamp() + timeout;
         running = true;
         DriverStation.reportError("are we doing this?", false);

@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -55,7 +56,7 @@ public class Robot extends TimedRobot {
     public UsbCamera camBack;
     public VideoSink camServer;
     public CSVLogger logger;
-    ExecuteTrajectoryCommand ex;
+    CommandGroup ex;
 
     public PowerDistributionPanel pdp;
     public Compressor compressor;
@@ -89,18 +90,25 @@ public class Robot extends TimedRobot {
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
         Scheduler.getInstance().add(compDisable);
         
-        Waypoint[] points = new Waypoint[] {
-                //new Waypoint(-4, -1, 0),      // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
-                new Waypoint(0, 0, 0),                        // Waypoint @ x=-2, y=-2, exit angle=0 radians
+        Waypoint[] points1 = new Waypoint[] {
+                new Waypoint(0, 0, 0),
                 new Waypoint(30, 0, 0), 
                 new Waypoint(80, -24, Pathfinder.d2r(-45)),
                 new Waypoint(120, -48, 0),
                 new Waypoint(160, -48, 0)
 
             };
-         DriverStation.reportError("lets doo dis", false);
-         Pathfinder.generate(points, TrajectoryExecutor.DEFAULT_CONFIG);
-         ex = new ExecuteTrajectoryCommand(points);
+        
+        Waypoint[] points2 = new Waypoint[] {
+                new Waypoint(0, 0, 0),
+                new Waypoint(-40, 0, 0), 
+                new Waypoint(-80, 24, Pathfinder.d2r(-45)),
+                new Waypoint(-130, 48, 0), 
+                new Waypoint(-160, 48, 0)
+            };
+         ex = new CommandGroup();
+         ex.addSequential(new ExecuteTrajectoryCommand(points1));
+         ex.addSequential(new ExecuteTrajectoryCommand(points2));
     }
 
     public Side[] getSide() {
