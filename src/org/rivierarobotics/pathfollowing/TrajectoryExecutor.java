@@ -36,7 +36,7 @@ public class TrajectoryExecutor implements Runnable {
     private Vector2d currentPos;
     private double currentHeading;
 
-    public static final double DEFAULT_DT = .02;
+    public static final double DEFAULT_DT = .01;
     public static final double DEFAULT_MAX_VEL = 60;
     public static final double DEFAULT_MAX_ACCEL = 60;
     public static final double DEFAULT_MAX_JERK = 500;
@@ -44,11 +44,11 @@ public class TrajectoryExecutor implements Runnable {
 
     private static final double KP = 0.15;
     private static final double KI = 0.0;
-    private static final double KD = 0.01;
+    private static final double KD = 0.0;
     private static final double KV = 0.01;
     private static final double KA = 0.0003;
     private static final double K_OFFSET = .07;
-    private static final double K_HEADING = 0.0;
+    private static final double K_HEADING = 0.01;
 
     public static final Trajectory.Config DEFAULT_CONFIG = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
             Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, DEFAULT_MAX_VEL, DEFAULT_MAX_ACCEL, DEFAULT_MAX_JERK);
@@ -100,7 +100,7 @@ public class TrajectoryExecutor implements Runnable {
             double right = rightFollow.calculate((int) currentPos.getY()) + K_OFFSET * Math.signum(seg.velocity);
             double err = dummy.calculate((int) currentPos.getY());
             double headDiff = MathUtil.wrapAngleRad(currentHeading - Pathfinder.r2d(seg.heading));
-            driveTrain.setPowerLeftRight(left - K_HEADING * headDiff, right + K_HEADING * headDiff);
+            driveTrain.setPowerLeftRight(left + K_HEADING * headDiff, right - K_HEADING * headDiff);
             Robot.runningRobot.logger.storeValue(new double[] { (currentPos.getX() + currentPos.getY()) / 2,
                     driveTrain.getAvgSideVelocity(), seg.position, seg.velocity, currentHeading - Pathfinder.r2d(seg.heading),time});
         } else {

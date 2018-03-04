@@ -40,5 +40,5 @@ public class RobotMap {
     
     public static final int RIGHT_LIMIT_SWITCH_PORT = 1;
     
-    public static final int GYRO_ID = 13;
+    public static final int GYRO_ID = 15;
 }
