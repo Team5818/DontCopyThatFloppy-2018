@@ -74,6 +74,10 @@ public class DriveTrain extends Subsystem {
         return new Vector2d(left.getSidePosition(), right.getSidePosition());
     }
     
+    public Vector2d getDistanceInches() {
+        return new Vector2d(left.getSidePositionInches(), right.getSidePositionInches());
+    }
+    
     public Vector2d getVelocity() {
         return new Vector2d(left.getSideVelocity(), right.getSideVelocity());
     }

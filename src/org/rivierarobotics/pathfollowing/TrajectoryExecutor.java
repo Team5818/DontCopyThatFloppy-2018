@@ -18,7 +18,7 @@ import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 
-public class TrajectoryExecutor implements Runnable{
+public class TrajectoryExecutor implements Runnable {
 
     private DriveTrain driveTrain;
     private boolean running = false;
@@ -40,22 +40,21 @@ public class TrajectoryExecutor implements Runnable{
     public static final double DEFAULT_MAX_ACCEL = 60;
     public static final double DEFAULT_MAX_JERK = 500;
     private static final double DEFAULT_TIMEOUT = Double.POSITIVE_INFINITY;
-    
+
     private static final double KP = 0.0;
     private static final double KI = 0.0;
     private static final double KD = 0.0;
-    private static final double KV = 0.009374372;
-    private static final double KA = 0.000205374;
-    private static final double K_OFFSET = .06368;
+    private static final double KV = 0.01;
+    private static final double KA = 0.0003;
+    private static final double K_OFFSET = .07;
     private static final double K_HEADING = 0.0;
 
-    
     public static final Trajectory.Config DEFAULT_CONFIG = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
             Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, DEFAULT_MAX_VEL, DEFAULT_MAX_ACCEL, DEFAULT_MAX_JERK);
 
     public TrajectoryExecutor(Waypoint[] waypoints, Trajectory.Config config, double time) {
         driveTrain = Robot.runningRobot.driveTrain;
-        DriverStation.reportError("here i go", false);
+        DriverStation.reportError("starting generation...", false);
         master = Pathfinder.generate(waypoints, config);
         DriverStation.reportError("done!", false);
         TankModifier mod = new TankModifier(master).modify(RobotConstants.WHEEL_BASE_WIDTH);
@@ -63,59 +62,63 @@ public class TrajectoryExecutor implements Runnable{
         rightTraj = mod.getRightTrajectory();
         currentPos = driveTrain.getDistance();
         dt = config.dt;
-        
+
         leftFollow = new EncoderFollower(leftTraj);
         rightFollow = new EncoderFollower(rightTraj);
         leftFollow.configurePIDVA(KP, KI, KD, KV, KA);
         rightFollow.configurePIDVA(KP, KI, KD, KV, KA);
-        leftFollow.configureEncoder((int)currentPos.getX(), DriveTrainSide.ENCODER_CODES_PER_REV, RobotConstants.WHEEL_DIAMETER);
-        rightFollow.configureEncoder((int)currentPos.getY(), DriveTrainSide.ENCODER_CODES_PER_REV, RobotConstants.WHEEL_DIAMETER);
+        leftFollow.configureEncoder((int) currentPos.getX(), DriveTrainSide.ENCODER_CODES_PER_REV*4,
+                RobotConstants.WHEEL_DIAMETER);
+        rightFollow.configureEncoder((int) currentPos.getY(), DriveTrainSide.ENCODER_CODES_PER_REV*4,
+                RobotConstants.WHEEL_DIAMETER);
         timeout = time;
-        
+
         runner = new Notifier(this);
     }
 
     public TrajectoryExecutor(Waypoint[] waypoints, double time) {
         this(waypoints, DEFAULT_CONFIG, time);
     }
-    
 
     public TrajectoryExecutor(Waypoint[] waypoints) {
         this(waypoints, DEFAULT_CONFIG, DEFAULT_TIMEOUT);
     }
-    
+
     @Override
     public void run() {
-        if(!leftFollow.isFinished() && !rightFollow.isFinished() && Timer.getFPGATimestamp() < endTime){
+        double time = Timer.getFPGATimestamp();
+        if (!leftFollow.isFinished() && !rightFollow.isFinished() && time < endTime) {
+            currentPos = driveTrain.getDistance();
             Segment seg = leftFollow.getSegment();
-            double left = leftFollow.calculate((int)currentPos.getX()) + K_OFFSET*Math.signum(seg.velocity);
-            double right = rightFollow.calculate((int)currentPos.getY()) + K_OFFSET*Math.signum(seg.velocity);
+            double left = leftFollow.calculate((int) currentPos.getX()) + K_OFFSET * Math.signum(seg.velocity);
+            double right = rightFollow.calculate((int) currentPos.getY()) + K_OFFSET * Math.signum(seg.velocity);
             double headDiff = MathUtil.wrapAngleRad(currentHeading - seg.heading);
-            driveTrain.setPowerLeftRight(left - K_HEADING*headDiff, right + K_HEADING*headDiff);
-            SmartDashboard.putNumber("target pos", seg.position);
-        }
-        else {
+            driveTrain.setPowerLeftRight(left - K_HEADING * headDiff, right + K_HEADING * headDiff);
+            Robot.runningRobot.logger.storeValue(new double[] { (currentPos.getX() + currentPos.getY()) / 2,
+                    driveTrain.getAvgSideVelocity(), seg.position, seg.velocity, time });
+        } else {
             isFinished = true;
             stop();
         }
     }
-    
+
     public void start() {
         runner.startPeriodic(dt);
         endTime = Timer.getFPGATimestamp() + timeout;
         running = true;
         DriverStation.reportError("are we doing this?", false);
     }
-    
+
     public void stop() {
         runner.stop();
         running = false;
+        Robot.runningRobot.logger.flushToDisk();
     }
-    
+
     public boolean isRunning() {
         return running;
     }
-    
+
     public boolean isFinished() {
         return isFinished;
     }

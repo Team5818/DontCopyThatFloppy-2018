@@ -61,7 +61,7 @@ public class DriveTrainSide {
     }
     
     public double getSidePositionInches() {
-        return masterTalon.getSelectedSensorPosition(0)/ENCODER_CODES_PER_REV*DIST_PER_REV;
+        return masterTalon.getSelectedSensorPosition(0)/ENCODER_CODES_PER_REV*DIST_PER_REV/4.0;
     }
 
     public double getRawPos() {

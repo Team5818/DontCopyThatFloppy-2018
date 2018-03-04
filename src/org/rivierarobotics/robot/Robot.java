@@ -81,8 +81,8 @@ public class Robot extends TimedRobot {
         // camCollect = CameraServer.getInstance().startAutomaticCapture(0);
         // camBack = CameraServer.getInstance().startAutomaticCapture(1);
         // camServer = CameraServer.getInstance().getServer();
-        String[] fields = { "Pos", "Vel", "Time" };
-        logger = new CSVLogger("/home/lvuser/templogs/DRIVE_LOG", fields);
+        String[] fields = { "Pos", "Vel", "Set Pos","Set Vel","Time"};
+        logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG", fields);
         m_chooser.addDefault("Default Auto", kDefaultAuto);
         m_chooser.addObject("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
@@ -92,7 +92,7 @@ public class Robot extends TimedRobot {
         Waypoint[] points = new Waypoint[] {
                 //new Waypoint(-4, -1, 0),      // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
                 new Waypoint(0, 0, 0),                        // Waypoint @ x=-2, y=-2, exit angle=0 radians
-                new Waypoint(60, 0, 0)       
+                new Waypoint(72, 0, 0)       
             };
          DriverStation.reportError("lets doo dis", false);
          Pathfinder.generate(points, TrajectoryExecutor.DEFAULT_CONFIG);
@@ -153,7 +153,6 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         printDash();
-        logCSV();
     }
 
     /**
@@ -182,10 +181,5 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Left Enc", driveTrain.getDistance().getX());
         SmartDashboard.putNumber("Right Enc", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Avg Inches", driveTrain.getAvgSidePositionInches());
-    }
-
-    public void logCSV() {
-        double[] vals = { driveTrain.getAvgSidePosition(), driveTrain.getAvgSideVelocity(), Timer.getFPGATimestamp() };
-        logger.writeImmediately(vals);
     }
 }
