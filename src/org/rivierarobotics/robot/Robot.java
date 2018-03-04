@@ -128,6 +128,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        driveTrain.resetGyro();
         driveTrain.shiftGear(DriveGear.GEAR_LOW);
         ex.start();
     }
@@ -181,5 +182,6 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Left Enc", driveTrain.getDistance().getX());
         SmartDashboard.putNumber("Right Enc", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Avg Inches", driveTrain.getAvgSidePositionInches());
+        SmartDashboard.putNumber("Yaw", driveTrain.getYaw());
     }
 }

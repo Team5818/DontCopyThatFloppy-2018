@@ -94,14 +94,15 @@ public class TrajectoryExecutor implements Runnable {
         double time = Timer.getFPGATimestamp();
         if (!leftFollow.isFinished() && !rightFollow.isFinished() && time < endTime) {
             currentPos = driveTrain.getDistance();
+            currentHeading = driveTrain.getYaw();
             Segment seg = leftFollow.getSegment();
             double left = leftFollow.calculate((int) currentPos.getX()) + K_OFFSET * Math.signum(seg.velocity);
             double right = rightFollow.calculate((int) currentPos.getY()) + K_OFFSET * Math.signum(seg.velocity);
             double err = dummy.calculate((int) currentPos.getY());
-            double headDiff = MathUtil.wrapAngleRad(currentHeading - seg.heading);
+            double headDiff = MathUtil.wrapAngleRad(currentHeading - Pathfinder.r2d(seg.heading));
             driveTrain.setPowerLeftRight(left - K_HEADING * headDiff, right + K_HEADING * headDiff);
             Robot.runningRobot.logger.storeValue(new double[] { (currentPos.getX() + currentPos.getY()) / 2,
-                    driveTrain.getAvgSideVelocity(), seg.position, seg.velocity, err,time});
+                    driveTrain.getAvgSideVelocity(), seg.position, seg.velocity, currentHeading - Pathfinder.r2d(seg.heading),time});
         } else {
             isFinished = true;
             stop();
