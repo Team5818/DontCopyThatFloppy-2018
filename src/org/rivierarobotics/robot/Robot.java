@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
         // camCollect = CameraServer.getInstance().startAutomaticCapture(0);
         // camBack = CameraServer.getInstance().startAutomaticCapture(1);
         // camServer = CameraServer.getInstance().getServer();
-        String[] fields = { "Pos", "Vel", "Set Pos","Set Vel","Time"};
+        String[] fields = { "Pos", "Vel", "Set Pos","Set Vel","Err","Time"};
         logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG", fields);
         m_chooser.addDefault("Default Auto", kDefaultAuto);
         m_chooser.addObject("My Auto", kCustomAuto);
