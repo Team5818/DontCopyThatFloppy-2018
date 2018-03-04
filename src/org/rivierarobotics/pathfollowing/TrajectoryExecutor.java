@@ -10,7 +10,6 @@ import org.rivierarobotics.subsystems.DriveTrainSide;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Trajectory.Segment;
@@ -29,7 +28,6 @@ public class TrajectoryExecutor implements Runnable {
     private Trajectory rightTraj;
     private EncoderFollower leftFollow;
     private EncoderFollower rightFollow;
-    private EncoderFollower dummy;
     private Trajectory master;
     private double dt;
     private Notifier runner;
@@ -37,6 +35,7 @@ public class TrajectoryExecutor implements Runnable {
     private double currentHeading;
     private boolean reversed;
     private int directionMultiplier;
+    private Object lock = new Object();
 
     public static final double DEFAULT_DT = .01;
     public static final double DEFAULT_MAX_VEL = 60;
@@ -75,15 +74,11 @@ public class TrajectoryExecutor implements Runnable {
 
         leftFollow = new EncoderFollower(leftTraj);
         rightFollow = new EncoderFollower(rightTraj);
-        dummy = new EncoderFollower(rightTraj);
         leftFollow.configurePIDVA(KP, KI, KD, KV, KA);
         rightFollow.configurePIDVA(KP, KI, KD, KV, KA);
-        dummy.configurePIDVA(1, 0, 0, 0, 0);
         leftFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV*4,
                 RobotConstants.WHEEL_DIAMETER);
         rightFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV*4,
-                RobotConstants.WHEEL_DIAMETER);
-        dummy.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV*4,
                 RobotConstants.WHEEL_DIAMETER);
         timeout = time;
         runner = new Notifier(this);
@@ -106,36 +101,45 @@ public class TrajectoryExecutor implements Runnable {
             Segment seg = leftFollow.getSegment();
             double left = directionMultiplier*(leftFollow.calculate(directionMultiplier*(int) currentPos.getX()) + K_OFFSET * Math.signum(seg.velocity));
             double right = directionMultiplier*(rightFollow.calculate(directionMultiplier*(int) currentPos.getY()) + K_OFFSET * Math.signum(seg.velocity));
-            double err = dummy.calculate((int) currentPos.getY());
             double headDiff = MathUtil.wrapAngleRad(currentHeading - Pathfinder.r2d(seg.heading));
             driveTrain.setPowerLeftRight(left + K_HEADING * headDiff, right - K_HEADING * headDiff);
             Robot.runningRobot.logger.storeValue(new double[] { (currentPos.getX() + currentPos.getY()) / 2,
                     driveTrain.getAvgSideVelocity(), seg.position, seg.velocity, currentHeading - Pathfinder.r2d(seg.heading),time});
         } else {
-            isFinished = true;
-            stop();
+            synchronized(lock) {
+                isFinished = true;
+                stop();
+            }
         }
     }
 
     public void start() {
-        runner.startPeriodic(dt);
-        driveTrain.resetEnc();
-        endTime = Timer.getFPGATimestamp() + timeout;
-        running = true;
-        DriverStation.reportError("are we doing this?", false);
+        synchronized(lock) {
+            runner.startPeriodic(dt);
+            driveTrain.resetEnc();
+            endTime = Timer.getFPGATimestamp() + timeout;
+            running = true;
+            DriverStation.reportError("are we doing this?", false);
+        }
     }
 
     public void stop() {
-        runner.stop();
-        running = false;
-        Robot.runningRobot.logger.flushToDisk();
+        synchronized(lock) {
+            runner.stop();
+            running = false;
+            Robot.runningRobot.logger.flushToDisk();
+        }
     }
 
     public boolean isRunning() {
-        return running;
+        synchronized(lock) {
+            return running;
+        }
     }
 
     public boolean isFinished() {
-        return isFinished;
+        synchronized(lock) {
+            return isFinished;
+        }
     }
 }
