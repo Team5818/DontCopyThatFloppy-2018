@@ -3,6 +3,7 @@ package org.rivierarobotics.commands;
 import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.subsystems.RSSerialPort;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class LEDControlCommand extends Command {
@@ -70,10 +71,11 @@ public class LEDControlCommand extends Command {
 	@Override
     public void execute() {
         port.writePatternToSerial(stateByte);
+        DriverStation.reportError("I'm running too", false);
     }
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return true;
 	}
 
 }
