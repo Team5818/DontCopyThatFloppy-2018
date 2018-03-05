@@ -153,9 +153,11 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        camCollect = CameraServer.getInstance().startAutomaticCapture(0);
-        camBack = CameraServer.getInstance().startAutomaticCapture(1);
-        camServer = CameraServer.getInstance().getServer();
+        if(camCollect == null) {
+            camCollect = CameraServer.getInstance().startAutomaticCapture(0);
+            camBack = CameraServer.getInstance().startAutomaticCapture(1);
+            camServer = CameraServer.getInstance().getServer();
+        }
         arm.stop();
     }
 
