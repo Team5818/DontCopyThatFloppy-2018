@@ -21,17 +21,17 @@ public class TrajectoryExecutor implements Runnable {
 
     public static final int NUM_SAMPLES = 20;
     public static final double UNINITIALIZED_SENTINEL = -254;
-    public static final double DEFAULT_DT = .005;
-    public static final double DEFAULT_MAX_VEL = 60;
+    public static final double DEFAULT_DT = .01;
+    public static final double DEFAULT_MAX_VEL = 80;
     public static final double DEFAULT_MAX_ACCEL = 60;
     public static final double DEFAULT_MAX_JERK = 500;
     public static final double DEFAULT_TIMEOUT = Double.POSITIVE_INFINITY;
-    public static final double KP = 0.15;
+    public static final double KP = 0.1;
     public static final double KI = 0.0;
     public static final double KD = 0.0;
-    public static final double KV = 0.01;
-    public static final double KA = 0.0003;
-    public static final double K_OFFSET = .07;
+    public static final double KV = 0.0086;
+    public static final double KA = 0.0024;
+    public static final double K_OFFSET = 0.045;
     public static final double K_HEADING = 0.01;
 
     public enum TrajectoryExecutionState {
@@ -156,7 +156,7 @@ public class TrajectoryExecutor implements Runnable {
                 Robot.runningRobot.logger.storeValue(
                         new double[] { (currentPos.getX() + currentPos.getY()) / 2, driveTrain.getAvgSideVelocity(),
                                 seg.position, seg.velocity, currentHeading, Pathfinder.r2d(seg.heading), time });
-                if (leftFollow.isFinished() || rightFollow.isFinished() || time < endTime) {
+                if (leftFollow.isFinished() || rightFollow.isFinished() || time > endTime) {
                     currState = TrajectoryExecutionState.STATE_FINISHED;
                 }
                 break;
