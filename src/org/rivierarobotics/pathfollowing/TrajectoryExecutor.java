@@ -6,7 +6,7 @@ import org.rivierarobotics.subsystems.DriveTrain;
 import org.rivierarobotics.subsystems.DriveTrainSide;
 import org.rivierarobotics.util.MathUtil;
 import org.rivierarobotics.util.Vector2d;
-
+import edu.wpi.first.wpilibj.CircularBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
@@ -19,7 +19,29 @@ import jaci.pathfinder.modifiers.TankModifier;
 
 public class TrajectoryExecutor implements Runnable {
 
+    public static final int NUM_SAMPLES = 20;
+    public static final double UNINITIALIZED_SENTINEL = -254;
+    public static final double DEFAULT_DT = .005;
+    public static final double DEFAULT_MAX_VEL = 60;
+    public static final double DEFAULT_MAX_ACCEL = 60;
+    public static final double DEFAULT_MAX_JERK = 500;
+    public static final double DEFAULT_TIMEOUT = Double.POSITIVE_INFINITY;
+    public static final double KP = 0.15;
+    public static final double KI = 0.0;
+    public static final double KD = 0.0;
+    public static final double KV = 0.01;
+    public static final double KA = 0.0003;
+    public static final double K_OFFSET = .07;
+    public static final double K_HEADING = 0.01;
+
+    public enum TrajectoryExecutionState {
+        STATE_STABILIZING_TIMING, STATE_MATCHING_VELOCITY, STATE_RUNNING_PROFILE, STATE_FINISHED
+    }
+
     private DriveTrain driveTrain;
+    private TrajectoryExecutionState currState = TrajectoryExecutionState.STATE_STABILIZING_TIMING;
+    private CircularBuffer dtBuffer;
+    private double lastTime;
     private boolean running = false;
     private boolean isFinished = false;
     private double timeout;
@@ -37,35 +59,21 @@ public class TrajectoryExecutor implements Runnable {
     private int directionMultiplier;
     private Object lock = new Object();
 
-    public static final double DEFAULT_DT = .01;
-    public static final double DEFAULT_MAX_VEL = 60;
-    public static final double DEFAULT_MAX_ACCEL = 60;
-    public static final double DEFAULT_MAX_JERK = 500;
-    private static final double DEFAULT_TIMEOUT = Double.POSITIVE_INFINITY;
-
-    private static final double KP = 0.15;
-    private static final double KI = 0.0;
-    private static final double KD = 0.0;
-    private static final double KV = 0.01;
-    private static final double KA = 0.0003;
-    private static final double K_OFFSET = .07;
-    private static final double K_HEADING = 0.01;
-
     public static final Trajectory.Config DEFAULT_CONFIG = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
             Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, DEFAULT_MAX_VEL, DEFAULT_MAX_ACCEL, DEFAULT_MAX_JERK);
 
     public TrajectoryExecutor(Waypoint[] waypoints, Trajectory.Config config, double time, boolean rev) {
         driveTrain = Robot.runningRobot.driveTrain;
         reversed = rev;
-        directionMultiplier = reversed ? -1:1;
+        directionMultiplier = reversed ? -1 : 1;
         DriverStation.reportError("starting generation...", false);
         master = Pathfinder.generate(waypoints, config);
         DriverStation.reportError("done!", false);
         TankModifier mod = new TankModifier(master).modify(RobotConstants.WHEEL_BASE_WIDTH);
-        if(reversed) {
+        if (reversed) {
             leftTraj = mod.getRightTrajectory();
             rightTraj = mod.getLeftTrajectory();
-        }else {
+        } else {
             leftTraj = mod.getLeftTrajectory();
             rightTraj = mod.getRightTrajectory();
         }
@@ -76,12 +84,13 @@ public class TrajectoryExecutor implements Runnable {
         rightFollow = new EncoderFollower(rightTraj);
         leftFollow.configurePIDVA(KP, KI, KD, KV, KA);
         rightFollow.configurePIDVA(KP, KI, KD, KV, KA);
-        leftFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV*4,
-                RobotConstants.WHEEL_DIAMETER);
-        rightFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV*4,
-                RobotConstants.WHEEL_DIAMETER);
+        leftFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV * 4, RobotConstants.WHEEL_DIAMETER);
+        rightFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV * 4, RobotConstants.WHEEL_DIAMETER);
         timeout = time;
         runner = new Notifier(this);
+
+        dtBuffer = new CircularBuffer(NUM_SAMPLES);
+        fillBuffer(UNINITIALIZED_SENTINEL);
     }
 
     public TrajectoryExecutor(Waypoint[] waypoints, double time, boolean rev) {
@@ -89,43 +98,82 @@ public class TrajectoryExecutor implements Runnable {
     }
 
     public TrajectoryExecutor(Waypoint[] waypoints, boolean rev) {
-        this(waypoints, DEFAULT_CONFIG, DEFAULT_TIMEOUT,rev);
+        this(waypoints, DEFAULT_CONFIG, DEFAULT_TIMEOUT, rev);
     }
 
-    @Override
-    public void run() {
-        double time = Timer.getFPGATimestamp();
-        if (!leftFollow.isFinished() && !rightFollow.isFinished() && time < endTime) {
-            currentPos = driveTrain.getDistance();
-            currentHeading = driveTrain.getYaw();
-            Segment seg = leftFollow.getSegment();
-            double left = directionMultiplier*(leftFollow.calculate(directionMultiplier*(int) currentPos.getX()) + K_OFFSET * Math.signum(seg.velocity));
-            double right = directionMultiplier*(rightFollow.calculate(directionMultiplier*(int) currentPos.getY()) + K_OFFSET * Math.signum(seg.velocity));
-            double headDiff = MathUtil.wrapAngleRad(currentHeading - Pathfinder.r2d(seg.heading));
-            driveTrain.setPowerLeftRight(left + K_HEADING * headDiff, right - K_HEADING * headDiff);
-            Robot.runningRobot.logger.storeValue(new double[] { (currentPos.getX() + currentPos.getY()) / 2,
-                    driveTrain.getAvgSideVelocity(), seg.position, seg.velocity, currentHeading, Pathfinder.r2d(seg.heading),time});
-        } else {
-            synchronized(lock) {
-                isFinished = true;
-                stop();
-                DriverStation.reportError("Trajectory complete", false);
-            }
+    public void fillBuffer(double val) {
+        for (int i = 0; i < NUM_SAMPLES; i++) {
+            dtBuffer.addFirst(val);
         }
     }
 
+    public double getDTRunningAverage() {
+        double sum = 0;
+        int numPoints = 0;
+        for (int i = 0; i < NUM_SAMPLES; i++) {
+            double val = dtBuffer.get(i);
+            if (val != UNINITIALIZED_SENTINEL) {
+                sum += val;
+                numPoints++;
+            }
+        }
+        return sum / numPoints;
+    }
+
     public void start() {
-        synchronized(lock) {
+        synchronized (lock) {
             runner.startPeriodic(dt);
             driveTrain.resetEnc();
-            endTime = Timer.getFPGATimestamp() + timeout;
+            lastTime = Timer.getFPGATimestamp();
+            endTime = lastTime + timeout;
             running = true;
             DriverStation.reportError("Starting Trajectory...", false);
         }
     }
 
+    @Override
+    public void run() {
+        double time = Timer.getFPGATimestamp();
+        switch (currState) {
+            case STATE_STABILIZING_TIMING:
+                dtBuffer.addFirst(time - lastTime);
+                lastTime = time;
+                if (Math.abs(getDTRunningAverage() - dt) < .00001) {
+                    currState = TrajectoryExecutionState.STATE_RUNNING_PROFILE;
+                }
+                break;
+            case STATE_RUNNING_PROFILE:
+                currentPos = driveTrain.getDistance();
+                currentHeading = driveTrain.getYaw();
+                Segment seg = leftFollow.getSegment();
+                double left = directionMultiplier * (leftFollow.calculate(directionMultiplier * (int) currentPos.getX())
+                        + K_OFFSET * Math.signum(seg.velocity));
+                double right =
+                        directionMultiplier * (rightFollow.calculate(directionMultiplier * (int) currentPos.getY())
+                                + K_OFFSET * Math.signum(seg.velocity));
+                double headDiff = MathUtil.wrapAngleRad(currentHeading - Pathfinder.r2d(seg.heading));
+                driveTrain.setPowerLeftRight(left + K_HEADING * headDiff, right - K_HEADING * headDiff);
+                Robot.runningRobot.logger.storeValue(
+                        new double[] { (currentPos.getX() + currentPos.getY()) / 2, driveTrain.getAvgSideVelocity(),
+                                seg.position, seg.velocity, currentHeading, Pathfinder.r2d(seg.heading), time });
+                if (leftFollow.isFinished() || rightFollow.isFinished() || time < endTime) {
+                    currState = TrajectoryExecutionState.STATE_FINISHED;
+                }
+                break;
+            case STATE_FINISHED:
+                synchronized (lock) {
+                    isFinished = true;
+                    stop();
+                    DriverStation.reportError("Trajectory complete", false);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
     public void stop() {
-        synchronized(lock) {
+        synchronized (lock) {
             runner.stop();
             running = false;
             Robot.runningRobot.logger.flushToDisk();
@@ -133,13 +181,13 @@ public class TrajectoryExecutor implements Runnable {
     }
 
     public boolean isRunning() {
-        synchronized(lock) {
+        synchronized (lock) {
             return running;
         }
     }
 
     public boolean isFinished() {
-        synchronized(lock) {
+        synchronized (lock) {
             return isFinished;
         }
     }

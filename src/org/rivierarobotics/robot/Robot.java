@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
     public UsbCamera camBack;
     public VideoSink camServer;
     public CSVLogger logger;
+    
     CommandGroup ex;
 
     public PowerDistributionPanel pdp;

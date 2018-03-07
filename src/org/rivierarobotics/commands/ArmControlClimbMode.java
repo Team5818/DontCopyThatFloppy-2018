@@ -35,7 +35,7 @@ public class ArmControlClimbMode extends Command {
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return !arm.isClimb();
     }
 
 }

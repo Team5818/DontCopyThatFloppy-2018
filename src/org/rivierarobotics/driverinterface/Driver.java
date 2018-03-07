@@ -2,6 +2,7 @@ package org.rivierarobotics.driverinterface;
 
 import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.CompressorControlCommand;
+import org.rivierarobotics.commands.LeaveClimbCommand;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
 import org.rivierarobotics.commands.SetArmBrake;
 import org.rivierarobotics.commands.SetArmEngaged;
@@ -53,12 +54,14 @@ public class Driver {
         JoystickButton backCamButton = new JoystickButton(JS_TURN, ControlMap.BACK_CAM_BUTTON);
         JoystickButton collectCamButton = new JoystickButton(JS_TURN, ControlMap.COLLECT_CAM_BUTTON);
 
-        JoystickButton enterClimbButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.CLIMB_MODE_BUTTON);
-        JoystickButton reengageArmButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.REENGAGE_ARM_BUTTON);
-        JoystickButton disengageArmButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.DISENGAGE_ARM_BUTTON);
-        JoystickButton lockWinchButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.LOCK_WINCH_BUTTON);
+        JoystickButton enterClimbButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.CLIMB_MODE_BUTTON);
+        JoystickButton reengageArmButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.REENGAGE_ARM_BUTTON);
+        JoystickButton disengageArmButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.DISENGAGE_ARM_BUTTON);
+        JoystickButton lockWinchButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.LOCK_WINCH_BUTTON);
+        JoystickButton unlockWinchButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.UNLOCK_WINCH_BUTTON);
+        JoystickButton leaveClimbButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.LEAVE_CLIMB_BUTTON);
         
-        JoystickButton autoCollectButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.COLLECT_SEQUENCE_BUTTON);
+        JoystickButton autoCollectButton = new JoystickButton(JS_FLOPPIES, ControlMap.COLLECT_SEQUENCE_BUTTON);
         
         // Bind Commands
         clampOn.whenPressed(new SetClampOpen(false));
@@ -81,5 +84,7 @@ public class Driver {
         reengageArmButton.whenPressed(new SetArmEngaged(true));//reengage + lower arm, winching at same time
         disengageArmButton.whenPressed(new SetArmEngaged(false));//disengage arm when it hits bottom
         lockWinchButton.whenPressed(new SetArmBrake(true));//lock robot in place after climb   
+        unlockWinchButton.whenPressed(new SetArmBrake(false));//for the pits
+        leaveClimbButton.whenPressed(new LeaveClimbCommand());//for crisis mode
     }
 }

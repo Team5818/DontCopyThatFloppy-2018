@@ -2,6 +2,7 @@ package org.rivierarobotics.subsystems;
 
 import org.rivierarobotics.commands.ArmControlCommand;
 import org.rivierarobotics.robot.Robot;
+import org.rivierarobotics.constants.RobotDependentConstants;
 import org.rivierarobotics.constants.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -35,6 +36,7 @@ public class Arm extends Subsystem {
     private Solenoid armPTOSolenoid;
     private Solenoid armEngagerSolenoid;
     private Solenoid armBrakeSolenoid;
+    private boolean climbMode = false;
 
     public Arm() {
         masterTalon = new WPI_TalonSRX(RobotMap.ARM_TALON_1);
@@ -83,6 +85,10 @@ public class Arm extends Subsystem {
     }
 
     public double getPosition() {
+        int pos = masterTalon.getSelectedSensorPosition(MOTION_MAGIC_IDX);
+        if(pos < RobotDependentConstants.Constant.getLowerArmSoftLimit() - 200) {
+            masterTalon.setSelectedSensorPosition(pos + 4096, MOTION_MAGIC_IDX, TIMEOUT);
+        }
         return masterTalon.getSelectedSensorPosition(MOTION_MAGIC_IDX);
     }
 
@@ -109,6 +115,15 @@ public class Arm extends Subsystem {
     public void stop() {
         setPower(0.0);
         setBrakeMode();
+    }
+    
+    public boolean isClimb() {
+        return climbMode;
+    }
+    
+    //PLEASE BE CAUTIOUS ABOUT CALLING THIS!!!
+    public void setClimb(boolean climb) {
+        climbMode = climb;
     }
 
     @Override
