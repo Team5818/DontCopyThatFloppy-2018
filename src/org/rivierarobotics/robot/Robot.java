@@ -17,6 +17,7 @@ import org.rivierarobotics.subsystems.DriveTrain.DriveGear;
 import org.rivierarobotics.subsystems.Floppies;
 import org.rivierarobotics.util.CSVLogger;
 
+import autos.DriveToSwitchFromRight;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -24,6 +25,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -55,7 +57,7 @@ public class Robot extends TimedRobot {
     public VideoSink camServer;
     public CSVLogger logger;
     
-    CommandGroup ex;
+    CommandGroup ex = new CommandGroup();
 
     public PowerDistributionPanel pdp;
     public Compressor compressor;
@@ -88,13 +90,7 @@ public class Robot extends TimedRobot {
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
         Scheduler.getInstance().add(compDisable);
         
-        Waypoint[] points1 = new Waypoint[] {
-                new Waypoint(0, 0, 0),
-                new Waypoint(120, 0, 0), 
-            };
-
-         ex = new CommandGroup();
-         ex.addSequential(new ExecuteTrajectoryCommand(points1,false));
+         ex.addSequential(new DriveToSwitchFromRight());
     }
 
     public Side[] getSide() {
@@ -182,8 +178,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Left Roller Trunc", floppies.getLeftTrunc());
         SmartDashboard.putNumber("Right Roller Trunc", floppies.getRightTrunc());
         SmartDashboard.putBoolean("Cube ready", floppies.cubeInPlace());
-        SmartDashboard.putNumber("Left Enc", driveTrain.getDistance().getX());
-        SmartDashboard.putNumber("Right Enc", driveTrain.getDistance().getY());
+        SmartDashboard.putNumber("Left Inches", driveTrain.getDistanceInches().getX());
+        SmartDashboard.putNumber("Right Inches", driveTrain.getDistanceInches().getY());
         SmartDashboard.putNumber("Avg Inches", driveTrain.getAvgSidePositionInches());
         SmartDashboard.putNumber("Yaw", driveTrain.getYaw());
     }

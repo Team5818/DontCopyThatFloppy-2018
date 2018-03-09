@@ -32,7 +32,7 @@ public class TrajectoryExecutor implements Runnable {
     public static final double KV = 0.0086;
     public static final double KA = 0.0024;
     public static final double K_OFFSET = 0.045;
-    public static final double K_HEADING = 0.01;
+    public static final double K_HEADING = 0.03;
 
     public enum TrajectoryExecutionState {
         STATE_STABILIZING_TIMING, STATE_MATCHING_VELOCITY, STATE_RUNNING_PROFILE, STATE_FINISHED
@@ -151,7 +151,7 @@ public class TrajectoryExecutor implements Runnable {
                 double right =
                         directionMultiplier * (rightFollow.calculate(directionMultiplier * (int) currentPos.getY())
                                 + K_OFFSET * Math.signum(seg.velocity));
-                double headDiff = MathUtil.wrapAngleRad(currentHeading - Pathfinder.r2d(seg.heading));
+                double headDiff = Pathfinder.boundHalfDegrees(currentHeading - Pathfinder.r2d(seg.heading));
                 driveTrain.setPowerLeftRight(left + K_HEADING * headDiff, right - K_HEADING * headDiff);
                 Robot.runningRobot.logger.storeValue(
                         new double[] { (currentPos.getX() + currentPos.getY()) / 2, driveTrain.getAvgSideVelocity(),
