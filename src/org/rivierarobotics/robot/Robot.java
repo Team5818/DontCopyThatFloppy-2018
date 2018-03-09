@@ -90,7 +90,13 @@ public class Robot extends TimedRobot {
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
         Scheduler.getInstance().add(compDisable);
         
-         ex.addSequential(new DriveToSwitchFromRight());
+        Waypoint[] points1 = new Waypoint[] {
+                new Waypoint(0, 0, 0),
+                new Waypoint(240, 0, 0), 
+            };
+
+         ex.addSequential(new ExecuteTrajectoryCommand(points1,false));
+         ex.addSequential(new ExecuteTrajectoryCommand(points1,true));
     }
 
     public Side[] getSide() {

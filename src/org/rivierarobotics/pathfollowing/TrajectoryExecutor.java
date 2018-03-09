@@ -57,6 +57,8 @@ public class TrajectoryExecutor implements Runnable {
     private double currentHeading;
     private boolean reversed;
     private int directionMultiplier;
+    private double leftGyroIntegrator = 0;
+    private double rightGyroIntegrator = 0;
     private Object lock = new Object();
 
     public static final Trajectory.Config DEFAULT_CONFIG = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
@@ -146,13 +148,24 @@ public class TrajectoryExecutor implements Runnable {
                 currentPos = driveTrain.getDistance();
                 currentHeading = driveTrain.getYaw();
                 Segment seg = leftFollow.getSegment();
-                double left = directionMultiplier * (leftFollow.calculate(directionMultiplier * (int) currentPos.getX())
-                        + K_OFFSET * Math.signum(seg.velocity));
-                double right =
-                        directionMultiplier * (rightFollow.calculate(directionMultiplier * (int) currentPos.getY())
-                                + K_OFFSET * Math.signum(seg.velocity));
+
                 double headDiff = Pathfinder.boundHalfDegrees(currentHeading - Pathfinder.r2d(seg.heading));
-                driveTrain.setPowerLeftRight(left + K_HEADING * headDiff, right - K_HEADING * headDiff);
+                double leftGyroPower = K_HEADING * headDiff;
+                double rightGyroPower = -K_HEADING * headDiff;
+                double leftTwist =
+                        leftGyroPower / KV / DriveTrainSide.DIST_PER_REV * DriveTrainSide.ENCODER_CODES_PER_REV * dt;
+                double rightTwist =
+                        rightGyroPower / KV / DriveTrainSide.DIST_PER_REV * DriveTrainSide.ENCODER_CODES_PER_REV * dt;
+                leftGyroIntegrator += leftTwist;
+                rightGyroIntegrator += rightTwist;
+
+                double left = directionMultiplier * (leftFollow
+                        .calculate(directionMultiplier * ((int) currentPos.getX() - (int) leftGyroIntegrator))
+                        + K_OFFSET * Math.signum(seg.velocity));
+                double right = directionMultiplier * (rightFollow
+                        .calculate(directionMultiplier * ((int) currentPos.getY() - (int) rightGyroIntegrator))
+                        + K_OFFSET * Math.signum(seg.velocity));
+                driveTrain.setPowerLeftRight(left, right);
                 Robot.runningRobot.logger.storeValue(
                         new double[] { (currentPos.getX() + currentPos.getY()) / 2, driveTrain.getAvgSideVelocity(),
                                 seg.position, seg.velocity, currentHeading, Pathfinder.r2d(seg.heading), time });
