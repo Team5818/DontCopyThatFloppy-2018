@@ -7,6 +7,7 @@
 package org.rivierarobotics.robot;
 
 import org.rivierarobotics.autos.DriveToSwitchFromRight;
+import org.rivierarobotics.autos.SwitchToScale;
 import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
 import org.rivierarobotics.constants.Side;
@@ -90,13 +91,20 @@ public class Robot extends TimedRobot {
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
         Scheduler.getInstance().add(compDisable);
         
-        Waypoint[] points1 = new Waypoint[] {
+        Waypoint[] weHaveToGoBack = new Waypoint[] {
                 new Waypoint(0, 0, 0),
-                new Waypoint(240, 0, 0), 
+                new Waypoint(36, 0, 0), 
+            };
+        
+        Waypoint[] weHaveToGoBackBack = new Waypoint[] {
+                new Waypoint(0, 0, 0),
+                new Waypoint(56, 0, 0), 
             };
 
-         ex.addSequential(new ExecuteTrajectoryCommand(points1,false));
-         ex.addSequential(new ExecuteTrajectoryCommand(points1,true));
+         ex.addSequential(new DriveToSwitchFromRight());
+         ex.addSequential(new SwitchToScale());
+         ex.addSequential(new ExecuteTrajectoryCommand(weHaveToGoBack,false));
+         ex.addSequential(new ExecuteTrajectoryCommand(weHaveToGoBackBack,true));
     }
 
     public Side[] getSide() {

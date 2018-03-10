@@ -14,14 +14,14 @@ public class DriveToSwitchFromRight extends Command {
 
     public static final double WALL_TO_START_CORNER = 56.5;// inches
 
-    public static final Waypoint[] RIGHT_PATH = new Waypoint[] { 
+    public static final Waypoint[] RIGHT_PATH = new Waypoint[] { //one simple turn
             new Waypoint(0, 0, 0),
             new Waypoint(MathUtil.feet2inches(11) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0, 0, 0),
             new Waypoint(MathUtil.feet2inches(14) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0,
                     MathUtil.feet2inches(5.68) - RobotConstants.TOTAL_ROBOT_WIDTH / 2.0 - WALL_TO_START_CORNER,
                     Pathfinder.d2r(90)) };
 
-    public static final Waypoint[] LEFT_PATH = new Waypoint[] { 
+    public static final Waypoint[] LEFT_PATH = new Waypoint[] { //drive in a crazy square around the whole field
             new Waypoint(0, 0, 0),
             new Waypoint(MathUtil.feet2inches(18) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0, 0, 0),
             new Waypoint(MathUtil.feet2inches(20) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0,
