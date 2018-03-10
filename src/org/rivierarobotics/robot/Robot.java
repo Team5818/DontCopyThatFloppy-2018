@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 package org.rivierarobotics.robot;
 
+import org.rivierarobotics.autos.DriveToSwitchFromRight;
 import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
 import org.rivierarobotics.constants.Side;
@@ -17,7 +18,6 @@ import org.rivierarobotics.subsystems.DriveTrain.DriveGear;
 import org.rivierarobotics.subsystems.Floppies;
 import org.rivierarobotics.util.CSVLogger;
 
-import autos.DriveToSwitchFromRight;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.wpilibj.CameraServer;

@@ -35,7 +35,7 @@ public class TrajectoryExecutor implements Runnable {
     public static final double K_HEADING = 0.03;
 
     public enum TrajectoryExecutionState {
-        STATE_STABILIZING_TIMING, STATE_MATCHING_VELOCITY, STATE_RUNNING_PROFILE, STATE_FINISHED
+        STATE_STABILIZING_TIMING, STATE_RUNNING_PROFILE, STATE_FINISHED
     }
 
     private DriveTrain driveTrain;

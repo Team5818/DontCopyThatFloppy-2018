@@ -1,4 +1,4 @@
-package autos;
+package org.rivierarobotics.autos;
 
 import org.rivierarobotics.constants.RobotConstants;
 import org.rivierarobotics.constants.Side;
