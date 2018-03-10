@@ -19,14 +19,14 @@ public class SwitchToScale extends Command {
 
     public static final Waypoint[] LEFT_TO_RIGHT_PATH = null; //TODO
 
-    public static final Waypoint[] RIGHT_TO_RIGHT_PATH = new Waypoint[] { new Waypoint(0, 0, Pathfinder.d2r(90)),
+    public static final Waypoint[] RIGHT_TO_RIGHT_PATH = new Waypoint[] { new Waypoint(0, 0, Pathfinder.d2r(270)),
             new Waypoint(MathUtil.feet2inches(14.25) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0 - SWITCH_PLACING_X_RIGHT,
                     MathUtil.feet2inches(4.25) - RobotConstants.TOTAL_ROBOT_WIDTH / 2.0 - SWITCH_PLACING_Y_RIGHT, 0),
             new Waypoint(MathUtil.feet2inches(19) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0 - SWITCH_PLACING_X_RIGHT,
                     MathUtil.feet2inches(6) - RobotConstants.TOTAL_ROBOT_WIDTH / 2.0 - SWITCH_PLACING_Y_RIGHT,
                     Pathfinder.d2r(45)),
             new Waypoint(MathUtil.feet2inches(21) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0 - SWITCH_PLACING_X_RIGHT,
-                    MathUtil.feet2inches(7.25) - RobotConstants.TOTAL_ROBOT_WIDTH / 2.0 - SWITCH_PLACING_Y_RIGHT, 0), };
+                    MathUtil.feet2inches(7.25) - RobotConstants.TOTAL_ROBOT_WIDTH / 2.0 - SWITCH_PLACING_Y_RIGHT, Pathfinder.d2r(180)), };
 
     public static final Waypoint[] LEFT_TO_LEFT_PATH = null;//TODO
 
@@ -40,7 +40,7 @@ public class SwitchToScale extends Command {
     public SwitchToScale() {
         requires(Robot.runningRobot.driveTrain);
         left2leftEx = null;//new TrajectoryExecutor(LEFT_TO_LEFT_PATH, false);
-        right2rightEx = new TrajectoryExecutor(RIGHT_TO_RIGHT_PATH, true);
+        right2rightEx = new TrajectoryExecutor(RIGHT_TO_RIGHT_PATH, true, true);
         left2rightEx = null;//new TrajectoryExecutor(LEFT_TO_RIGHT_PATH, false);
         right2leftEx = null;//new TrajectoryExecutor(RIGHT_TO_LEFT_PATH, false);
     }

@@ -12,10 +12,10 @@ public class ExecuteTrajectoryCommand extends Command{
     private TrajectoryExecutor trajEx;
     private DriveTrain dt;
     
-    public ExecuteTrajectoryCommand(Waypoint[] wp, boolean reversed) {
+    public ExecuteTrajectoryCommand(Waypoint[] wp, boolean reversed, boolean flip) {
         dt = Robot.runningRobot.driveTrain;
         requires(dt);
-        trajEx = new TrajectoryExecutor(wp,reversed);
+        trajEx = new TrajectoryExecutor(wp,reversed, flip);
     }
     
     @Override
