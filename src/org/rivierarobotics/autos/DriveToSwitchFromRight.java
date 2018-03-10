@@ -4,6 +4,7 @@ import org.rivierarobotics.constants.RobotConstants;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.pathfollowing.TrajectoryExecutor;
 import org.rivierarobotics.robot.Robot;
+import org.rivierarobotics.util.MathUtil;
 
 import edu.wpi.first.wpilibj.command.Command;
 import jaci.pathfinder.Pathfinder;
@@ -11,30 +12,33 @@ import jaci.pathfinder.Waypoint;
 
 public class DriveToSwitchFromRight extends Command {
 
-    public static final Waypoint[] RIGHT_PATH =
-            new Waypoint[] { 
-                    new Waypoint(0, 0, 0), 
-                    new Waypoint(120 - RobotConstants.TOTAL_ROBOT_LENGTH, 0, 0),
-                    new Waypoint(164 - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0,
-                            56.5 - RobotConstants.TOTAL_ROBOT_LENGTH, Pathfinder.d2r(90))
+    public static final double WALL_TO_START_CORNER = 56.5;// inches
 
-            };
+    public static final Waypoint[] RIGHT_PATH = new Waypoint[] { 
+            new Waypoint(0, 0, 0),
+            new Waypoint(MathUtil.feet2inches(11) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0, 0, 0),
+            new Waypoint(MathUtil.feet2inches(14) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0,
+                    MathUtil.feet2inches(5.68) - RobotConstants.TOTAL_ROBOT_WIDTH / 2.0 - WALL_TO_START_CORNER,
+                    Pathfinder.d2r(90)) };
 
-    public static final Waypoint[] LEFT_PATH =
-            new Waypoint[] { 
-                    new Waypoint(0, 0, 0), 
-                    new Waypoint(200 - RobotConstants.TOTAL_ROBOT_LENGTH, 0, 0),
-                    new Waypoint(220 - RobotConstants.TOTAL_ROBOT_WIDTH/ 2.0,
-                            -56.5 + RobotConstants.TOTAL_ROBOT_LENGTH, Pathfinder.d2r(90)),
-                    new Waypoint(220 - RobotConstants.TOTAL_ROBOT_WIDTH/ 2.0,
-                            -240, Pathfinder.d2r(90)),
-                    new Waypoint(200 - RobotConstants.TOTAL_ROBOT_WIDTH/2.0,
-                            -300, Pathfinder.d2r(180)),
-                    new Waypoint(160 - RobotConstants.TOTAL_ROBOT_WIDTH/2.0,
-                            -300, Pathfinder.d2r(180)),
-                    new Waypoint(140 - RobotConstants.TOTAL_ROBOT_WIDTH/2.0,
-                            -240, Pathfinder.d2r(270))
-            };
+    public static final Waypoint[] LEFT_PATH = new Waypoint[] { 
+            new Waypoint(0, 0, 0),
+            new Waypoint(MathUtil.feet2inches(18) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0, 0, 0),
+            new Waypoint(MathUtil.feet2inches(20) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0,
+                    MathUtil.feet2inches(6) - RobotConstants.TOTAL_ROBOT_WIDTH / 2.0 - WALL_TO_START_CORNER,
+                    Pathfinder.d2r(90)),
+            new Waypoint(MathUtil.feet2inches(20) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0,
+                    MathUtil.inches2feet(21.5) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0 - WALL_TO_START_CORNER,
+                    Pathfinder.d2r(90)),
+            new Waypoint(MathUtil.feet2inches(18) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0,
+                    MathUtil.feet2inches(23.5) - RobotConstants.TOTAL_ROBOT_WIDTH / 2.0 - WALL_TO_START_CORNER,
+                    Pathfinder.d2r(180)),
+            new Waypoint(MathUtil.feet2inches(16) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0,
+                    MathUtil.feet2inches(23.50) - RobotConstants.TOTAL_ROBOT_WIDTH / 2.0 - WALL_TO_START_CORNER,
+                    Pathfinder.d2r(180)),
+            new Waypoint(MathUtil.feet2inches(14) - RobotConstants.TOTAL_ROBOT_WIDTH / 2.0,
+                    MathUtil.feet2inches(21.32) - RobotConstants.TOTAL_ROBOT_WIDTH / 2.0 - WALL_TO_START_CORNER,
+                    Pathfinder.d2r(270)) };
 
     private TrajectoryExecutor leftEx;
     private TrajectoryExecutor rightEx;
@@ -49,7 +53,7 @@ public class DriveToSwitchFromRight extends Command {
 
     @Override
     protected void initialize() {
-        fieldData = new Side[]{Side.RIGHT, Side.RIGHT, Side.RIGHT};//Robot.runningRobot.getSide();
+        fieldData = new Side[] { Side.RIGHT, Side.RIGHT, Side.RIGHT };// Robot.runningRobot.getSide();
         if (fieldData[0] == Side.LEFT) {
             selectedEx = leftEx;
         } else {

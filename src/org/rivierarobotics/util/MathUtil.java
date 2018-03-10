@@ -136,5 +136,13 @@ public class MathUtil {
         }
         return angle;
     }
+    
+    public static double feet2inches(double ft) {
+        return ft*12;
+    }
+    
+    public static double inches2feet(double in) {
+        return in*12;
+    }
 
 }
