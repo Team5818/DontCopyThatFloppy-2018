@@ -70,6 +70,11 @@ public class DriveTrain extends Subsystem {
         gyro.setYaw(0.0, 10);
     }
     
+    public void driveDistance(double leftDist, double rightDist) {
+        left.driveDistanceMotionMagicInches(leftDist);
+        right.driveDistanceMotionMagicInches(rightDist);
+    }
+    
     public void resetEnc() {
         left.resetEnc();
         right.resetEnc();
@@ -99,6 +104,13 @@ public class DriveTrain extends Subsystem {
         return (left.getSideVelocity() + right.getSideVelocity()) / 2;
     }
     
+    public void slaveLeftToRight(boolean inverted) {
+        left.slaveToOtherSide(inverted);
+    }
+    
+    public void unslaveLeft() {
+        left.unslave();
+    }
 
     public void setCoastMode() {
         left.setCoastMode();

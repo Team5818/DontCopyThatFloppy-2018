@@ -3,6 +3,7 @@ package org.rivierarobotics.driverinterface;
 import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.commands.LeaveClimbCommand;
+import org.rivierarobotics.commands.MagicSpin;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
 import org.rivierarobotics.commands.SetArmBrake;
 import org.rivierarobotics.commands.SetArmEngaged;
@@ -62,6 +63,8 @@ public class Driver {
         JoystickButton leaveClimbButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.LEAVE_CLIMB_BUTTON);
         
         JoystickButton autoCollectButton = new JoystickButton(JS_FLOPPIES, ControlMap.COLLECT_SEQUENCE_BUTTON);
+        JoystickButton magicSpin = new JoystickButton(JS_RIGHT_BUTTONS, 6);
+
         
         // Bind Commands
         clampOn.whenPressed(new SetClampOpen(false));
@@ -86,5 +89,7 @@ public class Driver {
         lockWinchButton.whenPressed(new SetArmBrake(true));//lock robot in place after climb   
         unlockWinchButton.whenPressed(new SetArmBrake(false));//for the pits
         leaveClimbButton.whenPressed(new LeaveClimbCommand());//for crisis mode
+        
+        magicSpin.whenPressed(new MagicSpin(0));
     }
 }
