@@ -90,7 +90,6 @@ public class Robot extends TimedRobot {
         m_chooser.addObject("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
-        Scheduler.getInstance().add(compDisable);
         
         Waypoint[] weHaveToGoBack = new Waypoint[] {
                 new Waypoint(0, 0, 0),
@@ -136,6 +135,7 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         driveTrain.resetGyro();
         driveTrain.shiftGear(DriveGear.GEAR_LOW);
+        compressor.stop();
         ex.start();
     }
 
@@ -150,6 +150,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        compDisable.start();
         ex.cancel();
         if(camCollect == null) {
             camCollect = CameraServer.getInstance().startAutomaticCapture(0);

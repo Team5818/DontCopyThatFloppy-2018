@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj.DriverStation;
  */
 public class DriveTrainSide {
 
-    private static final int MAGIC_VEL = 600;
-    private static final int MAGIC_ACCEL = 600;
+    private static final int MAGIC_VEL = 575;
+    private static final int MAGIC_ACCEL = 550;
     private static final int MOTION_MAGIC_IDX = 0;
     private static final int SLOT_IDX = 0;
     private static final int TIMEOUT = 10;

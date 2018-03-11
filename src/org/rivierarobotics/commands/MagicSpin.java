@@ -19,7 +19,7 @@ public class MagicSpin extends Command {
     private double veloc;
 
     public MagicSpin(double ang) {
-        setTimeout(3);
+        setTimeout(1.5);
         dt = Robot.runningRobot.driveTrain;
         requires(dt);
         angle = ang;
