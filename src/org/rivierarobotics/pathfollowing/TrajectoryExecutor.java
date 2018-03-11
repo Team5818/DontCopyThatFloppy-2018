@@ -57,7 +57,7 @@ public class TrajectoryExecutor implements Runnable {
     private double currentHeading;
     private boolean reversed;
     private int directionMultiplier;
-    private int gyroFlipCompensator = 0;
+    private double gyroCompensator = 0;
     private double leftGyroIntegrator = 0;
     private double rightGyroIntegrator = 0;
     private Object lock = new Object();
@@ -65,7 +65,7 @@ public class TrajectoryExecutor implements Runnable {
     public static final Trajectory.Config DEFAULT_CONFIG = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
             Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, DEFAULT_MAX_VEL, DEFAULT_MAX_ACCEL, DEFAULT_MAX_JERK);
 
-    public TrajectoryExecutor(Waypoint[] waypoints, Trajectory.Config config, double time, boolean rev, boolean flipGyro) {
+    public TrajectoryExecutor(Waypoint[] waypoints, Trajectory.Config config, double time, boolean rev, double gyroOffset) {
         driveTrain = Robot.runningRobot.driveTrain;
         reversed = rev;
         directionMultiplier = reversed ? -1 : 1;
@@ -80,9 +80,7 @@ public class TrajectoryExecutor implements Runnable {
             leftTraj = mod.getLeftTrajectory();
             rightTraj = mod.getRightTrajectory();
         }
-        if(flipGyro) {
-            gyroFlipCompensator = 180;
-        }
+        gyroCompensator = gyroOffset;
         currentPos = driveTrain.getDistance();
         dt = config.dt;
 
@@ -99,12 +97,12 @@ public class TrajectoryExecutor implements Runnable {
         fillBuffer(UNINITIALIZED_SENTINEL);
     }
 
-    public TrajectoryExecutor(Waypoint[] waypoints, double time, boolean rev, boolean flipGyro) {
-        this(waypoints, DEFAULT_CONFIG, time, rev, flipGyro);
+    public TrajectoryExecutor(Waypoint[] waypoints, double time, boolean rev, double gyroOffset) {
+        this(waypoints, DEFAULT_CONFIG, time, rev, gyroOffset);
     }
 
-    public TrajectoryExecutor(Waypoint[] waypoints, boolean rev, boolean flipGyro) {
-        this(waypoints, DEFAULT_CONFIG, DEFAULT_TIMEOUT, rev, flipGyro);
+    public TrajectoryExecutor(Waypoint[] waypoints, boolean rev, double gyroOffset) {
+        this(waypoints, DEFAULT_CONFIG, DEFAULT_TIMEOUT, rev, gyroOffset);
     }
 
     public void fillBuffer(double val) {
@@ -153,7 +151,7 @@ public class TrajectoryExecutor implements Runnable {
                 currentHeading = driveTrain.getYaw();
                 Segment seg = leftFollow.getSegment();
 
-                double headDiff = Pathfinder.boundHalfDegrees(currentHeading + gyroFlipCompensator - Pathfinder.r2d(seg.heading));
+                double headDiff = Pathfinder.boundHalfDegrees(currentHeading + gyroCompensator - Pathfinder.r2d(seg.heading));
                 double leftGyroPower = K_HEADING * headDiff;
                 double rightGyroPower = -K_HEADING * headDiff;
                 double leftTwist =

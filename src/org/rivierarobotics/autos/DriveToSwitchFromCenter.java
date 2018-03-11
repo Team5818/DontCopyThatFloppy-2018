@@ -34,8 +34,8 @@ public class DriveToSwitchFromCenter extends Command {
 
     public DriveToSwitchFromCenter() {
         requires(Robot.runningRobot.driveTrain);
-        leftEx = new TrajectoryExecutor(LEFT_PATH, false);
-        rightEx = new TrajectoryExecutor(RIGHT_PATH, false);
+        leftEx = new TrajectoryExecutor(LEFT_PATH, false,0);
+        rightEx = new TrajectoryExecutor(RIGHT_PATH, false,0);
     }
 
     @Override

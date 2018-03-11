@@ -12,13 +12,13 @@ import jaci.pathfinder.Waypoint;
 
 public class DriveToSwitchFromRight extends Command {
 
-    public static final double WALL_TO_START_CORNER = 30;// inches
+    public static final double WALL_TO_START_CORNER = 28.8;// inches
 
     public static final Waypoint[] RIGHT_PATH = new Waypoint[] { //one simple turn
             new Waypoint(0, 0, 0),
             new Waypoint(MathUtil.feet2inches(11) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0, 0, 0),
             new Waypoint(MathUtil.feet2inches(14) - RobotConstants.TOTAL_ROBOT_LENGTH / 2.0,
-                    MathUtil.feet2inches(6) - RobotConstants.TOTAL_ROBOT_WIDTH / 2.0 - WALL_TO_START_CORNER,
+                    MathUtil.feet2inches(5.86) - RobotConstants.TOTAL_ROBOT_WIDTH / 2.0 - WALL_TO_START_CORNER,
                     Pathfinder.d2r(90)) };
 
     public static final Waypoint[] LEFT_PATH = new Waypoint[] { //drive in a crazy square around the whole field
@@ -47,8 +47,8 @@ public class DriveToSwitchFromRight extends Command {
 
     public DriveToSwitchFromRight() {
         requires(Robot.runningRobot.driveTrain);
-        leftEx = new TrajectoryExecutor(LEFT_PATH, false);
-        rightEx = new TrajectoryExecutor(RIGHT_PATH, false);
+        leftEx = new TrajectoryExecutor(LEFT_PATH, false, 0);
+        rightEx = new TrajectoryExecutor(RIGHT_PATH, false, 0);
     }
 
     @Override

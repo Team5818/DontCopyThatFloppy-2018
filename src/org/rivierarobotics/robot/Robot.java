@@ -103,8 +103,8 @@ public class Robot extends TimedRobot {
 
          ex.addSequential(new DriveToSwitchFromRight());
          ex.addSequential(new SwitchToScale());
-         ex.addSequential(new ExecuteTrajectoryCommand(weHaveToGoBack,false, true));
-         ex.addSequential(new ExecuteTrajectoryCommand(weHaveToGoBackBack,true, true));
+         ex.addSequential(new ExecuteTrajectoryCommand(weHaveToGoBack,false, -180));
+         ex.addSequential(new ExecuteTrajectoryCommand(weHaveToGoBackBack,true, -180));
     }
 
     public Side[] getSide() {
