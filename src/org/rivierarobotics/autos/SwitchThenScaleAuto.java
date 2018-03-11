@@ -23,7 +23,7 @@ public class SwitchThenScaleAuto extends CommandGroup {
         this.addSequential(new SwitchToScale());
         this.addSequential(new MagicSpin(-180));
 
-        Waypoint[] driveToCube = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(15, 0, 0)};
+        Waypoint[] driveToCube = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(20, 0, 0)};
 
         CommandGroup collectGroup = new CommandGroup();
         collectGroup.addParallel(new ExecuteTrajectoryCommand(driveToCube, false, -180));
