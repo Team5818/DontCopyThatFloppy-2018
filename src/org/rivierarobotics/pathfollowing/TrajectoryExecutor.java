@@ -180,6 +180,7 @@ public class TrajectoryExecutor implements Runnable {
                     isFinished = true;
                     stop();
                     DriverStation.reportError("Trajectory complete", false);
+                    driveTrain.stop();
                 }
                 break;
             default:

@@ -90,16 +90,6 @@ public class Robot extends TimedRobot {
         m_chooser.addObject("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
-        
-        Waypoint[] weHaveToGoBack = new Waypoint[] {
-                new Waypoint(0, 0, 0),
-                new Waypoint(36, 0, 0), 
-            };
-        
-        Waypoint[] weHaveToGoBackBack = new Waypoint[] {
-                new Waypoint(0, 0, 0),
-                new Waypoint(56, 0, 0), 
-            };
 
          ex = new SwitchThenScaleAuto();
     }
