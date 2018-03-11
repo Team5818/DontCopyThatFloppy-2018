@@ -78,7 +78,7 @@ public class Driver {
         shiftHigh.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_HIGH));
         backCamButton.whenPressed(new SetCameraCollect(false));
         collectCamButton.whenPressed(new SetCameraCollect(true));
-        autoCollectButton.whenPressed(new CollectGrabRaise());
+        autoCollectButton.whenPressed(new CollectGrabRaise(true));
 
         enterClimbButton.whenPressed(new StartClimbMode(JS_ARM));//engage PTO + disengage arm
         reengageArmButton.whenPressed(new SetArmEngaged(true));//reengage + lower arm, winching at same time

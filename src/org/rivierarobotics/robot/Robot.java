@@ -7,6 +7,7 @@
 package org.rivierarobotics.robot;
 
 import org.rivierarobotics.autos.DriveToSwitchFromRight;
+import org.rivierarobotics.autos.SwitchThenScaleAuto;
 import org.rivierarobotics.autos.SwitchToScale;
 import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
@@ -101,10 +102,7 @@ public class Robot extends TimedRobot {
                 new Waypoint(56, 0, 0), 
             };
 
-         ex.addSequential(new DriveToSwitchFromRight());
-         ex.addSequential(new SwitchToScale());
-         ex.addSequential(new ExecuteTrajectoryCommand(weHaveToGoBack,false, -180));
-         ex.addSequential(new ExecuteTrajectoryCommand(weHaveToGoBackBack,true, -180));
+         ex = new SwitchThenScaleAuto();
     }
 
     public Side[] getSide() {
@@ -152,6 +150,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        ex.cancel();
         if(camCollect == null) {
             camCollect = CameraServer.getInstance().startAutomaticCapture(0);
             camBack = CameraServer.getInstance().startAutomaticCapture(1);

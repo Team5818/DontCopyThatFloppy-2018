@@ -22,9 +22,11 @@ public class SwitchToScale extends Command {
     public static final Waypoint[] RIGHT_TO_RIGHT_PATH = new Waypoint[] { new Waypoint(0, 0, 0),
             new Waypoint(OFFSET_X_RIGHT - MathUtil.feet2inches(4.25), OFFSET_Y_RIGHT + MathUtil.feet2inches(15.25),
                     Pathfinder.d2r(90)),
+            new Waypoint(OFFSET_X_RIGHT - MathUtil.feet2inches(4.25), OFFSET_Y_RIGHT + MathUtil.feet2inches(16),
+                    Pathfinder.d2r(90)),
             new Waypoint(OFFSET_X_RIGHT - MathUtil.feet2inches(6), OFFSET_Y_RIGHT + MathUtil.feet2inches(19),
                     Pathfinder.d2r(135)),
-            new Waypoint(OFFSET_X_RIGHT - MathUtil.feet2inches(8), OFFSET_Y_RIGHT + MathUtil.feet2inches(21),
+            new Waypoint(OFFSET_X_RIGHT - MathUtil.feet2inches(8.2), OFFSET_Y_RIGHT + MathUtil.feet2inches(20),
                     Pathfinder.d2r(90)) };
 
     public static final Waypoint[] LEFT_TO_LEFT_PATH = null;// TODO
