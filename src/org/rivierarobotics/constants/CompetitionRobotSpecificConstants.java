@@ -9,8 +9,8 @@ public class CompetitionRobotSpecificConstants extends RobotDependentConstants{
     }
 
     @Override
-    public double getArmPositionScaleLow() {
-        return 3940;
+    public double getArmPositionThrowRelease() {
+        return -254;
     }
 
     @Override

@@ -24,7 +24,7 @@ public class SwitchToScale extends Command {
                     Pathfinder.d2r(90)),
             new Waypoint(OFFSET_X_RIGHT - MathUtil.feet2inches(4.25), OFFSET_Y_RIGHT + MathUtil.feet2inches(16),
                     Pathfinder.d2r(90)),
-            new Waypoint(OFFSET_X_RIGHT - MathUtil.feet2inches(8.0), OFFSET_Y_RIGHT + MathUtil.feet2inches(21),
+            new Waypoint(OFFSET_X_RIGHT - MathUtil.feet2inches(8.4), OFFSET_Y_RIGHT + MathUtil.feet2inches(21),
                     Pathfinder.d2r(150)) };
 
     public static final Waypoint[] LEFT_TO_LEFT_PATH = null;// TODO

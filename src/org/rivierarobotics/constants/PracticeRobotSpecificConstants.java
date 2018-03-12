@@ -8,9 +8,10 @@ public class PracticeRobotSpecificConstants extends RobotDependentConstants {
     }
 
     @Override
-    public double getArmPositionScaleLow() {
-        return -254;//wrong
+    public double getArmPositionThrowRelease() {
+        return 4460;
     }
+
 
     @Override
     public double getArmPositionSwitchMid() {

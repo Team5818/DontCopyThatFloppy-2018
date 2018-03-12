@@ -27,8 +27,8 @@ public abstract class RobotDependentConstants {
     }
 
     public abstract double getArmPositionScaleHigh();
-
-    public abstract double getArmPositionScaleLow();
+    
+    public abstract double getArmPositionThrowRelease();
 
     public abstract double getArmPositionSwitchMid();
 

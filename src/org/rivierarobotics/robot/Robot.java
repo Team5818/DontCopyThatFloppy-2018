@@ -182,6 +182,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Left Roller Trunc", floppies.getLeftTrunc());
         SmartDashboard.putNumber("Right Roller Trunc", floppies.getRightTrunc());
         SmartDashboard.putBoolean("Cube ready", floppies.cubeInPlace());
+        SmartDashboard.putBoolean("Left Switch", floppies.leftSwitchAcitve());
+        SmartDashboard.putBoolean("Right Switch", floppies.rightSwitchActive());
         SmartDashboard.putNumber("Left Inches", driveTrain.getDistanceInches().getX());
         SmartDashboard.putNumber("Right Inches", driveTrain.getDistanceInches().getY());
         SmartDashboard.putNumber("Avg Inches", driveTrain.getAvgSidePositionInches());

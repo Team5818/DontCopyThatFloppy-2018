@@ -79,6 +79,16 @@ public class Arm extends Subsystem {
     public void setPower(double pow) {
         masterTalon.set(ControlMode.PercentOutput, pow);
     }
+    
+    public void configreForCubeThrow() {
+        masterTalon.configMotionCruiseVelocity(428, TIMEOUT);
+        masterTalon.configMotionAcceleration(MAX_POSSIBLE_VELOCITY*5, TIMEOUT);
+    }
+    
+    public void configureForNormalMotion() {
+        masterTalon.configMotionCruiseVelocity((int) (MAX_POSSIBLE_VELOCITY / 2.5), TIMEOUT);
+        masterTalon.configMotionAcceleration((int) (MAX_POSSIBLE_VELOCITY / 1.5), TIMEOUT);
+    }
 
     public double getPower() {
         return masterTalon.getMotorOutputPercent();

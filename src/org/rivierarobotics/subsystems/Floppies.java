@@ -56,7 +56,15 @@ public class Floppies extends Subsystem {
     {
         return (!leftSwitch.get() && !rightSwitch.get());
     }
+    
+    public boolean leftSwitchAcitve() {
+        return !leftSwitch.get();
+    }
 
+    public boolean rightSwitchActive() {
+        return !rightSwitch.get();
+    }
+    
     public void setBrakeMode(boolean on) {
         if (on) {
             left.setNeutralMode(NeutralMode.Brake);

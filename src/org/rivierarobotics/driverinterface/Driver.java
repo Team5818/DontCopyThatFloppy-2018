@@ -1,5 +1,6 @@
 package org.rivierarobotics.driverinterface;
 
+import org.rivierarobotics.commands.AutoThrow;
 import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.commands.LeaveClimbCommand;
@@ -90,6 +91,6 @@ public class Driver {
         unlockWinchButton.whenPressed(new SetArmBrake(false));//for the pits
         leaveClimbButton.whenPressed(new LeaveClimbCommand());//for crisis mode
         
-        magicSpin.whenPressed(new MagicSpin(0));
+        magicSpin.whenPressed(new AutoThrow());
     }
 }

@@ -179,8 +179,6 @@ public class TrajectoryExecutor implements Runnable {
                 synchronized (lock) {
                     isFinished = true;
                     stop();
-                    DriverStation.reportError("Trajectory complete", false);
-                    driveTrain.stop();
                 }
                 break;
             default:
@@ -192,6 +190,8 @@ public class TrajectoryExecutor implements Runnable {
         synchronized (lock) {
             runner.stop();
             running = false;
+            DriverStation.reportError("Trajectory complete", false);
+            driveTrain.stop();
             Robot.runningRobot.logger.flushToDisk();
         }
     }
