@@ -6,9 +6,11 @@
 /*----------------------------------------------------------------------------*/
 package org.rivierarobotics.robot;
 
-import org.rivierarobotics.autos.DriveToSwitchFromRight;
-import org.rivierarobotics.autos.SwitchThenScaleAuto;
-import org.rivierarobotics.autos.SwitchToScale;
+import org.rivierarobotics.autos.rightscale.ScaleToCube;
+import org.rivierarobotics.autos.rightscale.TwoCubeScaleAuto;
+import org.rivierarobotics.autos.switchthenscale.DriveToSwitchFromRight;
+import org.rivierarobotics.autos.switchthenscale.SwitchThenScaleAuto;
+import org.rivierarobotics.autos.switchthenscale.SwitchToCube;
 import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
 import org.rivierarobotics.constants.Side;
@@ -91,7 +93,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Auto choices", m_chooser);
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
 
-         ex = new SwitchThenScaleAuto();
+         ex = new TwoCubeScaleAuto();
     }
 
     public Side[] getSide() {

@@ -1,4 +1,4 @@
-package org.rivierarobotics.autos;
+package org.rivierarobotics.autos.switchthenscale;
 
 import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
@@ -20,7 +20,7 @@ public class SwitchThenScaleAuto extends CommandGroup {
                 .addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
         this.addSequential(driveToSwitch);
         this.addSequential(new SetClampOpen(true));
-        this.addSequential(new SwitchToScale());
+        this.addSequential(new SwitchToCube());
         this.addSequential(new MagicSpin(-180));
 
         Waypoint[] driveToCube = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(22, 0, 0)};

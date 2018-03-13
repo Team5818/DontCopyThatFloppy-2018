@@ -80,6 +80,11 @@ public class Arm extends Subsystem {
         masterTalon.set(ControlMode.PercentOutput, pow);
     }
     
+    public void configureForCollect() {
+        masterTalon.configMotionCruiseVelocity(MAX_POSSIBLE_VELOCITY, TIMEOUT);
+        masterTalon.configMotionAcceleration(MAX_POSSIBLE_VELOCITY*2, TIMEOUT);
+    }
+    
     public void configreForCubeThrow() {
         masterTalon.configMotionCruiseVelocity(428, TIMEOUT);
         masterTalon.configMotionAcceleration(MAX_POSSIBLE_VELOCITY*5, TIMEOUT);

@@ -1,4 +1,4 @@
-package org.rivierarobotics.autos;
+package org.rivierarobotics.autos.switchthenscale;
 
 import org.rivierarobotics.constants.RobotConstants;
 import org.rivierarobotics.constants.Side;
@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
-public class SwitchToScale extends Command {
+public class SwitchToCube extends Command {
 
     public static final double OFFSET_Y_RIGHT = -MathUtil.feet2inches(14.0);
     public static final double OFFSET_X_RIGHT = MathUtil.feet2inches(5.68);
@@ -36,7 +36,7 @@ public class SwitchToScale extends Command {
     private TrajectoryExecutor selectedEx;
     private Side[] fieldData;
 
-    public SwitchToScale() {
+    public SwitchToCube() {
         requires(Robot.runningRobot.driveTrain);
         left2leftEx = null;// new TrajectoryExecutor(LEFT_TO_LEFT_PATH, false);
         right2rightEx = new TrajectoryExecutor(RIGHT_TO_RIGHT_PATH, true, -90);

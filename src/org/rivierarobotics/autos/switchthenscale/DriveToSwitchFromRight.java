@@ -1,4 +1,4 @@
-package org.rivierarobotics.autos;
+package org.rivierarobotics.autos.switchthenscale;
 
 import org.rivierarobotics.constants.RobotConstants;
 import org.rivierarobotics.constants.Side;

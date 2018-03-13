@@ -1,4 +1,4 @@
-package org.rivierarobotics.autos;
+package org.rivierarobotics.autos.switchthenscale;
 
 import org.rivierarobotics.constants.RobotConstants;
 import org.rivierarobotics.constants.Side;
@@ -14,8 +14,8 @@ public class CubeToScale extends Command {
 
     public static final Waypoint[] RIGHT_PATH = new Waypoint[] { 
             new Waypoint(0, 0, 0),
-            new Waypoint(MathUtil.feet2inches(1), MathUtil.feet2inches(-.5), Pathfinder.d2r(-45)),
-            new Waypoint(MathUtil.feet2inches(5.5), MathUtil.feet2inches(-1.5), 0)};
+            new Waypoint(MathUtil.feet2inches(.5), 0,0),
+            new Waypoint(MathUtil.feet2inches(4.75), MathUtil.feet2inches(-1), 0)};
 
     public static final Waypoint[] LEFT_PATH =
             new Waypoint[] { 
