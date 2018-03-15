@@ -1,6 +1,6 @@
 package org.rivierarobotics.autos.rightscale;
 
-import org.rivierarobotics.autos.switchthenscale.CubeToScale;
+import org.rivierarobotics.autos.switchthenscale.CubeToScaleSTS;
 import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
 import org.rivierarobotics.commands.MagicSpin;
@@ -37,12 +37,12 @@ public class TwoCubeScaleAuto extends CommandGroup {
         this.addSequential(getCubeGroup);
         
         CommandGroup placeGroup = new CommandGroup();
-        placeGroup.addParallel(new CubeToScale());
+        placeGroup.addParallel(new CubeToScaleTCS());
         placeGroup.addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getUpperArmSoftLimit()));
         this.addSequential(placeGroup);
         this.addSequential(new SetClampOpen(true));
+        this.addSequential(new TimedCommand(.5));
         this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
 
     }
-
 }

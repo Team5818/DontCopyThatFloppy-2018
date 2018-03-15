@@ -37,7 +37,7 @@ public class SwitchThenScaleAuto extends CommandGroup {
         this.addSequential(collectGroup);
 
         CommandGroup placeGroup = new CommandGroup();
-        placeGroup.addParallel(new CubeToScale());
+        placeGroup.addParallel(new CubeToScaleSTS());
         CommandGroup raiseGroup = new CommandGroup();
         raiseGroup.addSequential(new TimedCommand(.5));
         raiseGroup.addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionBack()));

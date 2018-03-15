@@ -6,13 +6,8 @@
 /*----------------------------------------------------------------------------*/
 package org.rivierarobotics.robot;
 
-import org.rivierarobotics.autos.rightscale.ScaleToCube;
 import org.rivierarobotics.autos.rightscale.TwoCubeScaleAuto;
-import org.rivierarobotics.autos.switchthenscale.DriveToSwitchFromRight;
-import org.rivierarobotics.autos.switchthenscale.SwitchThenScaleAuto;
-import org.rivierarobotics.autos.switchthenscale.SwitchToCube;
 import org.rivierarobotics.commands.CompressorControlCommand;
-import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.driverinterface.Driver;
 import org.rivierarobotics.subsystems.Arm;
@@ -29,13 +24,10 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Waypoint;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -60,6 +52,7 @@ public class Robot extends TimedRobot {
     public UsbCamera camBack;
     public VideoSink camServer;
     public CSVLogger logger;
+    public Side[] fieldData;
     
     CommandGroup ex = new CommandGroup();
 
@@ -96,7 +89,7 @@ public class Robot extends TimedRobot {
          ex = new TwoCubeScaleAuto();
     }
 
-    public Side[] getSide() {
+    public void queryFieldData() {
         String gameSide = DriverStation.getInstance().getGameSpecificMessage();
 
         Side[] side = new Side[3];
@@ -108,7 +101,11 @@ public class Robot extends TimedRobot {
                 side[x] = Side.RIGHT;
         }
 
-        return side;
+        fieldData = side;
+    }
+    
+    public Side[] getSide() {
+        return fieldData;
     }
 
     /**
@@ -125,6 +122,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        queryFieldData();
         driveTrain.resetGyro();
         driveTrain.shiftGear(DriveGear.GEAR_LOW);
         compressor.stop();
