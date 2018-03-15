@@ -88,16 +88,19 @@ public class Robot extends TimedRobot {
 
     public void queryFieldData() {
         String gameSide = DriverStation.getInstance().getGameSpecificMessage();
-
         Side[] side = new Side[3];
-
-        for (int x = 0; x < 3; x++) {
-            if (gameSide.charAt(x) == 'L')
-                side[x] = Side.LEFT;
-            else
-                side[x] = Side.RIGHT;
+        if(gameSide.length() < 3) {
+            side = new Side[] {Side.RIGHT,Side.RIGHT,Side.RIGHT};
+            DriverStation.reportError("no game data", false);
         }
-
+        else {
+            for (int x = 0; x < 3; x++) {
+                if (gameSide.charAt(x) == 'L')
+                    side[x] = Side.LEFT;
+                else
+                    side[x] = Side.RIGHT;
+            }
+        }
         fieldData = side;
     }
 
@@ -120,10 +123,6 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         queryFieldData();
-        while (fieldData[0] == null) {
-            queryFieldData();
-            DriverStation.reportError("Warning: Didn't get field data on first try!", false);
-        }
         driveTrain.resetGyro();
         driveTrain.shiftGear(DriveGear.GEAR_LOW);
         compressor.stop();
