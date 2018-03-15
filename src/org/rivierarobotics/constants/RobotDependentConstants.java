@@ -26,19 +26,33 @@ public abstract class RobotDependentConstants {
         }
     }
 
-    public abstract double getArmPositionScaleHigh();
+    public double getArmPositionScaleHigh() {
+        return getLowerArmSoftLimit() + 1521;
+    }
     
-    public abstract double getArmPositionThrowRelease();
+    public double getArmPositionThrowRelease() {
+        return getLowerArmSoftLimit() + 371;
+    }
 
-    public abstract double getArmPositionSwitchMid();
+    public double getArmPositionSwitchMid() {
+        return getLowerArmSoftLimit() + 543;
+    }
 
-    public abstract double getArmPositionCollectStandby();
+    public double getArmPositionCollectStandby() {
+        return getLowerArmSoftLimit() + 281;
+    }
 
-    public abstract double getArmPositionGrabbing();
+    public double getArmPositionGrabbing() {
+        return getLowerArmSoftLimit() + 45;
+    }
     
-    public abstract double getArmPositionBack();
+    public double getArmPositionBack() {
+        return getLowerArmSoftLimit() + 1796;
+    }
     
-    public abstract double getUpperArmSoftLimit();
+    public double getUpperArmSoftLimit() {
+        return getLowerArmSoftLimit() + 1912;
+    }
     
     public abstract double getLowerArmSoftLimit();
 
