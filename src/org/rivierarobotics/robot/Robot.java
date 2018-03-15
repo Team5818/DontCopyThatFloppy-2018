@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 package org.rivierarobotics.robot;
 
+import org.rivierarobotics.autos.centerswitch.CenterSwitchAuto;
 import org.rivierarobotics.autos.rightscale.TwoCubeScaleAuto;
 import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.constants.Side;
@@ -24,6 +25,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -37,12 +39,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
-
-    private static final String kDefaultAuto = "Default";
-    private static final String kCustomAuto = "My Auto";
-    private String m_autoSelected;
-    private SendableChooser<String> m_chooser = new SendableChooser<>();
-
+    private Command autonomousCommand;
+    private SendableChooser<Command> chooser = new SendableChooser<>();
     public DriveTrain driveTrain;
     public Driver driver;
     public Arm arm;
@@ -53,15 +51,10 @@ public class Robot extends TimedRobot {
     public VideoSink camServer;
     public CSVLogger logger;
     public Side[] fieldData;
-    
-    CommandGroup ex = new CommandGroup();
-
     public PowerDistributionPanel pdp;
     public Compressor compressor;
-
-    public static Robot runningRobot;
-
     private CompressorControlCommand compDisable;
+    public static Robot runningRobot;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -81,12 +74,11 @@ public class Robot extends TimedRobot {
         String[] fields = { "Pos", "Vel", "Set Pos","Set Vel","Heading","Set Heading","Time"};
         logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG", fields);
         
-        m_chooser.addDefault("Default Auto", kDefaultAuto);
-        m_chooser.addObject("My Auto", kCustomAuto);
-        SmartDashboard.putData("Auto choices", m_chooser);
+        chooser.addDefault("Default Auto", new CenterSwitchAuto());
+        chooser.addObject("Center Switch", new CenterSwitchAuto());
+        chooser.addObject("Two Cube Scale", new TwoCubeScaleAuto());
+        SmartDashboard.putData("Auto choices", chooser);
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
-
-         ex = new TwoCubeScaleAuto();
     }
 
     public void queryFieldData() {
@@ -123,10 +115,17 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         queryFieldData();
+        while(fieldData[0] == null) {
+            queryFieldData();
+            DriverStation.reportError("Warning: Didn't get field data on first try!", false);
+        }
         driveTrain.resetGyro();
         driveTrain.shiftGear(DriveGear.GEAR_LOW);
         compressor.stop();
-        ex.start();
+        autonomousCommand = chooser.getSelected();
+        if (autonomousCommand != null) {
+            autonomousCommand.start();
+        } 
     }
 
     /**
@@ -140,8 +139,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        if (autonomousCommand != null) {
+            autonomousCommand.cancel();
+        }
         compDisable.start();
-        ex.cancel();
         if(camCollect == null) {
             camCollect = CameraServer.getInstance().startAutomaticCapture(0);
             camBack = CameraServer.getInstance().startAutomaticCapture(1);
