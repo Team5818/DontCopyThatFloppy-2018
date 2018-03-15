@@ -1,5 +1,6 @@
 package org.rivierarobotics.autos.centerswitch;
 
+import org.rivierarobotics.autos.SideDependentTrajectoryExecutor;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.pathfollowing.TrajectoryExecutor;
 import org.rivierarobotics.robot.Robot;
@@ -9,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
-public class DriveToSwitchFromCenter extends Command {
+public class DriveToSwitchFromCenter extends SideDependentTrajectoryExecutor {
     
     public static final double X_OFFSET = 0;
     public static final double Y_OFFSET = MathUtil.feet2inches(12.21);
@@ -32,35 +33,14 @@ public class DriveToSwitchFromCenter extends Command {
                     new Waypoint(MathUtil.feet2inches(10.33) - X_OFFSET, MathUtil.feet2inches(9) - Y_OFFSET, 0)
             };
 
-    private TrajectoryExecutor leftEx;
-    private TrajectoryExecutor rightEx;
-    private TrajectoryExecutor selectedEx;
-    private Side[] fieldData;
 
     public DriveToSwitchFromCenter() {
         requires(Robot.runningRobot.driveTrain);
-        leftEx = new TrajectoryExecutor(LEFT_PATH, false,0);
-        rightEx = new TrajectoryExecutor(RIGHT_PATH, false,0);
+        leftExecutor = new TrajectoryExecutor(LEFT_PATH, false,0);
+        rightExecutor = new TrajectoryExecutor(RIGHT_PATH, false,0);
     }
 
-    @Override
-    protected void initialize() {
-        fieldData = Robot.runningRobot.getSide();
-        if (fieldData[0] == Side.LEFT) {
-            selectedEx = leftEx;
-        } else {
-            selectedEx = rightEx;
-        }
-        selectedEx.start();
-    }
-
-    @Override
-    protected boolean isFinished() {
-        return selectedEx.isFinished();
-    }
-    
-    @Override
-    protected void interrupted() {
-        selectedEx.stop();
+    protected boolean isRightSide() {
+        return Robot.runningRobot.getSide()[0] == Side.RIGHT;
     }
 }

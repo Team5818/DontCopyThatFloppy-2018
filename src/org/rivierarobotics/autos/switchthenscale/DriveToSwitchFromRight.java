@@ -1,5 +1,6 @@
 package org.rivierarobotics.autos.switchthenscale;
 
+import org.rivierarobotics.autos.SideDependentTrajectoryExecutor;
 import org.rivierarobotics.constants.RobotConstants;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.pathfollowing.TrajectoryExecutor;
@@ -10,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
-public class DriveToSwitchFromRight extends Command {
+public class DriveToSwitchFromRight extends SideDependentTrajectoryExecutor {
 
     public static final double WALL_TO_START_CORNER = 28.8;// inches
 
@@ -40,35 +41,13 @@ public class DriveToSwitchFromRight extends Command {
                     MathUtil.feet2inches(21.32) - RobotConstants.TOTAL_ROBOT_WIDTH / 2.0 - WALL_TO_START_CORNER,
                     Pathfinder.d2r(270)) };
 
-    private TrajectoryExecutor leftEx;
-    private TrajectoryExecutor rightEx;
-    private TrajectoryExecutor selectedEx;
-    private Side[] fieldData;
-
     public DriveToSwitchFromRight() {
         requires(Robot.runningRobot.driveTrain);
-        leftEx = new TrajectoryExecutor(LEFT_PATH, false, 0);
-        rightEx = new TrajectoryExecutor(RIGHT_PATH, false, 0);
+        leftExecutor = new TrajectoryExecutor(LEFT_PATH, false, 0);
+        rightExecutor = new TrajectoryExecutor(RIGHT_PATH, false, 0);
     }
 
-    @Override
-    protected void initialize() {
-        fieldData = new Side[] { Side.RIGHT, Side.RIGHT, Side.RIGHT };// Robot.runningRobot.getSide();
-        if (fieldData[0] == Side.LEFT) {
-            selectedEx = leftEx;
-        } else {
-            selectedEx = rightEx;
-        }
-        selectedEx.start();
-    }
-
-    @Override
-    protected boolean isFinished() {
-        return selectedEx.isFinished();
-    }
-
-    @Override
-    protected void interrupted() {
-        selectedEx.stop();
+    protected boolean isRightSide() {
+        return Robot.runningRobot.getSide()[0] == Side.RIGHT;
     }
 }
