@@ -54,7 +54,7 @@ public class Floppies extends Subsystem {
 
     public boolean cubeInPlace()// gets switch data
     {
-        return (!leftSwitch.get() && !rightSwitch.get());
+        return (!leftSwitch.get() || !rightSwitch.get());
     }
     
     public boolean leftSwitchAcitve() {
