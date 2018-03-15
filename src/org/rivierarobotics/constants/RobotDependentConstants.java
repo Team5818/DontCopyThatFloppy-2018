@@ -51,7 +51,7 @@ public abstract class RobotDependentConstants {
     }
     
     public double getUpperArmSoftLimit() {
-        return getLowerArmSoftLimit() + 1912;
+        return getLowerArmSoftLimit() + 1850;
     }
     
     public abstract double getLowerArmSoftLimit();

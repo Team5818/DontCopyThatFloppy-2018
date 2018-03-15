@@ -9,6 +9,7 @@ package org.rivierarobotics.robot;
 import org.rivierarobotics.autos.centerswitch.CenterSwitchAuto;
 import org.rivierarobotics.autos.rightscale.TwoCubeScaleAuto;
 import org.rivierarobotics.commands.CompressorControlCommand;
+import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.driverinterface.Driver;
 import org.rivierarobotics.subsystems.Arm;
@@ -30,6 +31,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import jaci.pathfinder.Waypoint;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -39,6 +41,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
+
     private Command autonomousCommand;
     private SendableChooser<Command> chooser = new SendableChooser<>();
     public DriveTrain driveTrain;
@@ -71,12 +74,14 @@ public class Robot extends TimedRobot {
         compressor = new Compressor();
         driver = new Driver();
 
-        String[] fields = { "Pos", "Vel", "Set Pos","Set Vel","Heading","Set Heading","Time"};
+        String[] fields = { "Pos", "Vel", "Set Pos", "Set Vel", "Heading", "Set Heading", "Time" };
         logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG", fields);
-        
+
         chooser.addDefault("Default Auto", new CenterSwitchAuto());
         chooser.addObject("Center Switch", new CenterSwitchAuto());
         chooser.addObject("Two Cube Scale", new TwoCubeScaleAuto());
+        chooser.addObject("Test Drive", new ExecuteTrajectoryCommand(
+                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(48, 0, 0) }, false, 0));
         SmartDashboard.putData("Auto choices", chooser);
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
     }
@@ -95,7 +100,7 @@ public class Robot extends TimedRobot {
 
         fieldData = side;
     }
-    
+
     public Side[] getSide() {
         return fieldData;
     }
@@ -115,7 +120,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         queryFieldData();
-        while(fieldData[0] == null) {
+        while (fieldData[0] == null) {
             queryFieldData();
             DriverStation.reportError("Warning: Didn't get field data on first try!", false);
         }
@@ -125,7 +130,7 @@ public class Robot extends TimedRobot {
         autonomousCommand = chooser.getSelected();
         if (autonomousCommand != null) {
             autonomousCommand.start();
-        } 
+        }
     }
 
     /**
@@ -143,7 +148,7 @@ public class Robot extends TimedRobot {
             autonomousCommand.cancel();
         }
         compDisable.start();
-        if(camCollect == null) {
+        if (camCollect == null) {
             camCollect = CameraServer.getInstance().startAutomaticCapture(0);
             camBack = CameraServer.getInstance().startAutomaticCapture(1);
             camServer = CameraServer.getInstance().getServer();
