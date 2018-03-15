@@ -21,7 +21,7 @@ public class DriveToScaleRight extends SideDependentTrajectoryExecutor{
     public static final Waypoint[] RIGHT_PATH = new Waypoint[] {
             new Waypoint(0, 0, 0),
             new Waypoint(MathUtil.feet2inches(15) - X_OFFSET, 0, 0),
-            new Waypoint(MathUtil.feet2inches(25) - X_OFFSET, MathUtil.feet2inches(7.4) - Y_OFFSET, 0)
+            new Waypoint(MathUtil.feet2inches(25) - X_OFFSET, MathUtil.feet2inches(10) - Y_OFFSET, 0)
     };
 
 
