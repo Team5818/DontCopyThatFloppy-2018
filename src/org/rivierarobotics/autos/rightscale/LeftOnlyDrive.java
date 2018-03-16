@@ -11,7 +11,7 @@ public class LeftOnlyDrive extends SideDependentTrajectoryExecutor{
     
     public LeftOnlyDrive() {
         leftExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(78,0,0)},false,0);
-        rightExecutor = null;
+        rightExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(2,0,0)},false,0);
     }
 
     @Override

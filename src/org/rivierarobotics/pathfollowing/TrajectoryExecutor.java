@@ -69,7 +69,7 @@ public class TrajectoryExecutor implements Runnable {
     public TrajectoryExecutor(Waypoint[] waypoints, Trajectory.Config config, double time, boolean rev, double gyroOffset, double kGyro) {
         driveTrain = Robot.runningRobot.driveTrain;
         reversed = rev;
-        kHeading = kGyro;
+        kHeading = 0.0;//kGyro;
         directionMultiplier = reversed ? -1 : 1;
         DriverStation.reportError("starting generation...", false);
         master = Pathfinder.generate(waypoints, config);

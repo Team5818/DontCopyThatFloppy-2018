@@ -3,6 +3,7 @@ import org.rivierarobotics.constants.RobotConstants;
 import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.subsystems.DriveTrain;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import jaci.pathfinder.Pathfinder;
 
@@ -40,6 +41,7 @@ public abstract class SideDependentSpin extends Command{
     @Override
     protected boolean isFinished() {
         if(Double.isNaN(selectedTarget)) {
+            DriverStation.reportError("we done spinning", false);
             return true;
         }
         return Math.abs(Pathfinder.boundHalfDegrees(selectedTarget - dt.getYaw())) < 1

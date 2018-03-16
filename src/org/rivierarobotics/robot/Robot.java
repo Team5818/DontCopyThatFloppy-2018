@@ -102,7 +102,7 @@ public class Robot extends TimedRobot {
                     side[x] = Side.RIGHT;
             }
         }
-        fieldData = side;
+        fieldData = new Side[] {Side.RIGHT,Side.LEFT,Side.RIGHT};//side;
     }
 
     public Side[] getSide() {
