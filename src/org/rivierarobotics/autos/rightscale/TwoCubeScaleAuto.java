@@ -15,6 +15,7 @@ import jaci.pathfinder.Waypoint;
 public class TwoCubeScaleAuto extends CommandGroup {
     
     public TwoCubeScaleAuto() {
+        
         CommandGroup driveToScale = new CommandGroup();
         CommandGroup raiseGroup = new CommandGroup();
         driveToScale.addParallel(new DriveToScaleRight());

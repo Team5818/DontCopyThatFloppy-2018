@@ -32,12 +32,13 @@ public class TrajectoryExecutor implements Runnable {
     public static final double KV = 0.0086;
     public static final double KA = 0.0024;
     public static final double K_OFFSET = 0.045;
-    public static final double K_HEADING = 0.03;
+    public static final double K_HEADING_DEFAULT = 0.03;
 
     public enum TrajectoryExecutionState {
         STATE_STABILIZING_TIMING, STATE_RUNNING_PROFILE, STATE_FINISHED
     }
 
+    private double kHeading;
     private DriveTrain driveTrain;
     private TrajectoryExecutionState currState = TrajectoryExecutionState.STATE_STABILIZING_TIMING;
     private CircularBuffer dtBuffer;
@@ -65,9 +66,10 @@ public class TrajectoryExecutor implements Runnable {
     public static final Trajectory.Config DEFAULT_CONFIG = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
             Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, DEFAULT_MAX_VEL, DEFAULT_MAX_ACCEL, DEFAULT_MAX_JERK);
 
-    public TrajectoryExecutor(Waypoint[] waypoints, Trajectory.Config config, double time, boolean rev, double gyroOffset) {
+    public TrajectoryExecutor(Waypoint[] waypoints, Trajectory.Config config, double time, boolean rev, double gyroOffset, double kGyro) {
         driveTrain = Robot.runningRobot.driveTrain;
         reversed = rev;
+        kHeading = kGyro;
         directionMultiplier = reversed ? -1 : 1;
         DriverStation.reportError("starting generation...", false);
         master = Pathfinder.generate(waypoints, config);
@@ -98,11 +100,15 @@ public class TrajectoryExecutor implements Runnable {
     }
 
     public TrajectoryExecutor(Waypoint[] waypoints, double time, boolean rev, double gyroOffset) {
-        this(waypoints, DEFAULT_CONFIG, time, rev, gyroOffset);
+        this(waypoints, DEFAULT_CONFIG, time, rev, gyroOffset, K_HEADING_DEFAULT);
     }
 
     public TrajectoryExecutor(Waypoint[] waypoints, boolean rev, double gyroOffset) {
-        this(waypoints, DEFAULT_CONFIG, DEFAULT_TIMEOUT, rev, gyroOffset);
+        this(waypoints, DEFAULT_CONFIG, DEFAULT_TIMEOUT, rev, gyroOffset, K_HEADING_DEFAULT);
+    }
+    
+    public TrajectoryExecutor(Waypoint[] waypoints, boolean rev, double gyroOffset, double kGyro) {
+        this(waypoints, DEFAULT_CONFIG, DEFAULT_TIMEOUT, rev, gyroOffset, kGyro);
     }
 
     public void fillBuffer(double val) {
@@ -152,8 +158,8 @@ public class TrajectoryExecutor implements Runnable {
                 Segment seg = leftFollow.getSegment();
 
                 double headDiff = Pathfinder.boundHalfDegrees(currentHeading + gyroCompensator - Pathfinder.r2d(seg.heading));
-                double leftGyroPower = K_HEADING * headDiff;
-                double rightGyroPower = -K_HEADING * headDiff;
+                double leftGyroPower = kHeading * headDiff;
+                double rightGyroPower = -kHeading * headDiff;
                 double leftTwist =
                         leftGyroPower / KV / DriveTrainSide.DIST_PER_REV * DriveTrainSide.ENCODER_CODES_PER_REV * dt;
                 double rightTwist =

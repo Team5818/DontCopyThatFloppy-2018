@@ -37,7 +37,7 @@ public class DriveToSwitchFromCenter extends SideDependentTrajectoryExecutor {
     public DriveToSwitchFromCenter() {
         requires(Robot.runningRobot.driveTrain);
         leftExecutor = new TrajectoryExecutor(LEFT_PATH, false,0);
-        rightExecutor = new TrajectoryExecutor(RIGHT_PATH, false,0);
+        rightExecutor = new TrajectoryExecutor(RIGHT_PATH, false, 0);
     }
 
     protected boolean isRightSide() {

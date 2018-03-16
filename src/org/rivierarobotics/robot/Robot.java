@@ -101,7 +101,7 @@ public class Robot extends TimedRobot {
                     side[x] = Side.RIGHT;
             }
         }
-        fieldData = side;
+        fieldData = new Side[] {side[0],Side.LEFT,Side.LEFT};;
     }
 
     public Side[] getSide() {
@@ -149,7 +149,9 @@ public class Robot extends TimedRobot {
         compDisable.start();
         if (camCollect == null) {
             camCollect = CameraServer.getInstance().startAutomaticCapture(0);
+            camCollect.setResolution(160, 120);
             camBack = CameraServer.getInstance().startAutomaticCapture(1);
+            camBack.setResolution(160, 120);
             camServer = CameraServer.getInstance().getServer();
         }
         arm.stop();
