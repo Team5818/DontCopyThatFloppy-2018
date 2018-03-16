@@ -38,8 +38,10 @@ public class ControlMap {
 
     public static final int COLLECT_CAM_BUTTON = 2;
 
-    public static final int CLIMB_MODE_BUTTON = 6;
+    public static final int REMOVE_ARM_LIMIT_BUTTON = 7;
 
+    public static final int START_WINCHING_BUTTON = 6;
+    
     public static final int REENGAGE_ARM_BUTTON = 5;
 
     public static final int DISENGAGE_ARM_BUTTON = 4;

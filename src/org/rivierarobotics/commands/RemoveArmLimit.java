@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class StartClimbMode extends CommandGroup {
+public class RemoveArmLimit extends CommandGroup {
 
-    public StartClimbMode(Joystick js) {
+    public RemoveArmLimit(Joystick js) {
         this.addSequential(new Command() {
 
             @Override
@@ -22,7 +22,6 @@ public class StartClimbMode extends CommandGroup {
             }
 
         });
-        this.addSequential(new StartWinching());
         this.addSequential(new ArmControlClimbMode(js));
 
     }

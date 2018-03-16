@@ -11,7 +11,8 @@ import org.rivierarobotics.commands.SetArmEngaged;
 import org.rivierarobotics.commands.SetClampOpen;
 import org.rivierarobotics.commands.SetDrivePower;
 import org.rivierarobotics.commands.ShiftGear;
-import org.rivierarobotics.commands.StartClimbMode;
+import org.rivierarobotics.commands.StartWinching;
+import org.rivierarobotics.commands.RemoveArmLimit;
 import org.rivierarobotics.constants.ControlMap;
 import org.rivierarobotics.constants.RobotDependentConstants;
 import org.rivierarobotics.subsystems.DriveTrain;
@@ -53,7 +54,8 @@ public class Driver {
         JoystickButton shiftLow = new JoystickButton(JS_FW_BACK, ControlMap.SHIFT_LOW_BUTTON);
         JoystickButton shiftHigh = new JoystickButton(JS_FW_BACK, ControlMap.SHIFT_HIGH_BUTTON);
 
-        JoystickButton enterClimbButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.CLIMB_MODE_BUTTON);
+        JoystickButton removeArmLimitButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.REMOVE_ARM_LIMIT_BUTTON);
+        JoystickButton startWinchingButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.START_WINCHING_BUTTON);
         JoystickButton reengageArmButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.REENGAGE_ARM_BUTTON);
         JoystickButton disengageArmButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.DISENGAGE_ARM_BUTTON);
         JoystickButton lockWinchButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.LOCK_WINCH_BUTTON);
@@ -79,7 +81,8 @@ public class Driver {
         shiftHigh.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_HIGH));
         autoCollectButton.whenPressed(new CollectGrabRaise(true));
 
-        enterClimbButton.whenPressed(new StartClimbMode(JS_ARM));//engage PTO + disengage arm
+        removeArmLimitButton.whenPressed(new RemoveArmLimit(JS_ARM));//engage PTO + disengage arm
+        startWinchingButton.whenPressed(new StartWinching());
         reengageArmButton.whenPressed(new SetArmEngaged(true));//reengage + lower arm, winching at same time
         disengageArmButton.whenPressed(new SetArmEngaged(false));//disengage arm when it hits bottom
         lockWinchButton.whenPressed(new SetArmBrake(true));//lock robot in place after climb   
