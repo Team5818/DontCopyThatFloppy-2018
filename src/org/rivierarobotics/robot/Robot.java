@@ -45,8 +45,8 @@ import jaci.pathfinder.Waypoint;
 public class Robot extends TimedRobot {
 
     private Command autonomousCommand;
-    private Command switchOffAuto;
-    private Command switchOnAuto;
+    private Command switchInAuto;
+    private Command switchOutAuto;
     private SendableChooser<Command> chooser = new SendableChooser<>();
     public DriveTrain driveTrain;
     public Driver driver;
@@ -83,8 +83,8 @@ public class Robot extends TimedRobot {
         String[] fields = { "Pos", "Vel", "Set Pos", "Set Vel", "Heading", "Set Heading", "Time" };
         logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG", fields);
 
-        switchOffAuto = new CenterSwitchAuto();
-        switchOnAuto = new TwoCubeScaleAuto();
+        switchInAuto = new CenterSwitchAuto();
+        switchOutAuto = new TwoCubeScaleAuto();
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
     }
 
@@ -103,7 +103,7 @@ public class Robot extends TimedRobot {
                     side[x] = Side.RIGHT;
             }
         }
-        fieldData = new Side[] {side[0],Side.LEFT,Side.LEFT};;
+        fieldData = new Side[] {Side.LEFT,Side.LEFT,Side.LEFT};;
     }
 
     public Side[] getSide() {
@@ -129,10 +129,10 @@ public class Robot extends TimedRobot {
         driveTrain.shiftGear(DriveGear.GEAR_LOW);
         compressor.stop();
         if(autoSelector.get()) {
-            autonomousCommand = switchOnAuto;
+            autonomousCommand = switchOutAuto;
         }
         else{
-            autonomousCommand = switchOffAuto;
+            autonomousCommand = switchInAuto;
         }
 
         if (autonomousCommand != null) {
@@ -202,6 +202,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Left Inches", driveTrain.getDistanceInches().getX());
         SmartDashboard.putNumber("Right Inches", driveTrain.getDistanceInches().getY());
         SmartDashboard.putNumber("Avg Inches", driveTrain.getAvgSidePositionInches());
+        SmartDashboard.putBoolean("Auto Chooser", autoSelector.get());
         SmartDashboard.putNumber("Yaw", driveTrain.getYaw());
     }
 }

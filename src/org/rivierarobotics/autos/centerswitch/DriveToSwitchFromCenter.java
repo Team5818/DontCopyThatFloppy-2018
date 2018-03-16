@@ -18,9 +18,7 @@ public class DriveToSwitchFromCenter extends SideDependentTrajectoryExecutor {
     public static final Waypoint[] LEFT_PATH =
             new Waypoint[] { 
                     new Waypoint(0, 0, 0), 
-                    new Waypoint(MathUtil.feet2inches(2) - X_OFFSET, MathUtil.feet2inches(12.21) - Y_OFFSET, 0),
-                    new Waypoint(MathUtil.feet2inches(6) - X_OFFSET, MathUtil.feet2inches(15) - Y_OFFSET, Pathfinder.d2r(60)),
-                    new Waypoint(MathUtil.feet2inches(9) - X_OFFSET, MathUtil.feet2inches(18) - Y_OFFSET, 0),
+                    new Waypoint(MathUtil.feet2inches(5) - X_OFFSET, MathUtil.feet2inches(15) - Y_OFFSET, Pathfinder.d2r(45)),
                     new Waypoint(MathUtil.feet2inches(10.33) - X_OFFSET, MathUtil.feet2inches(18) - Y_OFFSET, 0)
             };
 
@@ -37,7 +35,7 @@ public class DriveToSwitchFromCenter extends SideDependentTrajectoryExecutor {
     public DriveToSwitchFromCenter() {
         requires(Robot.runningRobot.driveTrain);
         leftExecutor = new TrajectoryExecutor(LEFT_PATH, false,0);
-        rightExecutor = new TrajectoryExecutor(RIGHT_PATH, false, 0);
+        rightExecutor = new TrajectoryExecutor(RIGHT_PATH, false,0);
     }
 
     protected boolean isRightSide() {
