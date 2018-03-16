@@ -10,6 +10,7 @@ import org.rivierarobotics.autos.centerswitch.CenterSwitchAuto;
 import org.rivierarobotics.autos.rightscale.TwoCubeScaleAuto;
 import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
+import org.rivierarobotics.constants.RobotMap;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.driverinterface.Driver;
 import org.rivierarobotics.subsystems.Arm;
@@ -23,6 +24,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -43,6 +45,8 @@ import jaci.pathfinder.Waypoint;
 public class Robot extends TimedRobot {
 
     private Command autonomousCommand;
+    private Command switchOffAuto;
+    private Command switchOnAuto;
     private SendableChooser<Command> chooser = new SendableChooser<>();
     public DriveTrain driveTrain;
     public Driver driver;
@@ -56,6 +60,7 @@ public class Robot extends TimedRobot {
     public Side[] fieldData;
     public PowerDistributionPanel pdp;
     public Compressor compressor;
+    public DigitalInput autoSelector;
     private CompressorControlCommand compDisable;
     public static Robot runningRobot;
 
@@ -73,16 +78,13 @@ public class Robot extends TimedRobot {
         pdp = new PowerDistributionPanel();
         compressor = new Compressor();
         driver = new Driver();
+        autoSelector = new DigitalInput(RobotMap.AUTO_SELECTOR_SWITCH);
 
         String[] fields = { "Pos", "Vel", "Set Pos", "Set Vel", "Heading", "Set Heading", "Time" };
         logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG", fields);
 
-        chooser.addDefault("Default Auto", new CenterSwitchAuto());
-        chooser.addObject("Center Switch", new CenterSwitchAuto());
-        chooser.addObject("Two Cube Scale", new TwoCubeScaleAuto());
-        chooser.addObject("Test Drive", new ExecuteTrajectoryCommand(
-                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(48, 0, 0) }, false, 0));
-        SmartDashboard.putData("Auto choices", chooser);
+        switchOffAuto = new CenterSwitchAuto();
+        switchOnAuto = new TwoCubeScaleAuto();
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
     }
 
@@ -126,7 +128,13 @@ public class Robot extends TimedRobot {
         driveTrain.resetGyro();
         driveTrain.shiftGear(DriveGear.GEAR_LOW);
         compressor.stop();
-        autonomousCommand = chooser.getSelected();
+        if(autoSelector.get()) {
+            autonomousCommand = switchOnAuto;
+        }
+        else{
+            autonomousCommand = switchOffAuto;
+        }
+
         if (autonomousCommand != null) {
             autonomousCommand.start();
         }
