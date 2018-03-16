@@ -53,8 +53,6 @@ public class Robot extends TimedRobot {
     public Floppies floppies;
     public Clamp clamp;
     public UsbCamera camCollect;
-    public UsbCamera camBack;
-    public VideoSink camServer;
     public CSVLogger logger;
     public Side[] fieldData;
     public PowerDistributionPanel pdp;
@@ -102,7 +100,7 @@ public class Robot extends TimedRobot {
                     side[x] = Side.RIGHT;
             }
         }
-        fieldData = new Side[] {Side.RIGHT,Side.LEFT,Side.RIGHT};//side;
+        fieldData = side;
     }
 
     public Side[] getSide() {
@@ -157,9 +155,6 @@ public class Robot extends TimedRobot {
         if (camCollect == null) {
             camCollect = CameraServer.getInstance().startAutomaticCapture(0);
             camCollect.setResolution(160, 120);
-            camBack = CameraServer.getInstance().startAutomaticCapture(1);
-            camBack.setResolution(160, 120);
-            camServer = CameraServer.getInstance().getServer();
         }
         arm.stop();
     }

@@ -8,7 +8,6 @@ import org.rivierarobotics.commands.MagicSpin;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
 import org.rivierarobotics.commands.SetArmBrake;
 import org.rivierarobotics.commands.SetArmEngaged;
-import org.rivierarobotics.commands.SetCameraCollect;
 import org.rivierarobotics.commands.SetClampOpen;
 import org.rivierarobotics.commands.SetDrivePower;
 import org.rivierarobotics.commands.ShiftGear;
@@ -53,8 +52,6 @@ public class Driver {
                 new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_BACK);
         JoystickButton shiftLow = new JoystickButton(JS_FW_BACK, ControlMap.SHIFT_LOW_BUTTON);
         JoystickButton shiftHigh = new JoystickButton(JS_FW_BACK, ControlMap.SHIFT_HIGH_BUTTON);
-        JoystickButton backCamButton = new JoystickButton(JS_TURN, ControlMap.BACK_CAM_BUTTON);
-        JoystickButton collectCamButton = new JoystickButton(JS_TURN, ControlMap.COLLECT_CAM_BUTTON);
 
         JoystickButton enterClimbButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.CLIMB_MODE_BUTTON);
         JoystickButton reengageArmButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.REENGAGE_ARM_BUTTON);
@@ -80,8 +77,6 @@ public class Driver {
                 .whenPressed(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionBack()));
         shiftLow.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_LOW));
         shiftHigh.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_HIGH));
-        backCamButton.whenPressed(new SetCameraCollect(false));
-        collectCamButton.whenPressed(new SetCameraCollect(true));
         autoCollectButton.whenPressed(new CollectGrabRaise(true));
 
         enterClimbButton.whenPressed(new StartClimbMode(JS_ARM));//engage PTO + disengage arm
