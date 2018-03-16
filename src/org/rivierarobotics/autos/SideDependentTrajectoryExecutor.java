@@ -23,16 +23,23 @@ public abstract class SideDependentTrajectoryExecutor extends Command{
         else {
             selectedExecutor = leftExecutor;
         }
-        selectedExecutor.start();
+        if(selectedExecutor != null) {
+            selectedExecutor.start();
+        }
     }
     
     @Override
     protected boolean isFinished() {
+        if(selectedExecutor == null) {
+            return true;
+        }
         return selectedExecutor.isFinished();
     }
     
     @Override
     protected void interrupted() {
-        selectedExecutor.stop();
+        if(selectedExecutor != null) {
+            selectedExecutor.stop();
+        }
     }
 }

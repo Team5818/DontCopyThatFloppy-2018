@@ -47,7 +47,6 @@ public class Robot extends TimedRobot {
     private Command autonomousCommand;
     private Command switchInAuto;
     private Command switchOutAuto;
-    private SendableChooser<Command> chooser = new SendableChooser<>();
     public DriveTrain driveTrain;
     public Driver driver;
     public Arm arm;
@@ -103,7 +102,7 @@ public class Robot extends TimedRobot {
                     side[x] = Side.RIGHT;
             }
         }
-        fieldData = new Side[] {Side.LEFT,Side.LEFT,Side.LEFT};;
+        fieldData = side;
     }
 
     public Side[] getSide() {
