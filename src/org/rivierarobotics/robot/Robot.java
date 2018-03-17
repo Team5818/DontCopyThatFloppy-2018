@@ -78,7 +78,7 @@ public class Robot extends TimedRobot {
         autoSelector = new DigitalInput(RobotMap.AUTO_SELECTOR_SWITCH);
 
         String[] fields = { "Pos", "Vel", "Set Pos", "Set Vel", "Heading", "Set Heading", "Time" };
-        logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG", fields);
+        logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG_POMONA", fields);
 
         switchInAuto = new CenterSwitchAuto();
         switchOutAuto = new TwoCubeScaleAuto();
@@ -100,7 +100,7 @@ public class Robot extends TimedRobot {
                     side[x] = Side.RIGHT;
             }
         }
-        fieldData = side;
+        fieldData = new Side[] {Side.RIGHT,Side.RIGHT,Side.RIGHT};
     }
 
     public Side[] getSide() {
