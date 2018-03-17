@@ -89,7 +89,7 @@ public class Robot extends TimedRobot {
         String gameSide = DriverStation.getInstance().getGameSpecificMessage();
         Side[] side = new Side[3];
         if(gameSide.length() < 3) {
-            side = new Side[] {Side.RIGHT,Side.RIGHT,Side.RIGHT};
+            side = new Side[] {Side.LEFT,Side.LEFT,Side.LEFT};
             DriverStation.reportError("no game data", false);
         }
         else {
@@ -154,7 +154,7 @@ public class Robot extends TimedRobot {
         compDisable.start();
         if (camCollect == null) {
             camCollect = CameraServer.getInstance().startAutomaticCapture(0);
-            camCollect.setResolution(160, 120);
+            camCollect.setResolution(320, 240);
         }
         arm.stop();
     }

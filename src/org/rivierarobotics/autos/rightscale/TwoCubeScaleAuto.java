@@ -1,6 +1,5 @@
 package org.rivierarobotics.autos.rightscale;
 
-import org.rivierarobotics.autos.switchthenscale.CubeToScaleSTS;
 import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
 import org.rivierarobotics.commands.MagicSpin;
