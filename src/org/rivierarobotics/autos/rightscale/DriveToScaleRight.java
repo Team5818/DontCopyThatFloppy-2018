@@ -13,7 +13,7 @@ import jaci.pathfinder.Waypoint;
 
 public class DriveToScaleRight extends SideDependentTrajectoryExecutor {
 
-    public static final double X_OFFSET = RobotConstants.WHEEL_BASE_WIDTH / 2;
+    public static final double X_OFFSET = RobotConstants.TOTAL_ROBOT_LENGTH / 2;
     public static final double Y_OFFSET = MathUtil.feet2inches(3.68) + RobotConstants.TOTAL_ROBOT_WIDTH / 2;
     public static final double RIGHT_PLACING_X = MathUtil.feet2inches(26.5);
     public static final double RIGHT_PLACING_Y = MathUtil.feet2inches(7.0);

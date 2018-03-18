@@ -21,6 +21,7 @@ import org.rivierarobotics.subsystems.Floppies;
 import org.rivierarobotics.util.CSVLogger;
 
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
@@ -77,8 +78,9 @@ public class Robot extends TimedRobot {
         driver = new Driver();
         autoSelector = new DigitalInput(RobotMap.AUTO_SELECTOR_SWITCH);
 
-        String[] fields = { "Pos", "Vel", "Set Pos", "Set Vel", "Heading", "Set Heading", "Time" };
-        logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG_POMONA", fields);
+        String[] fields = { "PosL", "PosR", "VelL", "VelR", "Set Pos L", "Set Pos R", "Set Vel L", "Set Vel R",
+                "Left Gyro Integ", "Right Gyro Integ", "Heading", "Set Heading", "LPow", "RPow", "Time" };
+        logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG_VERBOSE", fields);
 
         switchInAuto = new CenterSwitchAuto();
         switchOutAuto = new TwoCubeScaleAuto();
@@ -88,11 +90,10 @@ public class Robot extends TimedRobot {
     public void queryFieldData() {
         String gameSide = DriverStation.getInstance().getGameSpecificMessage();
         Side[] side = new Side[3];
-        if(gameSide.length() < 3) {
-            side = new Side[] {Side.LEFT,Side.LEFT,Side.LEFT};
+        if (gameSide.length() < 3) {
+            side = new Side[] { Side.LEFT, Side.LEFT, Side.LEFT };
             DriverStation.reportError("no game data", false);
-        }
-        else {
+        } else {
             for (int x = 0; x < 3; x++) {
                 if (gameSide.charAt(x) == 'L')
                     side[x] = Side.LEFT;
@@ -100,7 +101,7 @@ public class Robot extends TimedRobot {
                     side[x] = Side.RIGHT;
             }
         }
-        fieldData = new Side[] {Side.RIGHT,Side.RIGHT,Side.RIGHT};
+        fieldData = side;
     }
 
     public Side[] getSide() {
@@ -125,10 +126,9 @@ public class Robot extends TimedRobot {
         driveTrain.resetGyro();
         driveTrain.shiftGear(DriveGear.GEAR_LOW);
         compressor.stop();
-        if(autoSelector.get()) {
+        if (autoSelector.get()) {
             autonomousCommand = switchOutAuto;
-        }
-        else{
+        } else {
             autonomousCommand = switchInAuto;
         }
 
@@ -154,7 +154,10 @@ public class Robot extends TimedRobot {
         compDisable.start();
         if (camCollect == null) {
             camCollect = CameraServer.getInstance().startAutomaticCapture(0);
-            camCollect.setResolution(320, 240);
+            boolean setCam = camCollect.setVideoMode(PixelFormat.kMJPEG, 320, 240, 30);
+            if (!setCam) {
+                DriverStation.reportError("Failed to set camera parameters", false);
+            }
         }
         arm.stop();
     }

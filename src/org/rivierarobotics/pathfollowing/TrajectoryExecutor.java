@@ -66,7 +66,8 @@ public class TrajectoryExecutor implements Runnable {
     public static final Trajectory.Config DEFAULT_CONFIG = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
             Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, DEFAULT_MAX_VEL, DEFAULT_MAX_ACCEL, DEFAULT_MAX_JERK);
 
-    public TrajectoryExecutor(Waypoint[] waypoints, Trajectory.Config config, double time, boolean rev, double gyroOffset, double kGyro) {
+    public TrajectoryExecutor(Waypoint[] waypoints, Trajectory.Config config, double time, boolean rev,
+            double gyroOffset, double kGyro) {
         driveTrain = Robot.runningRobot.driveTrain;
         reversed = rev;
         kHeading = kGyro;
@@ -106,7 +107,7 @@ public class TrajectoryExecutor implements Runnable {
     public TrajectoryExecutor(Waypoint[] waypoints, boolean rev, double gyroOffset) {
         this(waypoints, DEFAULT_CONFIG, DEFAULT_TIMEOUT, rev, gyroOffset, K_HEADING_DEFAULT);
     }
-    
+
     public TrajectoryExecutor(Waypoint[] waypoints, boolean rev, double gyroOffset, double kGyro) {
         this(waypoints, DEFAULT_CONFIG, DEFAULT_TIMEOUT, rev, gyroOffset, kGyro);
     }
@@ -155,9 +156,10 @@ public class TrajectoryExecutor implements Runnable {
             case STATE_RUNNING_PROFILE:
                 currentPos = driveTrain.getDistance();
                 currentHeading = driveTrain.getYaw();
-                Segment seg = leftFollow.getSegment();
-
-                double headDiff = Pathfinder.boundHalfDegrees(currentHeading + gyroCompensator - Pathfinder.r2d(seg.heading));
+                Segment segL = leftFollow.getSegment();
+                Segment segR = leftFollow.getSegment();
+                double headDiff =
+                        Pathfinder.boundHalfDegrees(currentHeading + gyroCompensator - Pathfinder.r2d(segL.heading));
                 double leftGyroPower = kHeading * headDiff;
                 double rightGyroPower = -kHeading * headDiff;
                 double leftTwist =
@@ -169,14 +171,18 @@ public class TrajectoryExecutor implements Runnable {
 
                 double left = directionMultiplier * (leftFollow
                         .calculate(directionMultiplier * ((int) currentPos.getX() - (int) leftGyroIntegrator))
-                        + K_OFFSET * Math.signum(seg.velocity));
+                        + K_OFFSET * Math.signum(segL.velocity));
                 double right = directionMultiplier * (rightFollow
                         .calculate(directionMultiplier * ((int) currentPos.getY() - (int) rightGyroIntegrator))
-                        + K_OFFSET * Math.signum(seg.velocity));
+                        + K_OFFSET * Math.signum(segR.velocity));
                 driveTrain.setPowerLeftRight(left, right);
-                Robot.runningRobot.logger.storeValue(
-                        new double[] { (currentPos.getX() + currentPos.getY()) / 2, driveTrain.getAvgSideVelocity(),
-                                seg.position, seg.velocity, currentHeading, Pathfinder.r2d(seg.heading), time });
+                Vector2d vel = driveTrain.getVelocityIPS();
+                Robot.runningRobot.logger.storeValue(new double[] {
+                        currentPos.getX() / DriveTrainSide.ENCODER_CODES_PER_REV * DriveTrainSide.DIST_PER_REV / 4.0,
+                        currentPos.getY() / DriveTrainSide.ENCODER_CODES_PER_REV * DriveTrainSide.DIST_PER_REV / 4.0,
+                        vel.getX(), vel.getY(), segL.position, segR.position, segL.velocity, segR.velocity,
+                        leftGyroIntegrator, rightGyroIntegrator, currentHeading, Pathfinder.r2d(segL.heading), left,
+                        right, time });
                 if (leftFollow.isFinished() || rightFollow.isFinished() || time > endTime) {
                     currState = TrajectoryExecutionState.STATE_FINISHED;
                 }

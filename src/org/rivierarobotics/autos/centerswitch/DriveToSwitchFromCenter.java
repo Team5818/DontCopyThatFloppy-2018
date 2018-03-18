@@ -19,7 +19,7 @@ public class DriveToSwitchFromCenter extends SideDependentTrajectoryExecutor {
             new Waypoint[] { 
                     new Waypoint(0, 0, 0), 
                     new Waypoint(MathUtil.feet2inches(3.5) - X_OFFSET, MathUtil.feet2inches(15) - Y_OFFSET, Pathfinder.d2r(45)),
-                    new Waypoint(MathUtil.feet2inches(10.33) - X_OFFSET, MathUtil.feet2inches(18) - Y_OFFSET, 0)
+                    new Waypoint(MathUtil.feet2inches(10.33) - X_OFFSET, MathUtil.feet2inches(17) - Y_OFFSET, 0)
             };
 
     public static final Waypoint[] RIGHT_PATH =
