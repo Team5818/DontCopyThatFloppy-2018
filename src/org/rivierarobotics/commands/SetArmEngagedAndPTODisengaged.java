@@ -6,18 +6,18 @@ import org.rivierarobotics.subsystems.Arm;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class SetArmEngaged extends Command{
+public class SetArmEngagedAndPTODisengaged extends Command{
     Arm arm;
     boolean locked;
     
-    public SetArmEngaged(boolean l) {
+    public SetArmEngagedAndPTODisengaged(boolean l) {
         arm = Robot.runningRobot.arm;
         locked = l;
     }
     
     @Override
     protected void initialize() {
-        arm.setArmEngaged(locked);
+        arm.setArmEngagedAndPTODisengaged(locked);
     }
 
     @Override

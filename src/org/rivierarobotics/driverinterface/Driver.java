@@ -7,7 +7,7 @@ import org.rivierarobotics.commands.LeaveClimbCommand;
 import org.rivierarobotics.commands.MagicSpin;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
 import org.rivierarobotics.commands.SetArmBrake;
-import org.rivierarobotics.commands.SetArmEngaged;
+import org.rivierarobotics.commands.SetArmEngagedAndPTODisengaged;
 import org.rivierarobotics.commands.SetClampOpen;
 import org.rivierarobotics.commands.SetDrivePower;
 import org.rivierarobotics.commands.ShiftGear;
@@ -83,8 +83,8 @@ public class Driver {
 
         removeArmLimitButton.whenPressed(new RemoveArmLimit(JS_ARM));//engage PTO + disengage arm
         startWinchingButton.whenPressed(new StartWinching());
-        reengageArmButton.whenPressed(new SetArmEngaged(true));//reengage + lower arm, winching at same time
-        disengageArmButton.whenPressed(new SetArmEngaged(false));//disengage arm when it hits bottom
+        reengageArmButton.whenPressed(new SetArmEngagedAndPTODisengaged(true));//reengage + lower arm, winching at same time
+        disengageArmButton.whenPressed(new SetArmEngagedAndPTODisengaged(false));//disengage arm when it hits bottom
         lockWinchButton.whenPressed(new SetArmBrake(true));//lock robot in place after climb   
         unlockWinchButton.whenPressed(new SetArmBrake(false));//for the pits
         leaveClimbButton.whenPressed(new LeaveClimbCommand());//for crisis mode

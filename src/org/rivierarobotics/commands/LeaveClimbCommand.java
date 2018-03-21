@@ -21,8 +21,7 @@ public class LeaveClimbCommand extends CommandGroup {
             }
 
         });
-        this.addSequential(new SetArmEngaged(true));
+        this.addSequential(new SetArmEngagedAndPTODisengaged(true));
         this.addSequential(new SetArmBrake(true));
-        this.addSequential(new SetArmPTO(false));
     }
 }
