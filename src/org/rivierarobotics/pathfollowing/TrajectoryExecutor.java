@@ -157,7 +157,7 @@ public class TrajectoryExecutor implements Runnable {
                 currentPos = driveTrain.getDistance();
                 currentHeading = driveTrain.getYaw();
                 Segment segL = leftFollow.getSegment();
-                Segment segR = leftFollow.getSegment();
+                Segment segR = rightFollow.getSegment();
                 double headDiff =
                         Pathfinder.boundHalfDegrees(currentHeading + gyroCompensator - Pathfinder.r2d(segL.heading));
                 double leftGyroPower = kHeading * headDiff;
