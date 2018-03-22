@@ -1,6 +1,6 @@
 package org.rivierarobotics.pathfollowing;
 
-import org.rivierarobotics.mathUtil.Vector2d;
+import org.rivierarobotics.util.Vector2d;
 
 public class Waypoint {
 

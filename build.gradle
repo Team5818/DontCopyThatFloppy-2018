@@ -1,8 +1,9 @@
 plugins {
-    id "org.rivierarobotics.frcgrantle" version "0.1.4"
+    id "org.rivierarobotics.frcgrantle" version "0.1.8"
 }
 grantle.with {
     packageBase = 'org.rivierarobotics.robot'
     teamNumber = 5818
-    versionSet_2018_2_2()
+    versionSet_2018_4_1()
+    usePathfinder("1.8")
 }

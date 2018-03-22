@@ -1,4 +1,4 @@
-package org.rivierarobotics.mathUtil;
+package org.rivierarobotics.util;
 
 public interface DriveCalculator {
 

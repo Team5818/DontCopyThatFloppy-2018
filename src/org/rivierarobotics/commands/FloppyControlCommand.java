@@ -1,9 +1,9 @@
 package org.rivierarobotics.commands;
 
-import org.rivierarobotics.mathUtil.MathUtil;
-import org.rivierarobotics.mathUtil.Vector2d;
 import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.subsystems.Floppies;
+import org.rivierarobotics.util.MathUtil;
+import org.rivierarobotics.util.Vector2d;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
@@ -29,6 +29,7 @@ public class FloppyControlCommand extends Command {
 		double inOut = jsVec.getY();
 		double twist = jsVec.getX();
 		Floppies.setPower(inOut - .5 * twist, inOut + .5 * twist);
+		Floppies.setLightsOn(Floppies.cubeInPlace());
 	}
 
 	@Override

@@ -1,19 +1,23 @@
 package org.rivierarobotics.driverinterface;
 
+import org.rivierarobotics.commands.AutoThrow;
 import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.CompressorControlCommand;
+import org.rivierarobotics.commands.LeaveClimbCommand;
+import org.rivierarobotics.commands.MagicSpin;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
 import org.rivierarobotics.commands.SetArmBrake;
 import org.rivierarobotics.commands.SetArmEngaged;
-import org.rivierarobotics.commands.SetCameraCollect;
 import org.rivierarobotics.commands.SetClampOpen;
+import org.rivierarobotics.commands.SetDrivePower;
 import org.rivierarobotics.commands.ShiftGear;
-import org.rivierarobotics.commands.StartClimbMode;
+import org.rivierarobotics.commands.StartWinching;
+import org.rivierarobotics.commands.RemoveArmLimit;
 import org.rivierarobotics.constants.ControlMap;
 import org.rivierarobotics.constants.RobotDependentConstants;
-import org.rivierarobotics.mathUtil.ArcadeDriveCalculator;
-import org.rivierarobotics.mathUtil.DriveCalculator;
 import org.rivierarobotics.subsystems.DriveTrain;
+import org.rivierarobotics.util.ArcadeDriveCalculator;
+import org.rivierarobotics.util.DriveCalculator;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -49,16 +53,19 @@ public class Driver {
                 new JoystickButton(JS_LEFT_BUTTONS, ControlMap.SET_ARM_ANGLE_BUTTON_BACK);
         JoystickButton shiftLow = new JoystickButton(JS_FW_BACK, ControlMap.SHIFT_LOW_BUTTON);
         JoystickButton shiftHigh = new JoystickButton(JS_FW_BACK, ControlMap.SHIFT_HIGH_BUTTON);
-        JoystickButton backCamButton = new JoystickButton(JS_TURN, ControlMap.BACK_CAM_BUTTON);
-        JoystickButton collectCamButton = new JoystickButton(JS_TURN, ControlMap.COLLECT_CAM_BUTTON);
 
-        JoystickButton enterClimbButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.CLIMB_MODE_BUTTON);
-        JoystickButton reengageArmButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.REENGAGE_ARM_BUTTON);
-        JoystickButton disengageArmButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.DISENGAGE_ARM_BUTTON);
-        JoystickButton lockWinchButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.LOCK_WINCH_BUTTON);
+        JoystickButton removeArmLimitButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.REMOVE_ARM_LIMIT_BUTTON);
+        JoystickButton startWinchingButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.START_WINCHING_BUTTON);
+        JoystickButton reengageArmButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.REENGAGE_ARM_BUTTON);
+        JoystickButton disengageArmButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.DISENGAGE_ARM_BUTTON);
+        JoystickButton lockWinchButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.LOCK_WINCH_BUTTON);
+        JoystickButton unlockWinchButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.UNLOCK_WINCH_BUTTON);
+        JoystickButton leaveClimbButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.LEAVE_CLIMB_BUTTON);
         
-        JoystickButton autoCollectButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.COLLECT_SEQUENCE_BUTTON);
+        JoystickButton autoCollectButton = new JoystickButton(JS_FLOPPIES, ControlMap.COLLECT_SEQUENCE_BUTTON);
+        JoystickButton magicSpin = new JoystickButton(JS_RIGHT_BUTTONS, 6);
 
+        
         // Bind Commands
         clampOn.whenPressed(new SetClampOpen(false));
         clampOff.whenPressed(new SetClampOpen(true));
@@ -72,13 +79,16 @@ public class Driver {
                 .whenPressed(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionBack()));
         shiftLow.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_LOW));
         shiftHigh.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_HIGH));
-        backCamButton.whenPressed(new SetCameraCollect(false));
-        collectCamButton.whenPressed(new SetCameraCollect(true));
-        autoCollectButton.whenPressed(new CollectGrabRaise());
+        autoCollectButton.whenPressed(new CollectGrabRaise(true));
 
-        enterClimbButton.whenPressed(new StartClimbMode(JS_ARM));//engage PTO + disengage arm
+        removeArmLimitButton.whenPressed(new RemoveArmLimit(JS_ARM));//engage PTO + disengage arm
+        startWinchingButton.whenPressed(new StartWinching());
         reengageArmButton.whenPressed(new SetArmEngaged(true));//reengage + lower arm, winching at same time
         disengageArmButton.whenPressed(new SetArmEngaged(false));//disengage arm when it hits bottom
-        lockWinchButton.whenPressed(new SetArmBrake(true));//lock robot in place after climb        
+        lockWinchButton.whenPressed(new SetArmBrake(true));//lock robot in place after climb   
+        unlockWinchButton.whenPressed(new SetArmBrake(false));//for the pits
+        leaveClimbButton.whenPressed(new LeaveClimbCommand());//for crisis mode
+        
+        magicSpin.whenPressed(new AutoThrow());
     }
 }

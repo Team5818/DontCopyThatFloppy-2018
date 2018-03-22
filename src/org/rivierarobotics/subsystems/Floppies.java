@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Floppies extends Subsystem {
@@ -23,10 +24,12 @@ public class Floppies extends Subsystem {
     public static int RIGHT_ZERO_POS = 3254;
     public DigitalInput leftSwitch;
     public DigitalInput rightSwitch;
+    private Solenoid lights;
 
     public Floppies() {
         left = new WPI_TalonSRX(RobotMap.LEFT_ROLLER_TALON);
         right = new WPI_TalonSRX(RobotMap.RIGHT_ROLLER_TALON);
+        lights = new Solenoid(RobotMap.LIGHTS_SOLENOID_PORT);
         left.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, PID_IDX, TIMEOUT);
         right.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, PID_IDX, TIMEOUT);
         right.setInverted(true);
@@ -46,6 +49,10 @@ public class Floppies extends Subsystem {
         leftSwitch = new DigitalInput(RobotMap.LEFT_LIMIT_SWITCH_PORT);
         rightSwitch = new DigitalInput(RobotMap.RIGHT_LIMIT_SWITCH_PORT);
     }
+    
+    public void setLightsOn(boolean on) {
+        lights.set(on);
+    }
 
     public void setPower(double leftPow, double rightPow) {
         left.set(leftPow);
@@ -54,9 +61,17 @@ public class Floppies extends Subsystem {
 
     public boolean cubeInPlace()// gets switch data
     {
-        return (!leftSwitch.get() && !rightSwitch.get());
+        return (!leftSwitch.get() || !rightSwitch.get());
+    }
+    
+    public boolean leftSwitchAcitve() {
+        return !leftSwitch.get();
     }
 
+    public boolean rightSwitchActive() {
+        return !rightSwitch.get();
+    }
+    
     public void setBrakeMode(boolean on) {
         if (on) {
             left.setNeutralMode(NeutralMode.Brake);

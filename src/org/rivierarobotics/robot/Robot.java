@@ -6,24 +6,35 @@
 /*----------------------------------------------------------------------------*/
 package org.rivierarobotics.robot;
 
+import org.rivierarobotics.autos.centerswitch.CenterSwitchAuto;
+import org.rivierarobotics.autos.rightscale.TwoCubeScaleAuto;
 import org.rivierarobotics.commands.CompressorControlCommand;
+import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
+import org.rivierarobotics.constants.RobotMap;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.driverinterface.Driver;
 import org.rivierarobotics.subsystems.Arm;
 import org.rivierarobotics.subsystems.Clamp;
 import org.rivierarobotics.subsystems.DriveTrain;
+import org.rivierarobotics.subsystems.DriveTrain.DriveGear;
 import org.rivierarobotics.subsystems.Floppies;
+import org.rivierarobotics.util.CSVLogger;
 
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import jaci.pathfinder.Waypoint;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -34,26 +45,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
-    private static final String kDefaultAuto = "Default";
-    private static final String kCustomAuto = "My Auto";
-    private String m_autoSelected;
-    private SendableChooser<String> m_chooser = new SendableChooser<>();
-
+    private Command autonomousCommand;
+    private Command switchInAuto;
+    private Command switchOutAuto;
     public DriveTrain driveTrain;
     public Driver driver;
     public Arm arm;
     public Floppies floppies;
     public Clamp clamp;
     public UsbCamera camCollect;
-    public UsbCamera camBack;
-    public VideoSink camServer;
-
+    public CSVLogger logger;
+    public Side[] fieldData;
     public PowerDistributionPanel pdp;
     public Compressor compressor;
-    
+    public DigitalInput autoSelector;
+    private CompressorControlCommand compDisable;
     public static Robot runningRobot;
 
-    private CompressorControlCommand compDisable;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -68,29 +76,36 @@ public class Robot extends TimedRobot {
         pdp = new PowerDistributionPanel();
         compressor = new Compressor();
         driver = new Driver();
-        camCollect = CameraServer.getInstance().startAutomaticCapture(0);
-        camBack = CameraServer.getInstance().startAutomaticCapture(1);
-        camServer = CameraServer.getInstance().getServer();
-        m_chooser.addDefault("Default Auto", kDefaultAuto);
-        m_chooser.addObject("My Auto", kCustomAuto);
-        SmartDashboard.putData("Auto choices", m_chooser);
+        autoSelector = new DigitalInput(RobotMap.AUTO_SELECTOR_SWITCH);
+
+        String[] fields = { "PosL", "PosR", "VelL", "VelR", "Set Pos L", "Set Pos R", "Set Vel L", "Set Vel R",
+                "Left Gyro Integ", "Right Gyro Integ", "Heading", "Set Heading", "LPow", "RPow", "Time" };
+        logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG_VERBOSE", fields);
+
+        switchInAuto = new CenterSwitchAuto();
+        switchOutAuto = new TwoCubeScaleAuto();
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
-        Scheduler.getInstance().add(compDisable);
+    }
+
+    public void queryFieldData() {
+        String gameSide = DriverStation.getInstance().getGameSpecificMessage();
+        Side[] side = new Side[3];
+        if (gameSide.length() < 3) {
+            side = new Side[] { Side.LEFT, Side.LEFT, Side.LEFT };
+            DriverStation.reportError("no game data", false);
+        } else {
+            for (int x = 0; x < 3; x++) {
+                if (gameSide.charAt(x) == 'L')
+                    side[x] = Side.LEFT;
+                else
+                    side[x] = Side.RIGHT;
+            }
+        }
+        fieldData = side;
     }
 
     public Side[] getSide() {
-        String gameSide = DriverStation.getInstance().getGameSpecificMessage();
-
-        Side[] side = new Side[3];
-
-        for (int x = 0; x < 3; x++) {
-            if (gameSide.charAt(x) == 'L')
-                side[x] = Side.LEFT;
-            else
-                side[x] = Side.RIGHT;
-        }
-
-        return side;
+        return fieldData;
     }
 
     /**
@@ -107,10 +122,19 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        m_autoSelected = m_chooser.getSelected();
-        // m_autoSelected = SmartDashboard.getString("Auto Selector",
-        // kDefaultAuto);
-        System.out.println("Auto selected: " + m_autoSelected);
+        queryFieldData();
+        driveTrain.resetGyro();
+        driveTrain.shiftGear(DriveGear.GEAR_LOW);
+        compressor.stop();
+        if (autoSelector.get()) {
+            autonomousCommand = switchOutAuto;
+        } else {
+            autonomousCommand = switchInAuto;
+        }
+
+        if (autonomousCommand != null) {
+            autonomousCommand.start();
+        }
     }
 
     /**
@@ -118,19 +142,23 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
-        switch (m_autoSelected) {
-            case kCustomAuto:
-                // Put custom auto code here
-                break;
-            case kDefaultAuto:
-            default:
-                // Put default auto code here
-                break;
-        }
+        Scheduler.getInstance().run();
+        printDash();
     }
 
     @Override
     public void teleopInit() {
+        if (autonomousCommand != null) {
+            autonomousCommand.cancel();
+        }
+        compDisable.start();
+        if (camCollect == null) {
+            camCollect = CameraServer.getInstance().startAutomaticCapture(0);
+            boolean setCam = camCollect.setVideoMode(PixelFormat.kMJPEG, 320, 240, 30);
+            if (!setCam) {
+                DriverStation.reportError("Failed to set camera parameters", false);
+            }
+        }
         arm.stop();
     }
 
@@ -166,7 +194,12 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Left Roller Trunc", floppies.getLeftTrunc());
         SmartDashboard.putNumber("Right Roller Trunc", floppies.getRightTrunc());
         SmartDashboard.putBoolean("Cube ready", floppies.cubeInPlace());
-        SmartDashboard.putNumber("Left Enc", driveTrain.getDistance().getX());
-        SmartDashboard.putNumber("Right Enc", driveTrain.getDistance().getY());
+        SmartDashboard.putBoolean("Left Switch", floppies.leftSwitchAcitve());
+        SmartDashboard.putBoolean("Right Switch", floppies.rightSwitchActive());
+        SmartDashboard.putNumber("Left Inches", driveTrain.getDistanceInches().getX());
+        SmartDashboard.putNumber("Right Inches", driveTrain.getDistanceInches().getY());
+        SmartDashboard.putNumber("Avg Inches", driveTrain.getAvgSidePositionInches());
+        SmartDashboard.putBoolean("Auto Chooser", autoSelector.get());
+        SmartDashboard.putNumber("Yaw", driveTrain.getYaw());
     }
 }

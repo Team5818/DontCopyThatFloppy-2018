@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.rivierarobotics.mathUtil;
+package org.rivierarobotics.util;
 
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -135,6 +135,14 @@ public class MathUtil {
             angle += 2.0 * Math.PI;
         }
         return angle;
+    }
+    
+    public static double feet2inches(double ft) {
+        return ft*12;
+    }
+    
+    public static double inches2feet(double in) {
+        return in*12;
     }
 
 }

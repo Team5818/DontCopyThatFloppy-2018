@@ -1,4 +1,4 @@
-package org.rivierarobotics.mathUtil;
+package org.rivierarobotics.util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,6 +8,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ConcurrentLinkedDeque;
+
+import edu.wpi.first.wpilibj.DriverStation;
 
 public class CSVLogger {
 
@@ -24,7 +26,8 @@ public class CSVLogger {
         try {
             csvFile.createNewFile();
         } catch (IOException e) {
-            e.printStackTrace();
+            String s = e.getMessage();
+            DriverStation.reportError(s, false);
         }
         try {
             writer = new PrintWriter(csvFile);
@@ -59,7 +62,7 @@ public class CSVLogger {
         return line.toString();
     }
 
-    public void storeValue(double... values) {
+    public synchronized void storeValue(double... values) {
         lineBuffer.add(getValueLine(values));
     }
 
