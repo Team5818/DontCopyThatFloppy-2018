@@ -1,5 +1,6 @@
 package org.rivierarobotics.driverinterface;
 
+import org.rivierarobotics.commands.AutoPunch;
 import org.rivierarobotics.commands.AutoThrow;
 import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.CompressorControlCommand;
@@ -64,6 +65,7 @@ public class Driver {
         
         JoystickButton autoCollectButton = new JoystickButton(JS_FLOPPIES, ControlMap.COLLECT_SEQUENCE_BUTTON);
         JoystickButton magicSpin = new JoystickButton(JS_RIGHT_BUTTONS, 6);
+        JoystickButton autoPunch = new JoystickButton(JS_FLOPPIES, ControlMap.AUTO_PUNCH_BUTTON);
 
         
         // Bind Commands
@@ -90,5 +92,6 @@ public class Driver {
         leaveClimbButton.whenPressed(new LeaveClimbCommand());//for crisis mode
         
         magicSpin.whenPressed(new AutoThrow());
+        autoPunch.whenPressed(new AutoPunch(-0.1));
     }
 }
