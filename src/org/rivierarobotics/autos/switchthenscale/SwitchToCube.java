@@ -48,7 +48,7 @@ public class SwitchToCube extends Command {
 
     @Override
     protected void initialize() {
-        fieldData = new Side[] { Side.RIGHT, Side.RIGHT, Side.RIGHT };// Robot.runningRobot.getSide();
+        fieldData = Robot.runningRobot.getSide();
         if (fieldData[0] == Side.LEFT && fieldData[1] == Side.LEFT) {
             selectedEx = left2leftEx;
         }
