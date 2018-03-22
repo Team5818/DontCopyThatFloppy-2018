@@ -92,6 +92,6 @@ public class Driver {
         leaveClimbButton.whenPressed(new LeaveClimbCommand());//for crisis mode
         
         magicSpin.whenPressed(new AutoThrow());
-        autoPunch.whenPressed(new AutoPunch(-0.1));
+        autoPunch.whenPressed(new AutoPunch(-0.2));
     }
 }
