@@ -19,5 +19,7 @@ public class AutoPunch extends CommandGroup {
 			addSequential(new SetPuncher(true));
 			addSequential(new SetClampOpen(true));
 		}
+		addSequential(new WaitCommand(.5));
+		addSequential(new SetPuncher(false));
 	}
 }
