@@ -11,8 +11,8 @@ public class LeftOnlyDrive extends SideDependentTrajectoryExecutor{
     
     public LeftOnlyDrive() {
         requires(Robot.runningRobot.driveTrain);
-        leftExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(78,0,0)},false,0);
-        rightExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(2,0,0)},false,0);
+        leftExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(76,0,0)},false,0);
+        rightExecutor = null;
     }
 
     @Override

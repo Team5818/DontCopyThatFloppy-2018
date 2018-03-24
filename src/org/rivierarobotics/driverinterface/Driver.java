@@ -64,7 +64,6 @@ public class Driver {
         JoystickButton leaveClimbButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.LEAVE_CLIMB_BUTTON);
         
         JoystickButton autoCollectButton = new JoystickButton(JS_FLOPPIES, ControlMap.COLLECT_SEQUENCE_BUTTON);
-        JoystickButton magicSpin = new JoystickButton(JS_RIGHT_BUTTONS, 6);
         JoystickButton autoPunch = new JoystickButton(JS_FLOPPIES, ControlMap.AUTO_PUNCH_BUTTON);
 
         
@@ -91,7 +90,6 @@ public class Driver {
         unlockWinchButton.whenPressed(new SetArmBrake(false));//for the pits
         leaveClimbButton.whenPressed(new LeaveClimbCommand());//for crisis mode
         
-        magicSpin.whenPressed(new AutoThrow());
         autoPunch.whenPressed(new AutoPunch(-0.2));
     }
 }
