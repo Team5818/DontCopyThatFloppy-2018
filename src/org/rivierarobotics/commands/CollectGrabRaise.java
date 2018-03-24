@@ -18,7 +18,6 @@ public class CollectGrabRaise extends CommandGroup{
         
         @Override
         protected boolean isFinished() {
-            // TODO Auto-generated method stub
             return true;
         }
         
@@ -33,7 +32,6 @@ public class CollectGrabRaise extends CommandGroup{
         
         @Override
         protected boolean isFinished() {
-            // TODO Auto-generated method stub
             return true;
         }
         
