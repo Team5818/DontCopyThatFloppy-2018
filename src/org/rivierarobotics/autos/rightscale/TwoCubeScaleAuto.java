@@ -1,5 +1,6 @@
 package org.rivierarobotics.autos.rightscale;
 
+import org.rivierarobotics.commands.AutoPunch;
 import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
 import org.rivierarobotics.commands.MagicSpin;
@@ -24,7 +25,7 @@ public class TwoCubeScaleAuto extends CommandGroup {
         this.addSequential(driveToScale);
         this.addSequential(new MagicSpin(0.0));
         this.addSequential(new LeftOnlyDrive());
-        this.addSequential(new SetClampOpen(true));
+        this.addSequential(new AutoPunch(-.2));
         
         this.addSequential(new ScaleToCube());
         this.addSequential(new MagicSpin(180));
