@@ -20,10 +20,7 @@ public class ScaleToCube extends SideDependentTrajectoryExecutor {
                     new Waypoint(0, 0, 0), 
                     new Waypoint(MathUtil.feet2inches(3), 0, 0)};
 
-    public static final Waypoint[] LEFT_PATH =
-            new Waypoint[] { 
-                    new Waypoint(0, 0, 0), 
-                    new Waypoint(MathUtil.feet2inches(3), 0, 0)};
+    public static final Waypoint[] LEFT_PATH = RIGHT_PATH;
 
     public ScaleToCube() {
         requires(Robot.runningRobot.driveTrain);
