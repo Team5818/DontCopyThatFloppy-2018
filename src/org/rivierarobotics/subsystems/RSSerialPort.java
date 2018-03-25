@@ -1,5 +1,7 @@
 package org.rivierarobotics.subsystems;
 
+import org.rivierarobotics.commands.LEDCycleCommand;
+
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -19,7 +21,7 @@ public class RSSerialPort extends Subsystem {
 	
 	@Override
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
+		setDefaultCommand(new LEDCycleCommand(500));
 	}
 	
 }
