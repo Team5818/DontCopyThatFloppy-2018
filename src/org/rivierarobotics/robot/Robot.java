@@ -18,6 +18,7 @@ import org.rivierarobotics.subsystems.Clamp;
 import org.rivierarobotics.subsystems.DriveTrain;
 import org.rivierarobotics.subsystems.DriveTrain.DriveGear;
 import org.rivierarobotics.subsystems.Floppies;
+import org.rivierarobotics.subsystems.RSSerialPort;
 import org.rivierarobotics.util.CSVLogger;
 
 import edu.wpi.cscore.UsbCamera;
@@ -55,6 +56,7 @@ public class Robot extends TimedRobot {
     public Clamp clamp;
     public UsbCamera camCollect;
     public CSVLogger logger;
+    public RSSerialPort serialPort;
     public Side[] fieldData;
     public PowerDistributionPanel pdp;
     public Compressor compressor;
@@ -77,9 +79,11 @@ public class Robot extends TimedRobot {
         compressor = new Compressor();
         driver = new Driver();
         autoSelector = new DigitalInput(RobotMap.AUTO_SELECTOR_SWITCH);
+        serialPort = new RSSerialPort();
 
         String[] fields = { "PosL", "PosR", "VelL", "VelR", "Set Pos L", "Set Pos R", "Set Vel L", "Set Vel R",
                 "Left Gyro Integ", "Right Gyro Integ", "Heading", "Set Heading", "LPow", "RPow", "Time" };
+        
         logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG_VERBOSE", fields);
 
         switchInAuto = new CenterSwitchAuto();
