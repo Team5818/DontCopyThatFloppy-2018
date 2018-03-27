@@ -33,7 +33,7 @@ public class Clamp extends Subsystem {
             extended = false;
         }
         puncher.set(extended);
-    }
+    } }
 
     public boolean isOpen() {
         return isOpen;
