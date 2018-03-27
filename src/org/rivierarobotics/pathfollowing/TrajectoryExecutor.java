@@ -4,8 +4,8 @@ import org.rivierarobotics.constants.RobotConstants;
 import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.subsystems.DriveTrain;
 import org.rivierarobotics.subsystems.DriveTrainSide;
-import org.rivierarobotics.util.MathUtil;
 import org.rivierarobotics.util.Vector2d;
+
 import edu.wpi.first.wpilibj.CircularBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
@@ -33,6 +33,7 @@ public class TrajectoryExecutor implements Runnable {
     public static final double KA = 0.0024;
     public static final double K_OFFSET = 0.045;
     public static final double K_HEADING_DEFAULT = 0.03;
+    public static final double VEL_SANITY_CHECK_RANGE = 60;
 
     public enum TrajectoryExecutionState {
         STATE_STABILIZING_TIMING, STATE_RUNNING_PROFILE, STATE_FINISHED
@@ -185,6 +186,10 @@ public class TrajectoryExecutor implements Runnable {
                         right, time });
                 if (leftFollow.isFinished() || rightFollow.isFinished() || time > endTime) {
                     currState = TrajectoryExecutionState.STATE_FINISHED;
+                } else if (Math.abs(segL.velocity - vel.getX()) > VEL_SANITY_CHECK_RANGE
+                        || Math.abs(segR.velocity - vel.getY()) > VEL_SANITY_CHECK_RANGE) {
+                    currState = TrajectoryExecutionState.STATE_FINISHED;
+                    DriverStation.reportError("Encoder fault detected! Aborting Path", false);
                 }
                 break;
             case STATE_FINISHED:
