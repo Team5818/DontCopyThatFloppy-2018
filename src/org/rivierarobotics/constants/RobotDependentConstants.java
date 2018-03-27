@@ -54,6 +54,10 @@ public abstract class RobotDependentConstants {
         return getLowerArmSoftLimit() + 1850;
     }
     
+    public double getPuncherMinHeight() {
+    	return getLowerArmSoftLimit() + 1077;
+    }
+    
     public abstract double getLowerArmSoftLimit();
 
 }

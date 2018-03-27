@@ -28,7 +28,7 @@ public class Clamp extends Subsystem {
     }
 
     public void setPuncher(boolean extended) {
-        if (Robot.runningRobot.arm.getPosition() < RobotDependentConstants.Constant.getArmPositionScaleHigh() - 500) {
+        if (Robot.runningRobot.arm.getPosition() < RobotDependentConstants.Constant.getPuncherMinHeight()) {
             extended = false;
         }
         puncher.set(extended);
