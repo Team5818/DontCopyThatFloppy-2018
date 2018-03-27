@@ -171,10 +171,10 @@ public class TrajectoryExecutor implements Runnable {
 
                 double left = directionMultiplier * (leftFollow
                         .calculate(directionMultiplier * ((int) currentPos.getX() - (int) leftGyroIntegrator))
-                        + K_OFFSET * Math.signum(segL.velocity));
+                        + K_OFFSET * Math.signum(segL.velocity)) + leftGyroPower;
                 double right = directionMultiplier * (rightFollow
                         .calculate(directionMultiplier * ((int) currentPos.getY() - (int) rightGyroIntegrator))
-                        + K_OFFSET * Math.signum(segR.velocity));
+                        + K_OFFSET * Math.signum(segR.velocity)) + rightGyroPower;
                 driveTrain.setPowerLeftRight(left, right);
                 Vector2d vel = driveTrain.getVelocityIPS();
                 Robot.runningRobot.logger.storeValue(new double[] {
