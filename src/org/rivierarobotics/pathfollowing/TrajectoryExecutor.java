@@ -36,7 +36,7 @@ public class TrajectoryExecutor implements Runnable {
     public static final double VEL_SANITY_CHECK_RANGE = 60;
 
     public enum TrajectoryExecutionState {
-        STATE_STABILIZING_TIMING, STATE_RUNNING_PROFILE, STATE_FINISHED
+        STATE_STABILIZING_TIMING, STATE_RUNNING_PROFILE, STATE_FINISHED, STATE_SENSOR_FAULT
     }
 
     private double kHeading;
@@ -62,6 +62,7 @@ public class TrajectoryExecutor implements Runnable {
     private double gyroCompensator = 0;
     private double leftGyroIntegrator = 0;
     private double rightGyroIntegrator = 0;
+    private double sensorFaultTime;
     private Object lock = new Object();
 
     public static final Trajectory.Config DEFAULT_CONFIG = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
@@ -172,10 +173,10 @@ public class TrajectoryExecutor implements Runnable {
 
                 double left = directionMultiplier * (leftFollow
                         .calculate(directionMultiplier * ((int) currentPos.getX() - (int) leftGyroIntegrator))
-                        + K_OFFSET * Math.signum(segL.velocity)) + leftGyroPower;
+                        + directionMultiplier * K_OFFSET * Math.signum(segL.velocity)) + leftGyroPower;
                 double right = directionMultiplier * (rightFollow
                         .calculate(directionMultiplier * ((int) currentPos.getY() - (int) rightGyroIntegrator))
-                        + K_OFFSET * Math.signum(segR.velocity)) + rightGyroPower;
+                        + directionMultiplier * K_OFFSET * Math.signum(segR.velocity)) + rightGyroPower;
                 driveTrain.setPowerLeftRight(left, right);
                 Vector2d vel = driveTrain.getVelocityIPS();
                 Robot.runningRobot.logger.storeValue(new double[] {
@@ -186,10 +187,20 @@ public class TrajectoryExecutor implements Runnable {
                         right, time });
                 if (leftFollow.isFinished() || rightFollow.isFinished() || time > endTime) {
                     currState = TrajectoryExecutionState.STATE_FINISHED;
-                } else if (Math.abs(segL.velocity - vel.getX()) > VEL_SANITY_CHECK_RANGE
-                        || Math.abs(segR.velocity - vel.getY()) > VEL_SANITY_CHECK_RANGE) {
-                    currState = TrajectoryExecutionState.STATE_FINISHED;
+                } 
+                else if (Math.abs(directionMultiplier*segL.velocity - vel.getX()) > VEL_SANITY_CHECK_RANGE
+                        || Math.abs(directionMultiplier*segR.velocity - vel.getY()) > VEL_SANITY_CHECK_RANGE) {
+                    currState = TrajectoryExecutionState.STATE_SENSOR_FAULT;
                     DriverStation.reportError("Encoder fault detected! Aborting Path", false);
+                    sensorFaultTime = Timer.getFPGATimestamp();
+                }
+                break;
+            case STATE_SENSOR_FAULT:
+                if(Timer.getFPGATimestamp() < sensorFaultTime + 2.5) {
+                    driveTrain.setPowerLeftRight(directionMultiplier * KV * DEFAULT_MAX_VEL/3.0, directionMultiplier * KV * DEFAULT_MAX_VEL/3.0);
+                }
+                else {
+                    driveTrain.stop();
                 }
                 break;
             case STATE_FINISHED:
