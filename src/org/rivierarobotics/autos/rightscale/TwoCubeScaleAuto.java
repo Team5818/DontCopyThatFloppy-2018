@@ -29,7 +29,7 @@ public class TwoCubeScaleAuto extends CommandGroup {
         this.addSequential(new LeftSideOnlyDriveAcrossField());
         this.addSequential(new LeftSideOnlySpinToScale());
         this.addSequential(new LeftSideOnlyDriveToScale());
-        this.addSequential(new AutoPunch(-.2));
+        this.addSequential(new SetClampOpen(true));
 
         this.addSequential(new ScaleToCube());
         this.addSequential(new MagicSpin(180));

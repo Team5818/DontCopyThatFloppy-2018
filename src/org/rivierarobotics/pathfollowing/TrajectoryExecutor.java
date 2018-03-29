@@ -188,12 +188,12 @@ public class TrajectoryExecutor implements Runnable {
                 if (leftFollow.isFinished() || rightFollow.isFinished() || time > endTime) {
                     currState = TrajectoryExecutionState.STATE_FINISHED;
                 } 
-                else if (Math.abs(directionMultiplier*segL.velocity - vel.getX()) > VEL_SANITY_CHECK_RANGE
-                        || Math.abs(directionMultiplier*segR.velocity - vel.getY()) > VEL_SANITY_CHECK_RANGE) {
-                    currState = TrajectoryExecutionState.STATE_SENSOR_FAULT;
-                    DriverStation.reportError("Encoder fault detected! Aborting Path", false);
-                    sensorFaultTime = Timer.getFPGATimestamp();
-                }
+//                else if (Math.abs(directionMultiplier*segL.velocity - vel.getX()) > VEL_SANITY_CHECK_RANGE
+//                        || Math.abs(directionMultiplier*segR.velocity - vel.getY()) > VEL_SANITY_CHECK_RANGE) {
+//                    currState = TrajectoryExecutionState.STATE_SENSOR_FAULT;
+//                    DriverStation.reportError("Encoder fault detected! Aborting Path", false);
+//                    sensorFaultTime = Timer.getFPGATimestamp();
+//                }
                 break;
             case STATE_SENSOR_FAULT:
                 if(Timer.getFPGATimestamp() < sensorFaultTime + 2.5) {

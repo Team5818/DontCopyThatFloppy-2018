@@ -12,7 +12,7 @@ public class LeftSideOnlyDriveAcrossField extends SideDependentTrajectoryExecuto
     
     public LeftSideOnlyDriveAcrossField() {
         requires(Robot.runningRobot.driveTrain);
-        leftExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(MathUtil.feet2inches(23.5),0,0)},false,-90);
+        leftExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(MathUtil.feet2inches(17),0,0)},false,-90);
         rightExecutor = null;
     }
 

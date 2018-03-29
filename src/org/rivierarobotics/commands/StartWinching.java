@@ -15,7 +15,7 @@ public class StartWinching extends Command{
     
     @Override
     protected void initialize() {
-        arm.setArmEngagedAndPTODisengaged(true);
+        arm.setArmEngagedAndPTODisengaged(false);
         arm.setBrakeEngaged(false);
     }
     
