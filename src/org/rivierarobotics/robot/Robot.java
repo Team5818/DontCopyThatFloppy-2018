@@ -83,7 +83,7 @@ public class Robot extends TimedRobot {
         logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG_VERBOSE", fields);
 
         switchInAuto = new CenterSwitchAuto();
-        switchOutAuto = new CenterSwitchAuto();//TwoCubeScaleAuto();
+        switchOutAuto = new TwoCubeScaleAuto();
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
     }
 
@@ -101,7 +101,7 @@ public class Robot extends TimedRobot {
                     side[x] = Side.RIGHT;
             }
         }
-        fieldData =  new Side[] { Side.RIGHT, Side.RIGHT, Side.RIGHT };
+        fieldData = side;
     }
 
     public Side[] getSide() {
