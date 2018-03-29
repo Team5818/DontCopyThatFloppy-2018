@@ -3,6 +3,7 @@ package org.rivierarobotics.pathfollowing;
 import org.rivierarobotics.constants.RobotConstants;
 import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.subsystems.DriveTrain;
+import org.rivierarobotics.subsystems.DriveTrain.DriveGear;
 import org.rivierarobotics.subsystems.DriveTrainSide;
 import org.rivierarobotics.util.Vector2d;
 
@@ -12,6 +13,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.Trajectory.Config;
 import jaci.pathfinder.Trajectory.Segment;
 import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.followers.EncoderFollower;
@@ -25,13 +27,20 @@ public class TrajectoryExecutor implements Runnable {
     public static final double DEFAULT_MAX_VEL = 80;
     public static final double DEFAULT_MAX_ACCEL = 60;
     public static final double DEFAULT_MAX_JERK = 500;
+    public static final double MAX_VEL_HIGH = 120;
+    public static final double MAX_ACCEL_HIGH = 45;
     public static final double DEFAULT_TIMEOUT = Double.POSITIVE_INFINITY;
     public static final double KP = 0.1;
     public static final double KI = 0.0;
     public static final double KD = 0.0;
     public static final double KV = 0.0086;
     public static final double KA = 0.0024;
-    public static final double K_OFFSET = 0.045;
+    public static final double KP_HIGH = 0.1;
+    public static final double KI_HIGH = 0.0;
+    public static final double KD_HIGH = 0.0;
+    public static final double KV_HIGH = 0.004968;
+    public static final double KA_HIGH = 0.0034;
+    public static final double K_OFFSET = 0.05;
     public static final double K_HEADING_DEFAULT = 0.03;
     public static final double VEL_SANITY_CHECK_RANGE = 60;
 
@@ -63,18 +72,31 @@ public class TrajectoryExecutor implements Runnable {
     private double leftGyroIntegrator = 0;
     private double rightGyroIntegrator = 0;
     private double sensorFaultTime;
+    private DriveGear gear;
     private Object lock = new Object();
 
-    public static final Trajectory.Config DEFAULT_CONFIG = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+    public static final Trajectory.Config CONFIG_LOW = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
             Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, DEFAULT_MAX_VEL, DEFAULT_MAX_ACCEL, DEFAULT_MAX_JERK);
+    
+    public static final Trajectory.Config CONFIG_HIGH = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+            Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, MAX_VEL_HIGH, MAX_ACCEL_HIGH, DEFAULT_MAX_JERK);
 
-    public TrajectoryExecutor(Waypoint[] waypoints, Trajectory.Config config, double time, boolean rev,
-            double gyroOffset, double kGyro) {
+    public TrajectoryExecutor(Waypoint[] waypoints, double time, boolean rev,
+            double gyroOffset, double kGyro, DriveGear g) {
+        gear = g;
         driveTrain = Robot.runningRobot.driveTrain;
         reversed = rev;
         kHeading = kGyro;
         directionMultiplier = reversed ? -1 : 1;
         DriverStation.reportError("starting generation...", false);
+        Config config;
+        if(g == DriveGear.GEAR_HIGH) {
+            config = CONFIG_HIGH;
+        }
+        else {
+            config = CONFIG_LOW;
+ 
+        }
         master = Pathfinder.generate(waypoints, config);
         DriverStation.reportError("done!", false);
         TankModifier mod = new TankModifier(master).modify(RobotConstants.WHEEL_BASE_WIDTH);
@@ -91,8 +113,14 @@ public class TrajectoryExecutor implements Runnable {
 
         leftFollow = new EncoderFollower(leftTraj);
         rightFollow = new EncoderFollower(rightTraj);
-        leftFollow.configurePIDVA(KP, KI, KD, KV, KA);
-        rightFollow.configurePIDVA(KP, KI, KD, KV, KA);
+        if(g == DriveGear.GEAR_HIGH) {
+            leftFollow.configurePIDVA(KP, KI, KD, KV_HIGH, KA_HIGH);
+            rightFollow.configurePIDVA(KP, KI, KD, KV_HIGH, KA_HIGH);
+        }
+        else {
+            leftFollow.configurePIDVA(KP, KI, KD, KV, KA);
+            rightFollow.configurePIDVA(KP, KI, KD, KV, KA); 
+        }
         leftFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV * 4, RobotConstants.WHEEL_DIAMETER);
         rightFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV * 4, RobotConstants.WHEEL_DIAMETER);
         timeout = time;
@@ -102,17 +130,15 @@ public class TrajectoryExecutor implements Runnable {
         fillBuffer(UNINITIALIZED_SENTINEL);
     }
 
-    public TrajectoryExecutor(Waypoint[] waypoints, double time, boolean rev, double gyroOffset) {
-        this(waypoints, DEFAULT_CONFIG, time, rev, gyroOffset, K_HEADING_DEFAULT);
-    }
 
+    public TrajectoryExecutor(Waypoint[] waypoints, boolean rev, double gyroOffset, DriveGear g) {
+        this(waypoints, DEFAULT_TIMEOUT, rev, gyroOffset, K_HEADING_DEFAULT, g);
+    }
+    
     public TrajectoryExecutor(Waypoint[] waypoints, boolean rev, double gyroOffset) {
-        this(waypoints, DEFAULT_CONFIG, DEFAULT_TIMEOUT, rev, gyroOffset, K_HEADING_DEFAULT);
+        this(waypoints, DEFAULT_TIMEOUT, rev, gyroOffset, K_HEADING_DEFAULT, DriveGear.GEAR_LOW);
     }
 
-    public TrajectoryExecutor(Waypoint[] waypoints, boolean rev, double gyroOffset, double kGyro) {
-        this(waypoints, DEFAULT_CONFIG, DEFAULT_TIMEOUT, rev, gyroOffset, kGyro);
-    }
 
     public void fillBuffer(double val) {
         for (int i = 0; i < NUM_SAMPLES; i++) {
@@ -137,6 +163,7 @@ public class TrajectoryExecutor implements Runnable {
         synchronized (lock) {
             runner.startPeriodic(dt);
             driveTrain.resetEnc();
+            driveTrain.shiftGear(gear);
             lastTime = Timer.getFPGATimestamp();
             endTime = lastTime + timeout;
             running = true;

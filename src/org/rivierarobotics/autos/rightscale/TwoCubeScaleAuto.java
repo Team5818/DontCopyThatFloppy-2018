@@ -7,7 +7,9 @@ import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
 import org.rivierarobotics.commands.MagicSpin;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
 import org.rivierarobotics.commands.SetClampOpen;
+import org.rivierarobotics.commands.ShiftGear;
 import org.rivierarobotics.constants.RobotDependentConstants;
+import org.rivierarobotics.subsystems.DriveTrain.DriveGear;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
@@ -24,9 +26,17 @@ public class TwoCubeScaleAuto extends CommandGroup {
         raiseGroup.addSequential(
                 new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 130));
         driveToScale.addParallel(raiseGroup);
+        this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
+        this.addSequential(new TimedCommand(.25));
         this.addSequential(driveToScale);
+        this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
+        this.addSequential(new TimedCommand(.25));
         this.addSequential(new LeftSideOnlyTurnToCross());
+        this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
+        this.addSequential(new TimedCommand(.25));
         this.addSequential(new LeftSideOnlyDriveAcrossField());
+        this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
+        this.addSequential(new TimedCommand(.25));
         this.addSequential(new LeftSideOnlySpinToScale());
         this.addSequential(new LeftSideOnlyDriveToScale());
         this.addSequential(new SetClampOpen(true));

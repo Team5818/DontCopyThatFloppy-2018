@@ -5,6 +5,7 @@ import org.rivierarobotics.constants.RobotConstants;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.pathfollowing.TrajectoryExecutor;
 import org.rivierarobotics.robot.Robot;
+import org.rivierarobotics.subsystems.DriveTrain.DriveGear;
 import org.rivierarobotics.util.MathUtil;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -31,8 +32,8 @@ public class DriveToScaleRight extends SideDependentTrajectoryExecutor {
 
     public DriveToScaleRight() {
         requires(Robot.runningRobot.driveTrain);
-        leftExecutor = new TrajectoryExecutor(LEFT_PATH, false, 0);
-        rightExecutor = new TrajectoryExecutor(RIGHT_PATH, false, 0);
+        leftExecutor = new TrajectoryExecutor(LEFT_PATH, false, 0, DriveGear.GEAR_HIGH);
+        rightExecutor = new TrajectoryExecutor(RIGHT_PATH, false, 0, DriveGear.GEAR_HIGH);
     }
 
     protected boolean isRightSide() {
