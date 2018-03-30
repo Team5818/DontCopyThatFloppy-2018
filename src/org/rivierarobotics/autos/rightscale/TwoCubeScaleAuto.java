@@ -24,43 +24,44 @@ public class TwoCubeScaleAuto extends CommandGroup {
         driveToScale.addParallel(new DriveToScaleRight());
         raiseGroup.addSequential(new TimedCommand(2));
         raiseGroup.addSequential(
-                new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 130));
+                new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 180));
         driveToScale.addParallel(raiseGroup);
         this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
         this.addSequential(new TimedCommand(.25));
         this.addSequential(driveToScale);
         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
         this.addSequential(new TimedCommand(.25));
-        this.addSequential(new LeftSideOnlyTurnToCross());
+        this.addSequential(new LeftSideOnlyTurnToCross());//both
         this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
         this.addSequential(new TimedCommand(.25));
-        this.addSequential(new LeftSideOnlyDriveAcrossField());
+        this.addSequential(new LeftSideOnlyDriveAcrossField());//left
         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
         this.addSequential(new TimedCommand(.25));
         this.addSequential(new LeftSideOnlySpinToScale());
-        this.addSequential(new LeftSideOnlyDriveToScale());
+        this.addSequential(new LeftSideOnlyDriveToScale());//both
         this.addSequential(new SetClampOpen(true));
         this.addSequential(new TimedCommand(.5));
-        
-        this.addSequential(new ScaleToCube());
-        this.addSequential(new MagicSpin(180));
-
-        CommandGroup driveBackGroup = new CommandGroup();
-        CommandGroup getCubeGroup = new CommandGroup();
-        Waypoint[] driveToCube = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(35, 0, 0) };
-        driveBackGroup.addSequential(new ExecuteTrajectoryCommand(driveToCube, false, -180));
-        driveBackGroup.addSequential(new WiggleWiggleWiggle());
-        
-        getCubeGroup.addParallel(driveBackGroup);
-        getCubeGroup.addParallel(new CollectGrabRaise(false));
-        this.addSequential(getCubeGroup);
-
-        CommandGroup placeGroup = new CommandGroup();
-        placeGroup.addParallel(new CubeToScaleTCS());
-        placeGroup.addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionBack()));
-        placeGroup.addParallel(new AutoThrow(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 130));
-        this.addSequential(placeGroup);
-        this.addSequential(new TimedCommand(.5));
+//        
+//        this.addSequential(new ScaleToCube());
+//        this.addSequential(new MagicSpin(180));
+//
+//        CommandGroup driveBackGroup = new CommandGroup();
+//        CommandGroup getCubeGroup = new CommandGroup();
+//        Waypoint[] driveToCube = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(35, 0, 0) };
+//        driveBackGroup.addSequential(new ExecuteTrajectoryCommand(driveToCube, false, -180));
+//        driveBackGroup.addSequential(new WiggleWiggleWiggle());
+//        
+//        getCubeGroup.addParallel(driveBackGroup);
+//        getCubeGroup.addParallel(new CollectGrabRaise(false));
+//        this.addSequential(getCubeGroup);
+//
+//        CommandGroup placeGroup = new CommandGroup();
+//        placeGroup.addParallel(new CubeToScaleTCS());
+//        placeGroup.addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionBack()));
+//        placeGroup.addParallel(new AutoThrow(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 130));
+//        this.addSequential(placeGroup);
+//        this.addSequential(new TimedCommand(.5));
+        this.addSequential(new BackUp());
         this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
     }
 }
