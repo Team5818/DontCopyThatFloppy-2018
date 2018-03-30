@@ -153,6 +153,7 @@ public class Robot extends TimedRobot {
             autonomousCommand.cancel();
         }
         compDisable.start();
+        driveTrain.unslaveLeft();
         if (camCollect == null) {
             camCollect = CameraServer.getInstance().startAutomaticCapture(0);
             boolean setCam = camCollect.setVideoMode(PixelFormat.kMJPEG, 320, 240, 30);
