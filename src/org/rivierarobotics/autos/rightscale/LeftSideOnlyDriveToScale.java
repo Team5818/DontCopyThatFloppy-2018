@@ -11,7 +11,7 @@ public class LeftSideOnlyDriveToScale extends SideDependentTrajectoryExecutor{
     
     public LeftSideOnlyDriveToScale() {
         requires(Robot.runningRobot.driveTrain);
-        leftExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(76,0,0)},false,0);
+        leftExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(60,0,0)},false,0);
         rightExecutor = null;
     }
 

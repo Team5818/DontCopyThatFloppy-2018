@@ -27,21 +27,23 @@ public class TrajectoryExecutor implements Runnable {
     public static final double DEFAULT_MAX_VEL = 80;
     public static final double DEFAULT_MAX_ACCEL = 60;
     public static final double DEFAULT_MAX_JERK = 500;
-    public static final double MAX_VEL_HIGH = 120;
-    public static final double MAX_ACCEL_HIGH = 45;
+    public static final double MAX_VEL_HIGH = 130;
+    public static final double MAX_ACCEL_HIGH = 80;
     public static final double DEFAULT_TIMEOUT = Double.POSITIVE_INFINITY;
     public static final double KP = 0.1;
     public static final double KI = 0.0;
     public static final double KD = 0.0;
     public static final double KV = 0.0086;
     public static final double KA = 0.0024;
-    public static final double KP_HIGH = 0.1;
+    public static final double KP_HIGH = 0.07;
     public static final double KI_HIGH = 0.0;
     public static final double KD_HIGH = 0.0;
     public static final double KV_HIGH = 0.004968;
     public static final double KA_HIGH = 0.0034;
-    public static final double K_OFFSET = 0.05;
+    public static final double K_OFFSET = 0.045;
+    public static final double K_OFFSET_HIGH = 0.0717;
     public static final double K_HEADING_DEFAULT = 0.03;
+    public static final double K_HEADING_HIGH = 0.01;
     public static final double VEL_SANITY_CHECK_RANGE = 60;
 
     public enum TrajectoryExecutionState {
@@ -49,6 +51,8 @@ public class TrajectoryExecutor implements Runnable {
     }
 
     private double kHeading;
+    private double kOffset;
+    private double kv;
     private DriveTrain driveTrain;
     private TrajectoryExecutionState currState = TrajectoryExecutionState.STATE_STABILIZING_TIMING;
     private CircularBuffer dtBuffer;
@@ -92,9 +96,15 @@ public class TrajectoryExecutor implements Runnable {
         Config config;
         if(g == DriveGear.GEAR_HIGH) {
             config = CONFIG_HIGH;
+            kv = KV_HIGH;
+            kOffset = K_OFFSET_HIGH;
+            kHeading = K_HEADING_DEFAULT;
         }
         else {
             config = CONFIG_LOW;
+            kv = KV;
+            kOffset = K_OFFSET;
+            kHeading = K_HEADING_HIGH;
  
         }
         master = Pathfinder.generate(waypoints, config);
@@ -114,8 +124,8 @@ public class TrajectoryExecutor implements Runnable {
         leftFollow = new EncoderFollower(leftTraj);
         rightFollow = new EncoderFollower(rightTraj);
         if(g == DriveGear.GEAR_HIGH) {
-            leftFollow.configurePIDVA(KP, KI, KD, KV_HIGH, KA_HIGH);
-            rightFollow.configurePIDVA(KP, KI, KD, KV_HIGH, KA_HIGH);
+            leftFollow.configurePIDVA(KP_HIGH, KI_HIGH, KD_HIGH, KV_HIGH, KA_HIGH);
+            rightFollow.configurePIDVA(KP_HIGH, KI_HIGH, KD_HIGH, KV_HIGH, KA_HIGH);
         }
         else {
             leftFollow.configurePIDVA(KP, KI, KD, KV, KA);
@@ -192,18 +202,18 @@ public class TrajectoryExecutor implements Runnable {
                 double leftGyroPower = kHeading * headDiff;
                 double rightGyroPower = -kHeading * headDiff;
                 double leftTwist =
-                        leftGyroPower / KV / DriveTrainSide.DIST_PER_REV * DriveTrainSide.ENCODER_CODES_PER_REV * dt;
+                        leftGyroPower / kv / DriveTrainSide.DIST_PER_REV * DriveTrainSide.ENCODER_CODES_PER_REV * dt;
                 double rightTwist =
-                        rightGyroPower / KV / DriveTrainSide.DIST_PER_REV * DriveTrainSide.ENCODER_CODES_PER_REV * dt;
+                        rightGyroPower / kv / DriveTrainSide.DIST_PER_REV * DriveTrainSide.ENCODER_CODES_PER_REV * dt;
                 leftGyroIntegrator += leftTwist;
                 rightGyroIntegrator += rightTwist;
 
                 double left = directionMultiplier * (leftFollow
                         .calculate(directionMultiplier * ((int) currentPos.getX() - (int) leftGyroIntegrator))
-                        + K_OFFSET * Math.signum(segL.velocity)) + leftGyroPower;
+                        + kOffset * Math.signum(segL.velocity)) + leftGyroPower;
                 double right = directionMultiplier * (rightFollow
                         .calculate(directionMultiplier * ((int) currentPos.getY() - (int) rightGyroIntegrator))
-                        + K_OFFSET * Math.signum(segR.velocity)) + rightGyroPower;
+                        + kOffset * Math.signum(segR.velocity)) + rightGyroPower;
                 driveTrain.setPowerLeftRight(left, right);
                 Vector2d vel = driveTrain.getVelocityIPS();
                 Robot.runningRobot.logger.storeValue(new double[] {
@@ -215,16 +225,10 @@ public class TrajectoryExecutor implements Runnable {
                 if (leftFollow.isFinished() || rightFollow.isFinished() || time > endTime) {
                     currState = TrajectoryExecutionState.STATE_FINISHED;
                 } 
-//                else if (Math.abs(directionMultiplier*segL.velocity - vel.getX()) > VEL_SANITY_CHECK_RANGE
-//                        || Math.abs(directionMultiplier*segR.velocity - vel.getY()) > VEL_SANITY_CHECK_RANGE) {
-//                    currState = TrajectoryExecutionState.STATE_SENSOR_FAULT;
-//                    DriverStation.reportError("Encoder fault detected! Aborting Path", false);
-//                    sensorFaultTime = Timer.getFPGATimestamp();
-//                }
                 break;
             case STATE_SENSOR_FAULT:
                 if(Timer.getFPGATimestamp() < sensorFaultTime + 2.5) {
-                    driveTrain.setPowerLeftRight(directionMultiplier * KV * DEFAULT_MAX_VEL/3.0, directionMultiplier * KV * DEFAULT_MAX_VEL/3.0);
+                    driveTrain.setPowerLeftRight(directionMultiplier * kv * DEFAULT_MAX_VEL/3.0, directionMultiplier * KV * DEFAULT_MAX_VEL/3.0);
                 }
                 else {
                     driveTrain.stop();

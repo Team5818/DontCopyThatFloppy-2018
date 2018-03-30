@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 package org.rivierarobotics.robot;
 
+import org.rivierarobotics.autos.JustDrive;
 import org.rivierarobotics.autos.centerswitch.CenterSwitchAuto;
 import org.rivierarobotics.autos.rightscale.TwoCubeScaleAuto;
 import org.rivierarobotics.commands.CompressorControlCommand;
@@ -80,7 +81,7 @@ public class Robot extends TimedRobot {
 
         String[] fields = { "PosL", "PosR", "VelL", "VelR", "Set Pos L", "Set Pos R", "Set Vel L", "Set Vel R",
                 "Left Gyro Integ", "Right Gyro Integ", "Heading", "Set Heading", "LPow", "RPow", "Time" };
-        logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG_VERBOSE", fields);
+        logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG_VERBOSE_NEW", fields);
 
         switchInAuto = new CenterSwitchAuto();
         switchOutAuto = new TwoCubeScaleAuto();
@@ -101,7 +102,7 @@ public class Robot extends TimedRobot {
                     side[x] = Side.RIGHT;
             }
         }
-        fieldData = side;
+        fieldData = new Side[] { Side.LEFT, Side.LEFT, Side.LEFT };
     }
 
     public Side[] getSide() {

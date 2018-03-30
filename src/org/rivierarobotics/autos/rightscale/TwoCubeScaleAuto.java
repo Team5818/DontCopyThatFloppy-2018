@@ -57,7 +57,7 @@ public class TwoCubeScaleAuto extends CommandGroup {
         CommandGroup placeGroup = new CommandGroup();
         placeGroup.addParallel(new CubeToScaleTCS());
         placeGroup.addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionBack()));
-        placeGroup.addParallel(new AutoThrow(RobotDependentConstants.Constant.getArmPositionScaleHigh()));
+        placeGroup.addParallel(new AutoThrow(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 30));
         this.addSequential(placeGroup);
         this.addSequential(new TimedCommand(.5));
         this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
