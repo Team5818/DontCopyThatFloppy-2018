@@ -35,7 +35,7 @@ public class TrajectoryExecutor implements Runnable {
     public static final double KD = 0.0;
     public static final double KV = 0.0086;
     public static final double KA = 0.0024;
-    public static final double KP_HIGH = 0.07;
+    public static final double KP_HIGH = 0.1;
     public static final double KI_HIGH = 0.0;
     public static final double KD_HIGH = 0.0;
     public static final double KV_HIGH = 0.004968;
@@ -98,13 +98,13 @@ public class TrajectoryExecutor implements Runnable {
             config = CONFIG_HIGH;
             kv = KV_HIGH;
             kOffset = K_OFFSET_HIGH;
-            kHeading = K_HEADING_DEFAULT;
+            kHeading = K_HEADING_HIGH;
         }
         else {
             config = CONFIG_LOW;
             kv = KV;
             kOffset = K_OFFSET;
-            kHeading = K_HEADING_HIGH;
+            kHeading = K_HEADING_DEFAULT;
  
         }
         master = Pathfinder.generate(waypoints, config);
