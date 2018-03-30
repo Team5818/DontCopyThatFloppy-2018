@@ -27,7 +27,7 @@ public class TwoCubeScaleAuto extends CommandGroup {
         driveToScale.addParallel(new DriveToScaleRight());
         raiseGroup.addSequential(new TimedCommand(2));
         raiseGroup.addSequential(
-                new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 180));
+                new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 130));
         driveToScale.addParallel(raiseGroup);
         this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
         this.addSequential(new TimedCommand(.25));

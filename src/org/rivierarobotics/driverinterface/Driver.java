@@ -80,7 +80,7 @@ public class Driver {
                 .whenPressed(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionBack()));
         shiftLow.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_LOW));
         shiftHigh.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_HIGH));
-        autoCollectButton.whenPressed(new CollectGrabRaise(true));
+        //autoCollectButton.whenPressed(new CollectGrabRaise(true));
 
         removeArmLimitButton.whenPressed(new RemoveArmLimit(JS_ARM));//engage PTO + disengage arm
         startWinchingButton.whenPressed(new StartWinching());
