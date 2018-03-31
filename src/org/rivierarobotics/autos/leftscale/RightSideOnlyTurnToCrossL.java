@@ -4,9 +4,9 @@ import org.rivierarobotics.autos.SideDependentSpin;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.robot.Robot;
 
-public class LeftSideOnlyTurnToCrossL extends SideDependentSpin{
+public class RightSideOnlyTurnToCrossL extends SideDependentSpin{
 
-    public LeftSideOnlyTurnToCrossL() {
+    public RightSideOnlyTurnToCrossL() {
         leftTarget = -90.0;
         rightTarget = -90.0;
         dt = Robot.runningRobot.driveTrain;

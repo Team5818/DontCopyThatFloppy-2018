@@ -7,12 +7,12 @@ import org.rivierarobotics.robot.Robot;
 
 import jaci.pathfinder.Waypoint;
 
-public class LeftSideOnlyDriveToScaleL extends SideDependentTrajectoryExecutor{
+public class RightSideOnlyDriveToScaleL extends SideDependentTrajectoryExecutor{
     
-    public LeftSideOnlyDriveToScaleL() {
+    public RightSideOnlyDriveToScaleL() {
         requires(Robot.runningRobot.driveTrain);
-        leftExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(60,0,0)},false,0);
-        rightExecutor = null;
+        rightExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(68,0,0)},false,0);
+        leftExecutor = null;
     }
 
     @Override

@@ -25,7 +25,7 @@ public class TrajectoryExecutor implements Runnable {
     public static final double UNINITIALIZED_SENTINEL = -254;
     public static final double DEFAULT_DT = .01;
     public static final double DEFAULT_MAX_VEL = 80;
-    public static final double DEFAULT_MAX_ACCEL = 60;
+    public static final double DEFAULT_MAX_ACCEL = 100;
     public static final double DEFAULT_MAX_JERK = 500;
     public static final double MAX_VEL_HIGH = 130;
     public static final double MAX_ACCEL_HIGH = 80;
@@ -43,7 +43,7 @@ public class TrajectoryExecutor implements Runnable {
     public static final double K_OFFSET = 0.045;
     public static final double K_OFFSET_HIGH = 0.0717;
     public static final double K_HEADING_DEFAULT = 0.03;
-    public static final double K_HEADING_HIGH = 0.01;
+    public static final double K_HEADING_HIGH = 0.012;
     public static final double VEL_SANITY_CHECK_RANGE = 60;
 
     public enum TrajectoryExecutionState {

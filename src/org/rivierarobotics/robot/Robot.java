@@ -8,6 +8,7 @@ package org.rivierarobotics.robot;
 
 import org.rivierarobotics.autos.JustDrive;
 import org.rivierarobotics.autos.centerswitch.CenterSwitchAuto;
+import org.rivierarobotics.autos.leftscale.ScaleAutoLeft;
 import org.rivierarobotics.autos.rightscale.TwoCubeScaleAuto;
 import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.commands.ExecuteTrajectoryCommand;

@@ -4,11 +4,11 @@ import org.rivierarobotics.autos.SideDependentSpin;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.robot.Robot;
 
-public class LeftSideOnlySpinToScaleL extends SideDependentSpin{
+public class RIghtSideOnlySpinToScaleL extends SideDependentSpin{
 
-    public LeftSideOnlySpinToScaleL() {
-        leftTarget = 0.0;
-        rightTarget = Double.NaN;
+    public RIghtSideOnlySpinToScaleL() {
+        rightTarget = 0.0;
+        leftTarget = Double.NaN;
         dt = Robot.runningRobot.driveTrain;
         requires(dt);
         setTimeout(1);
