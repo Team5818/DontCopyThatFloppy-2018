@@ -18,11 +18,15 @@ public class MagicSpin extends Command {
     private double angle;
     private double veloc;
 
-    public MagicSpin(double ang) {
-        setTimeout(1.5);
+    public MagicSpin(double ang, double timeout) {
+        setTimeout(timeout);
         dt = Robot.runningRobot.driveTrain;
         requires(dt);
         angle = ang;
+    }
+    
+    public MagicSpin(double ang) {
+        this(ang, 1.5);
     }
 
     @Override

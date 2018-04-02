@@ -6,7 +6,9 @@
 /*----------------------------------------------------------------------------*/
 package org.rivierarobotics.robot;
 
+import org.rivierarobotics.autos.JustDrive;
 import org.rivierarobotics.autos.centerswitch.CenterSwitchAuto;
+import org.rivierarobotics.autos.leftscale.ScaleAutoLeft;
 import org.rivierarobotics.autos.rightscale.TwoCubeScaleAuto;
 import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
@@ -80,10 +82,10 @@ public class Robot extends TimedRobot {
 
         String[] fields = { "PosL", "PosR", "VelL", "VelR", "Set Pos L", "Set Pos R", "Set Vel L", "Set Vel R",
                 "Left Gyro Integ", "Right Gyro Integ", "Heading", "Set Heading", "LPow", "RPow", "Time" };
-        logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG_VERBOSE", fields);
+        logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG_VERBOSE_NEW", fields);
 
         switchInAuto = new CenterSwitchAuto();
-        switchOutAuto = new TwoCubeScaleAuto();
+        switchOutAuto = new ScaleAutoLeft();
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
     }
 
@@ -152,6 +154,7 @@ public class Robot extends TimedRobot {
             autonomousCommand.cancel();
         }
         compDisable.start();
+        driveTrain.unslaveLeft();
         if (camCollect == null) {
             camCollect = CameraServer.getInstance().startAutomaticCapture(0);
             boolean setCam = camCollect.setVideoMode(PixelFormat.kMJPEG, 320, 240, 30);

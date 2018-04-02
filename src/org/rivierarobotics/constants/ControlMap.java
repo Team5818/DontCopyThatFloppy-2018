@@ -53,4 +53,6 @@ public class ControlMap {
     public static final int LEAVE_CLIMB_BUTTON = 8;
 
     public static final int FORCE_COMPRESSOR_ON_BUTTON = 2;
+    
+    public static final int AUTO_PUNCH_BUTTON = 2;
 }

@@ -1,5 +1,6 @@
 package org.rivierarobotics.driverinterface;
 
+import org.rivierarobotics.commands.AutoPunch;
 import org.rivierarobotics.commands.AutoThrow;
 import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.CompressorControlCommand;
@@ -7,7 +8,7 @@ import org.rivierarobotics.commands.LeaveClimbCommand;
 import org.rivierarobotics.commands.MagicSpin;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
 import org.rivierarobotics.commands.SetArmBrake;
-import org.rivierarobotics.commands.SetArmEngaged;
+import org.rivierarobotics.commands.SetArmEngagedAndPTODisengaged;
 import org.rivierarobotics.commands.SetClampOpen;
 import org.rivierarobotics.commands.SetDrivePower;
 import org.rivierarobotics.commands.ShiftGear;
@@ -63,7 +64,7 @@ public class Driver {
         JoystickButton leaveClimbButton = new JoystickButton(JS_LEFT_BUTTONS, ControlMap.LEAVE_CLIMB_BUTTON);
         
         JoystickButton autoCollectButton = new JoystickButton(JS_FLOPPIES, ControlMap.COLLECT_SEQUENCE_BUTTON);
-        JoystickButton magicSpin = new JoystickButton(JS_RIGHT_BUTTONS, 6);
+        JoystickButton autoPunch = new JoystickButton(JS_FLOPPIES, ControlMap.AUTO_PUNCH_BUTTON);
 
         
         // Bind Commands
@@ -79,16 +80,16 @@ public class Driver {
                 .whenPressed(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionBack()));
         shiftLow.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_LOW));
         shiftHigh.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_HIGH));
-        autoCollectButton.whenPressed(new CollectGrabRaise(true));
+        //autoCollectButton.whenPressed(new CollectGrabRaise(true));
 
         removeArmLimitButton.whenPressed(new RemoveArmLimit(JS_ARM));//engage PTO + disengage arm
         startWinchingButton.whenPressed(new StartWinching());
-        reengageArmButton.whenPressed(new SetArmEngaged(true));//reengage + lower arm, winching at same time
-        disengageArmButton.whenPressed(new SetArmEngaged(false));//disengage arm when it hits bottom
+        reengageArmButton.whenPressed(new SetArmEngagedAndPTODisengaged(true));//reengage + lower arm, winching at same time
+        disengageArmButton.whenPressed(new SetArmEngagedAndPTODisengaged(false));//disengage arm when it hits bottom
         lockWinchButton.whenPressed(new SetArmBrake(true));//lock robot in place after climb   
         unlockWinchButton.whenPressed(new SetArmBrake(false));//for the pits
         leaveClimbButton.whenPressed(new LeaveClimbCommand());//for crisis mode
         
-        magicSpin.whenPressed(new AutoThrow());
+        autoPunch.whenPressed(new AutoPunch(-0.2));
     }
 }
