@@ -30,16 +30,12 @@ public class ScaleAutoLeft extends CommandGroup {
                 new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 180));
         driveToScale.addParallel(raiseGroup);
         this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
-        this.addSequential(new TimedCommand(.25));
         this.addSequential(driveToScale);
         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
-        this.addSequential(new TimedCommand(.25));
         this.addSequential(new RightSideOnlyTurnToCrossL());//both
         this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
-        this.addSequential(new TimedCommand(.25));
         this.addSequential(new RightSideOnlyDriveAcrossFieldL());//left
         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
-        this.addSequential(new TimedCommand(.25));
         this.addSequential(new RIghtSideOnlySpinToScaleL());
         this.addSequential(new RightSideOnlyDriveToScaleL());//both
         this.addSequential(new SideDependentPunch(Side.LEFT));
