@@ -12,7 +12,7 @@ public class JustDrive extends SideDependentTrajectoryExecutor{
     
     public JustDrive() {
         requires(Robot.runningRobot.driveTrain);
-        leftExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(MathUtil.feet2inches(10),0,0)},false, 0, DriveGear.GEAR_HIGH);
+        leftExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(MathUtil.feet2inches(20),0,0)},false, 0, DriveGear.GEAR_HIGH);
         rightExecutor = null;
     }
 

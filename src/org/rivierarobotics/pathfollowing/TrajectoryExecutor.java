@@ -28,7 +28,7 @@ public class TrajectoryExecutor implements Runnable {
     public static final double DEFAULT_MAX_ACCEL = 100;
     public static final double DEFAULT_MAX_JERK = 500;
     public static final double MAX_VEL_HIGH = 130;
-    public static final double MAX_ACCEL_HIGH = 80;
+    public static final double MAX_ACCEL_HIGH = 120;
     public static final double DEFAULT_TIMEOUT = Double.POSITIVE_INFINITY;
     public static final double KP = 0.1;
     public static final double KI = 0.0;
@@ -38,8 +38,8 @@ public class TrajectoryExecutor implements Runnable {
     public static final double KP_HIGH = 0.0;//0.1;
     public static final double KI_HIGH = 0.0;
     public static final double KD_HIGH = 0.0;
-    public static final double KV_HIGH = 0.004968;
-    public static final double KA_HIGH = 0.0034;
+    public static final double KV_HIGH = 0.0045;
+    public static final double KA_HIGH = 0.0025;
     public static final double K_OFFSET = 0.045;
     public static final double K_OFFSET_HIGH = 0.0717;
     public static final double K_HEADING_DEFAULT = 0.03;
