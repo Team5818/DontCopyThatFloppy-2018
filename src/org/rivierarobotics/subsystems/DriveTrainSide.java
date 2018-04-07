@@ -141,7 +141,7 @@ public class DriveTrainSide {
     }
     
     public double getSideVelocityIPS() {
-        return masterTalon.getSelectedSensorVelocity(0)/ENCODER_CODES_PER_REV*DIST_PER_REV/4.0*10;
+        return masterTalon.getSelectedSensorVelocity(0)/(double)(ENCODER_CODES_PER_REV)*DIST_PER_REV/4.0*10;
     }
     
     public double getRawSpeed() {

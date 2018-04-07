@@ -35,7 +35,7 @@ public class TrajectoryExecutor implements Runnable {
     public static final double KD = 0.0;
     public static final double KV = 0.0086;
     public static final double KA = 0.0024;
-    public static final double KP_HIGH = 0.1;
+    public static final double KP_HIGH = 0.0;//0.1;
     public static final double KI_HIGH = 0.0;
     public static final double KD_HIGH = 0.0;
     public static final double KV_HIGH = 0.004968;
@@ -43,7 +43,7 @@ public class TrajectoryExecutor implements Runnable {
     public static final double K_OFFSET = 0.045;
     public static final double K_OFFSET_HIGH = 0.0717;
     public static final double K_HEADING_DEFAULT = 0.03;
-    public static final double K_HEADING_HIGH = 0.012;
+    public static final double K_HEADING_HIGH = 0.0;//0.012;
     public static final double VEL_SANITY_CHECK_RANGE = 60;
 
     public enum TrajectoryExecutionState {
@@ -217,8 +217,8 @@ public class TrajectoryExecutor implements Runnable {
                 driveTrain.setPowerLeftRight(left, right);
                 Vector2d vel = driveTrain.getVelocityIPS();
                 Robot.runningRobot.logger.storeValue(new double[] {
-                        currentPos.getX() / DriveTrainSide.ENCODER_CODES_PER_REV * DriveTrainSide.DIST_PER_REV / 4.0,
-                        currentPos.getY() / DriveTrainSide.ENCODER_CODES_PER_REV * DriveTrainSide.DIST_PER_REV / 4.0,
+                        currentPos.getX() / (double)(DriveTrainSide.ENCODER_CODES_PER_REV) * DriveTrainSide.DIST_PER_REV / 4.0,
+                        currentPos.getY() / (double)(DriveTrainSide.ENCODER_CODES_PER_REV) * DriveTrainSide.DIST_PER_REV / 4.0,
                         vel.getX(), vel.getY(), segL.position, segR.position, segL.velocity, segR.velocity,
                         leftGyroIntegrator, rightGyroIntegrator, currentHeading, Pathfinder.r2d(segL.heading), left,
                         right, time });

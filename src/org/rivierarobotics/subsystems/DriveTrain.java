@@ -36,10 +36,10 @@ public class DriveTrain extends Subsystem {
 
     public void shiftGear(DriveGear gear) {
         if(gear == DriveGear.GEAR_LOW) {
-            shifter.set(false);
+            shifter.set(true);
         }
         else {
-            shifter.set(true);
+            shifter.set(false);
         }
     }
     
