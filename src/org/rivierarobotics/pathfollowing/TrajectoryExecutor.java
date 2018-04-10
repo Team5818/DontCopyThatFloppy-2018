@@ -1,6 +1,7 @@
 package org.rivierarobotics.pathfollowing;
 
 import org.rivierarobotics.constants.RobotConstants;
+import org.rivierarobotics.pathfollowing.WiggleModifier.WiggleConfig;
 import org.rivierarobotics.robot.Robot;
 import org.rivierarobotics.subsystems.DriveTrain;
 import org.rivierarobotics.subsystems.DriveTrain.DriveGear;
@@ -43,7 +44,7 @@ public class TrajectoryExecutor implements Runnable {
     public static final double K_OFFSET = 0.045;
     public static final double K_OFFSET_HIGH = 0.0717;
     public static final double K_HEADING_DEFAULT = 0.03;
-    public static final double K_HEADING_HIGH = 0.01;
+    public static final double K_HEADING_HIGH = 0.015;
     public static final double VEL_SANITY_CHECK_RANGE = 60;
 
     public enum TrajectoryExecutionState {
@@ -86,11 +87,10 @@ public class TrajectoryExecutor implements Runnable {
             Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, MAX_VEL_HIGH, MAX_ACCEL_HIGH, DEFAULT_MAX_JERK);
 
     public TrajectoryExecutor(Waypoint[] waypoints, double time, boolean rev,
-            double gyroOffset, double kGyro, DriveGear g) {
+            double gyroOffset, double kGyro, DriveGear g, WiggleConfig wiggConf) {
         gear = g;
         driveTrain = Robot.runningRobot.driveTrain;
         reversed = rev;
-        kHeading = kGyro;
         directionMultiplier = reversed ? -1 : 1;
         DriverStation.reportError("starting generation...", false);
         Config config;
@@ -107,8 +107,14 @@ public class TrajectoryExecutor implements Runnable {
             kHeading = K_HEADING_DEFAULT;
  
         }
+        if(!Double.isNaN(kGyro)) {
+            kHeading = kGyro;
+        }
         master = Pathfinder.generate(waypoints, config);
         DriverStation.reportError("done!", false);
+        if(wiggConf != null) {
+            master = WiggleModifier.addWiggle(master, wiggConf);//add them wiggles
+        }
         TankModifier mod = new TankModifier(master).modify(RobotConstants.WHEEL_BASE_WIDTH);
         if (reversed) {
             leftTraj = mod.getRightTrajectory();
@@ -142,11 +148,11 @@ public class TrajectoryExecutor implements Runnable {
 
 
     public TrajectoryExecutor(Waypoint[] waypoints, boolean rev, double gyroOffset, DriveGear g) {
-        this(waypoints, DEFAULT_TIMEOUT, rev, gyroOffset, K_HEADING_DEFAULT, g);
+        this(waypoints, DEFAULT_TIMEOUT, rev, gyroOffset, Double.NaN, g,null);
     }
     
     public TrajectoryExecutor(Waypoint[] waypoints, boolean rev, double gyroOffset) {
-        this(waypoints, DEFAULT_TIMEOUT, rev, gyroOffset, K_HEADING_DEFAULT, DriveGear.GEAR_LOW);
+        this(waypoints, DEFAULT_TIMEOUT, rev, gyroOffset, Double.NaN, DriveGear.GEAR_LOW,null);
     }
 
 
@@ -210,10 +216,10 @@ public class TrajectoryExecutor implements Runnable {
 
                 double left = directionMultiplier * (leftFollow
                         .calculate(directionMultiplier * ((int) currentPos.getX() - (int) leftGyroIntegrator))
-                        + kOffset * Math.signum(segL.velocity)) + leftGyroPower;
+                        + kOffset * Math.signum(segL.velocity));// + leftGyroPower;
                 double right = directionMultiplier * (rightFollow
                         .calculate(directionMultiplier * ((int) currentPos.getY() - (int) rightGyroIntegrator))
-                        + kOffset * Math.signum(segR.velocity)) + rightGyroPower;
+                        + kOffset * Math.signum(segR.velocity));// + rightGyroPower;
                 driveTrain.setPowerLeftRight(left, right);
                 Vector2d vel = driveTrain.getVelocityIPS();
                 Robot.runningRobot.logger.storeValue(new double[] {
