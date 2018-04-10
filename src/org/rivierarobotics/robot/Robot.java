@@ -7,6 +7,7 @@
 package org.rivierarobotics.robot;
 
 import org.rivierarobotics.autos.JustDrive;
+import org.rivierarobotics.autos.JustWiggle;
 import org.rivierarobotics.autos.centerswitch.CenterSwitchAuto;
 import org.rivierarobotics.autos.leftscale.ScaleAutoLeft;
 import org.rivierarobotics.autos.rightscale.TwoCubeScaleAuto;
@@ -84,8 +85,8 @@ public class Robot extends TimedRobot {
                 "Left Gyro Integ", "Right Gyro Integ", "Heading", "Set Heading", "LPow", "RPow", "Time" };
         logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG_VERBOSE_NEW", fields);
 
-        switchInAuto = new JustDrive();//CenterSwitchAuto();
-        switchOutAuto = new TwoCubeScaleAuto();
+        switchInAuto = new JustWiggle();//CenterSwitchAuto();
+        switchOutAuto = new JustWiggle();//TwoCubeScaleAuto();
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
     }
 
@@ -126,7 +127,7 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         queryFieldData();
         driveTrain.resetGyro();
-        driveTrain.shiftGear(DriveGear.GEAR_HIGH);
+        driveTrain.shiftGear(DriveGear.GEAR_LOW);
         compressor.stop();
         if (autoSelector.get()) {
             autonomousCommand = switchOutAuto;

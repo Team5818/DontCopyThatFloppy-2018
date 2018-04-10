@@ -44,7 +44,7 @@ public class TrajectoryExecutor implements Runnable {
     public static final double K_OFFSET_HIGH = 0.0717;
     public static final double K_HEADING_DEFAULT = 0.03;
     public static final double K_HEADING_HIGH = 0.015;
-    public static final double VEL_SANITY_CHECK_RANGE = 60;
+    public static final double MAX_VEL_WIGGLE = 30;
 
     public enum TrajectoryExecutionState {
         STATE_STABILIZING_TIMING, STATE_RUNNING_PROFILE, STATE_FINISHED, STATE_SENSOR_FAULT
@@ -59,7 +59,6 @@ public class TrajectoryExecutor implements Runnable {
     private double lastTime;
     private boolean running = false;
     private boolean isFinished = false;
-    private double endTime;
     private Trajectory leftTraj;
     private Trajectory rightTraj;
     private EncoderFollower leftFollow;
@@ -104,6 +103,9 @@ public class TrajectoryExecutor implements Runnable {
             kOffset = K_OFFSET;
             kHeading = K_HEADING_DEFAULT;
  
+        }
+        if(wiggConf != null) {
+            config.max_velocity = MAX_VEL_WIGGLE;
         }
         if(!Double.isNaN(kGyro)) {
             kHeading = kGyro;

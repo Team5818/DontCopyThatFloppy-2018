@@ -13,10 +13,10 @@ public class JustWiggle extends SideDependentTrajectoryExecutor {
 
     public JustWiggle() {
         requires(Robot.runningRobot.driveTrain);
-        WiggleConfig wc = new WiggleConfig(5, Math.PI / 12, TrajectoryExecutor.MAX_VEL_HIGH);
+        WiggleConfig wc = new WiggleConfig(5, TrajectoryExecutor.MAX_VEL_WIGGLE, Math.PI/12);
         leftExecutor = new TrajectoryExecutor(
-                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(MathUtil.feet2inches(20), 0, 0) }, false, 0.0, 0.0,
-                DriveGear.GEAR_HIGH, wc);
+                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(MathUtil.feet2inches(10), 0, 0) }, false, 0.0, 0.01,
+                DriveGear.GEAR_LOW, wc);
         rightExecutor = null;
     }
 
