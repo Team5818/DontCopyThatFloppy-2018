@@ -30,7 +30,6 @@ public class TrajectoryExecutor implements Runnable {
     public static final double DEFAULT_MAX_JERK = 500;
     public static final double MAX_VEL_HIGH = 140;
     public static final double MAX_ACCEL_HIGH = 120;
-    public static final double DEFAULT_TIMEOUT = Double.POSITIVE_INFINITY;
     public static final double KP = 0.1;
     public static final double KI = 0.0;
     public static final double KD = 0.0;
@@ -60,7 +59,6 @@ public class TrajectoryExecutor implements Runnable {
     private double lastTime;
     private boolean running = false;
     private boolean isFinished = false;
-    private double timeout;
     private double endTime;
     private Trajectory leftTraj;
     private Trajectory rightTraj;
@@ -86,7 +84,7 @@ public class TrajectoryExecutor implements Runnable {
     public static final Trajectory.Config CONFIG_HIGH = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
             Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, MAX_VEL_HIGH, MAX_ACCEL_HIGH, DEFAULT_MAX_JERK);
 
-    public TrajectoryExecutor(Waypoint[] waypoints, double time, boolean rev,
+    public TrajectoryExecutor(Waypoint[] waypoints, boolean rev,
             double gyroOffset, double kGyro, DriveGear g, WiggleConfig wiggConf) {
         gear = g;
         driveTrain = Robot.runningRobot.driveTrain;
@@ -139,7 +137,6 @@ public class TrajectoryExecutor implements Runnable {
         }
         leftFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV * 4, RobotConstants.WHEEL_DIAMETER);
         rightFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV * 4, RobotConstants.WHEEL_DIAMETER);
-        timeout = time;
         runner = new Notifier(this);
 
         dtBuffer = new CircularBuffer(NUM_SAMPLES);
@@ -148,11 +145,11 @@ public class TrajectoryExecutor implements Runnable {
 
 
     public TrajectoryExecutor(Waypoint[] waypoints, boolean rev, double gyroOffset, DriveGear g) {
-        this(waypoints, DEFAULT_TIMEOUT, rev, gyroOffset, Double.NaN, g,null);
+        this(waypoints, rev, gyroOffset, Double.NaN, g,null);
     }
     
     public TrajectoryExecutor(Waypoint[] waypoints, boolean rev, double gyroOffset) {
-        this(waypoints, DEFAULT_TIMEOUT, rev, gyroOffset, Double.NaN, DriveGear.GEAR_LOW,null);
+        this(waypoints, rev, gyroOffset, Double.NaN, DriveGear.GEAR_LOW,null);
     }
 
 
@@ -181,7 +178,6 @@ public class TrajectoryExecutor implements Runnable {
             driveTrain.resetEnc();
             driveTrain.shiftGear(gear);
             lastTime = Timer.getFPGATimestamp();
-            endTime = lastTime + timeout;
             running = true;
             DriverStation.reportError("Starting Trajectory...", false);
         }
@@ -228,7 +224,7 @@ public class TrajectoryExecutor implements Runnable {
                         vel.getX(), vel.getY(), segL.position, segR.position, segL.velocity, segR.velocity,
                         leftGyroIntegrator, rightGyroIntegrator, currentHeading, Pathfinder.r2d(segL.heading), left,
                         right, time });
-                if (leftFollow.isFinished() || rightFollow.isFinished() || time > endTime) {
+                if (leftFollow.isFinished() || rightFollow.isFinished()) {
                     currState = TrajectoryExecutionState.STATE_FINISHED;
                 } 
                 break;
