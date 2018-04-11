@@ -6,11 +6,13 @@
 /*----------------------------------------------------------------------------*/
 package org.rivierarobotics.robot;
 
+import org.rivierarobotics.autos.DriveAndCollect;
 import org.rivierarobotics.autos.JustDrive;
 import org.rivierarobotics.autos.JustWiggle;
 import org.rivierarobotics.autos.centerswitch.CenterSwitchAuto;
 import org.rivierarobotics.autos.leftscale.ScaleAutoLeft;
 import org.rivierarobotics.autos.rightscale.TwoCubeScaleAuto;
+import org.rivierarobotics.autos.rightscale.WiggleWiggleWiggle;
 import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
 import org.rivierarobotics.constants.RobotMap;
@@ -85,8 +87,8 @@ public class Robot extends TimedRobot {
                 "Left Gyro Integ", "Right Gyro Integ", "Heading", "Set Heading", "LPow", "RPow", "Time" };
         logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG_VERBOSE_NEW", fields);
 
-        switchInAuto = new JustWiggle();//CenterSwitchAuto();
-        switchOutAuto = new JustWiggle();//TwoCubeScaleAuto();
+        switchInAuto = new DriveAndCollect();//CenterSwitchAuto();
+        switchOutAuto = new DriveAndCollect();//TwoCubeScaleAuto();
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
     }
 
@@ -104,7 +106,7 @@ public class Robot extends TimedRobot {
                     side[x] = Side.RIGHT;
             }
         }
-        fieldData = new Side[] { Side.LEFT, Side.RIGHT, Side.LEFT };;
+        fieldData = new Side[] { Side.LEFT, Side.RIGHT, Side.LEFT };
     }
 
     public Side[] getSide() {

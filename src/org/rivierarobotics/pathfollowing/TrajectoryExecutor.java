@@ -44,7 +44,7 @@ public class TrajectoryExecutor implements Runnable {
     public static final double K_OFFSET_HIGH = 0.0717;
     public static final double K_HEADING_DEFAULT = 0.03;
     public static final double K_HEADING_HIGH = 0.015;
-    public static final double MAX_VEL_WIGGLE = 30;
+    public static final double MAX_VEL_WIGGLE = 10;
 
     public enum TrajectoryExecutionState {
         STATE_STABILIZING_TIMING, STATE_RUNNING_PROFILE, STATE_FINISHED, STATE_SENSOR_FAULT
@@ -154,7 +154,6 @@ public class TrajectoryExecutor implements Runnable {
         this(waypoints, rev, gyroOffset, Double.NaN, DriveGear.GEAR_LOW,null);
     }
 
-
     public void fillBuffer(double val) {
         for (int i = 0; i < NUM_SAMPLES; i++) {
             dtBuffer.addFirst(val);
@@ -172,6 +171,18 @@ public class TrajectoryExecutor implements Runnable {
             }
         }
         return sum / numPoints;
+    }
+    
+    public void reset() {
+        leftGyroIntegrator = 0;
+        rightGyroIntegrator = 0;
+        fillBuffer(UNINITIALIZED_SENTINEL);
+        leftFollow.reset();
+        rightFollow.reset();
+        leftFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV * 4, RobotConstants.WHEEL_DIAMETER);
+        rightFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV * 4, RobotConstants.WHEEL_DIAMETER);
+        currState = TrajectoryExecutionState.STATE_STABILIZING_TIMING;
+        isFinished = false;
     }
 
     public void start() {

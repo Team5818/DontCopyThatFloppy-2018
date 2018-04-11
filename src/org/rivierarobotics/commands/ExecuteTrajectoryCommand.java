@@ -13,13 +13,18 @@ public class ExecuteTrajectoryCommand extends Command{
     private DriveTrain dt;
     
     public ExecuteTrajectoryCommand(Waypoint[] wp, boolean reversed, double gyro) {
+        this(new TrajectoryExecutor(wp,reversed, gyro));
+    }
+    
+    public ExecuteTrajectoryCommand(TrajectoryExecutor ex) {
         dt = Robot.runningRobot.driveTrain;
         requires(dt);
-        trajEx = new TrajectoryExecutor(wp,reversed, gyro);
+        trajEx = ex;
     }
     
     @Override
     protected void initialize() {
+        trajEx.reset();
         trajEx.start();
     }
 
