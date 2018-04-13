@@ -3,7 +3,7 @@ package org.rivierarobotics.constants;
 public class PracticeRobotSpecificConstants extends RobotDependentConstants {
 
     public double getLowerArmSoftLimit() {
-        return 7604;
+        return 16233;
     }
 
 }
