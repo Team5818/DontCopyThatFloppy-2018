@@ -1,26 +1,27 @@
 package org.rivierarobotics.autos;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.robot.Robot;
+import org.rivierarobotics.subsystems.DriveTrain.DriveGear;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class SideDependentPunch extends Command{
+public class SideDependentShift extends Command{
 
     private Side side;
-    public SideDependentPunch(Side s) {
+    private DriveGear gear;
+    public SideDependentShift(Side s, DriveGear g) {
         side = s;
-        setTimeout(.2);
+        gear = g;
     }
     
     protected void initialize() {
         if(Robot.runningRobot.getSide()[1] == side) {
-            Robot.runningRobot.clamp.setPuncher(true);
+            Robot.runningRobot.driveTrain.shiftGear(gear);
         }
     }
     
     @Override
     protected boolean isFinished() {
-        // TODO Auto-generated method stub
-        return isTimedOut();
+        return true;
     }
 }

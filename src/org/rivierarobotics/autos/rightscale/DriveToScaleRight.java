@@ -15,23 +15,21 @@ import jaci.pathfinder.Waypoint;
 public class DriveToScaleRight extends SideDependentTrajectoryExecutor {
 
     public static final double X_OFFSET = RobotConstants.TOTAL_ROBOT_LENGTH / 2;
-    public static final double Y_OFFSET = MathUtil.feet2inches(3.68) + RobotConstants.TOTAL_ROBOT_WIDTH / 2;
+    public static final double Y_OFFSET = MathUtil.feet2inches(3.68); // width already included
     public static final double RIGHT_PLACING_X = MathUtil.feet2inches(26.5);
     public static final double RIGHT_PLACING_Y = MathUtil.feet2inches(7.0);
 
     public static final Waypoint[] RIGHT_PATH =
-//            new Waypoint[] { 
-//                    new Waypoint(0, 0, 0), 
-//                    new Waypoint(MathUtil.feet2inches(15) - X_OFFSET, 0, 0),
-//                    new Waypoint(MathUtil.feet2inches(25.25) - X_OFFSET, MathUtil.feet2inches(8.25) - Y_OFFSET, 0) };
             new Waypoint[] { 
                     new Waypoint(0, 0, 0), 
-                    new Waypoint(MathUtil.feet2inches(26.5) - X_OFFSET, 0, 0) };
+                    new Waypoint(MathUtil.feet2inches(16.00) - X_OFFSET, 0, 0),
+                    new Waypoint(MathUtil.feet2inches(24.00) - X_OFFSET, MathUtil.feet2inches(5.00) - Y_OFFSET,
+                            Pathfinder.d2r(60)) };
 
     public static final Waypoint[] LEFT_PATH =
             new Waypoint[] { 
                     new Waypoint(0, 0, 0), 
-                    new Waypoint(MathUtil.feet2inches(20.0) - X_OFFSET, 0, 0)};
+                    new Waypoint(MathUtil.feet2inches(20.0) - X_OFFSET, 0, 0) };
 
     public DriveToScaleRight() {
         requires(Robot.runningRobot.driveTrain);

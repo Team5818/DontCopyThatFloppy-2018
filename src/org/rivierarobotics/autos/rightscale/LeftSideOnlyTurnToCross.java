@@ -8,7 +8,7 @@ public class LeftSideOnlyTurnToCross extends SideDependentSpin{
 
     public LeftSideOnlyTurnToCross() {
         leftTarget = 90.0;
-        rightTarget = 90.0;
+        rightTarget = Double.NaN;
         dt = Robot.runningRobot.driveTrain;
         requires(dt);
         setTimeout(.75);

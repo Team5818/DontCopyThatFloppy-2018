@@ -1,6 +1,7 @@
 package org.rivierarobotics.autos.rightscale;
 
 import org.rivierarobotics.autos.SideDependentPunch;
+import org.rivierarobotics.autos.SideDependentShift;
 import org.rivierarobotics.commands.AutoPunch;
 import org.rivierarobotics.commands.AutoThrow;
 import org.rivierarobotics.commands.CollectGrabRaise;
@@ -18,9 +19,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import jaci.pathfinder.Waypoint;
 
-public class TwoCubeScaleAuto extends CommandGroup {
+public class RightSideScaleAuto extends CommandGroup {
 
-    public TwoCubeScaleAuto() {
+    public RightSideScaleAuto() {
 
         CommandGroup driveToScale = new CommandGroup();
         CommandGroup raiseGroup = new CommandGroup();
@@ -29,22 +30,21 @@ public class TwoCubeScaleAuto extends CommandGroup {
         raiseGroup.addSequential(
                 new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 180));
         driveToScale.addParallel(raiseGroup);
-        this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
         this.addSequential(driveToScale);
-        this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
-        this.addSequential(new LeftSideOnlyTurnToCross());//both
-        this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
-        this.addSequential(new LeftSideOnlyDriveAcrossField());//left
-        this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
+        this.addSequential(new SideDependentShift(Side.LEFT, DriveGear.GEAR_LOW));
+        this.addSequential(new LeftSideOnlyTurnToCross());
+        this.addSequential(new SideDependentShift(Side.LEFT, DriveGear.GEAR_HIGH));
+        this.addSequential(new LeftSideOnlyDriveAcrossField());
+        this.addSequential(new SideDependentShift(Side.LEFT, DriveGear.GEAR_LOW));
         this.addSequential(new LeftSideOnlySpinToScale());
-        this.addSequential(new LeftSideOnlyDriveToScale());//both
+        this.addSequential(new LeftSideOnlyDriveToScale());
         this.addSequential(new SideDependentPunch(Side.RIGHT));
         this.addSequential(new SetClampOpen(true));
         this.addSequential(new TimedCommand(.5));
         this.addSequential(new SetPuncher(false));
-//        
-//        this.addSequential(new ScaleToCube());
-//        this.addSequential(new MagicSpin(180));
+        this.addSequential(new MagicSpin(-120));
+        this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
+        this.addSequential(new ScaleToCube());
 //
 //        CommandGroup driveBackGroup = new CommandGroup();
 //        CommandGroup getCubeGroup = new CommandGroup();
@@ -62,7 +62,6 @@ public class TwoCubeScaleAuto extends CommandGroup {
 //        placeGroup.addParallel(new AutoThrow(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 130));
 //        this.addSequential(placeGroup);
 //        this.addSequential(new TimedCommand(.5));
-        this.addSequential(new BackUp());
-        this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
+//        this.addSequential(new BackUp());
     }
 }
