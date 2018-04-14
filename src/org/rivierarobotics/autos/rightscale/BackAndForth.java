@@ -12,25 +12,21 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import jaci.pathfinder.Waypoint;
 
-public class WiggleWiggleWiggle extends CommandGroup {
+public class BackAndForth extends CommandGroup {
 
-    public WiggleWiggleWiggle() {
-        
-        WiggleConfig wc = new WiggleConfig(2, TrajectoryExecutor.MAX_VEL_WIGGLE, 0);
-        TrajectoryExecutor exFirst = new TrajectoryExecutor(
-                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(MathUtil.feet2inches(3), 0, 0)}, false, 0.0);
-//        TrajectoryExecutor exForward = new TrajectoryExecutor(
-//                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0) }, false, 0.0,
-//                0.015, DriveGear.GEAR_LOW, wc);
-//        TrajectoryExecutor exBackward = new TrajectoryExecutor(
-//                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0) }, true, 0.0,
-//                0.015, DriveGear.GEAR_LOW, wc);
-        this.addSequential(new ExecuteTrajectoryCommand(exFirst));
-//        for (int i = 0; i < 10; i++) {
-//            this.addSequential(new ExecuteTrajectoryCommand(exBackward));
-//            this.addSequential(new ExecuteTrajectoryCommand(exForward));
-//
-//        }
+    public BackAndForth() {
+        TrajectoryExecutor first = new TrajectoryExecutor(
+                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(MathUtil.feet2inches(3), 0, 0) }, false, 0.0,
+                Double.NaN, DriveGear.GEAR_LOW, 10);
+        TrajectoryExecutor forward = new TrajectoryExecutor(
+                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0) }, false, 0.0,
+                Double.NaN, DriveGear.GEAR_LOW, 10);
+        TrajectoryExecutor backward = new TrajectoryExecutor(
+                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0) }, true, 0.0,
+                Double.NaN, DriveGear.GEAR_LOW, 10);
+        this.addSequential(new ExecuteTrajectoryCommand(first));
+        this.addSequential(new ExecuteTrajectoryCommand(forward));
+        this.addSequential(new ExecuteTrajectoryCommand(backward));
     }
 
     @Override

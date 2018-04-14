@@ -7,14 +7,7 @@
 package org.rivierarobotics.robot;
 
 import org.rivierarobotics.autos.DriveAndCollect;
-import org.rivierarobotics.autos.JustDrive;
-import org.rivierarobotics.autos.JustWiggle;
-import org.rivierarobotics.autos.centerswitch.CenterSwitchAuto;
-import org.rivierarobotics.autos.leftscale.ScaleAutoLeft;
-import org.rivierarobotics.autos.rightscale.TwoCubeScaleAuto;
-import org.rivierarobotics.autos.rightscale.WiggleWiggleWiggle;
 import org.rivierarobotics.commands.CompressorControlCommand;
-import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
 import org.rivierarobotics.constants.RobotMap;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.driverinterface.Driver;
@@ -27,7 +20,6 @@ import org.rivierarobotics.util.CSVLogger;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoMode.PixelFormat;
-import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -35,11 +27,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import jaci.pathfinder.Waypoint;
 
 /**
  * The VM is configured to automatically run this class, and to call the

@@ -44,7 +44,6 @@ public class TrajectoryExecutor implements Runnable {
     public static final double K_OFFSET_HIGH = 0.0717;
     public static final double K_HEADING_DEFAULT = 0.03;
     public static final double K_HEADING_HIGH = 0.015;
-    public static final double MAX_VEL_WIGGLE = 10;
 
     public enum TrajectoryExecutionState {
         STATE_STABILIZING_TIMING, STATE_RUNNING_PROFILE, STATE_FINISHED, STATE_SENSOR_FAULT
@@ -84,7 +83,7 @@ public class TrajectoryExecutor implements Runnable {
             Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, MAX_VEL_HIGH, MAX_ACCEL_HIGH, DEFAULT_MAX_JERK);
 
     public TrajectoryExecutor(Waypoint[] waypoints, boolean rev,
-            double gyroOffset, double kGyro, DriveGear g, WiggleConfig wiggConf) {
+            double gyroOffset, double kGyro, DriveGear g, double speed) {
         gear = g;
         driveTrain = Robot.runningRobot.driveTrain;
         reversed = rev;
@@ -104,17 +103,14 @@ public class TrajectoryExecutor implements Runnable {
             kHeading = K_HEADING_DEFAULT;
  
         }
-        if(wiggConf != null) {
-            config.max_velocity = MAX_VEL_WIGGLE;
-        }
         if(!Double.isNaN(kGyro)) {
             kHeading = kGyro;
         }
+        if(!Double.isNaN(speed)) {
+            config.max_velocity = speed;
+        }
         master = Pathfinder.generate(waypoints, config);
         DriverStation.reportError("done!", false);
-        if(wiggConf != null) {
-            master = WiggleModifier.addWiggle(master, wiggConf);//add them wiggles
-        }
         TankModifier mod = new TankModifier(master).modify(RobotConstants.WHEEL_BASE_WIDTH);
         if (reversed) {
             leftTraj = mod.getRightTrajectory();
@@ -147,11 +143,11 @@ public class TrajectoryExecutor implements Runnable {
 
 
     public TrajectoryExecutor(Waypoint[] waypoints, boolean rev, double gyroOffset, DriveGear g) {
-        this(waypoints, rev, gyroOffset, Double.NaN, g,null);
+        this(waypoints, rev, gyroOffset, Double.NaN, g, Double.NaN);
     }
     
     public TrajectoryExecutor(Waypoint[] waypoints, boolean rev, double gyroOffset) {
-        this(waypoints, rev, gyroOffset, Double.NaN, DriveGear.GEAR_LOW,null);
+        this(waypoints, rev, gyroOffset, Double.NaN, DriveGear.GEAR_LOW, Double.NaN);
     }
 
     public void fillBuffer(double val) {
