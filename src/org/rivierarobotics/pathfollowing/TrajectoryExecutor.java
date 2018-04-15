@@ -112,17 +112,12 @@ public class TrajectoryExecutor implements Runnable {
         master = Pathfinder.generate(waypoints, config);
         DriverStation.reportError("done!", false);
         TankModifier mod = new TankModifier(master).modify(RobotConstants.WHEEL_BASE_WIDTH);
-        int lCPR, rCPR;
         if (reversed) {
             leftTraj = mod.getRightTrajectory();
-            lCPR = DriveTrainSide.ENCODER_CODES_PER_REV * 4;
             rightTraj = mod.getLeftTrajectory();
-            rCPR = 5000*4;
         } else {
             leftTraj = mod.getLeftTrajectory();
-            lCPR = 5000 * 4;
             rightTraj = mod.getRightTrajectory();
-            rCPR = DriveTrainSide.ENCODER_CODES_PER_REV * 4;
         }
         gyroCompensator = gyroOffset;
         currentPos = driveTrain.getDistance();
@@ -138,8 +133,8 @@ public class TrajectoryExecutor implements Runnable {
             leftFollow.configurePIDVA(KP, KI, KD, KV, KA);
             rightFollow.configurePIDVA(KP, KI, KD, KV, KA); 
         }
-        leftFollow.configureEncoder(0, lCPR, RobotConstants.WHEEL_DIAMETER);
-        rightFollow.configureEncoder(0, rCPR, RobotConstants.WHEEL_DIAMETER);
+        leftFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV_LEFT*4, RobotConstants.WHEEL_DIAMETER);
+        rightFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV_RIGHT*4, RobotConstants.WHEEL_DIAMETER);
         runner = new Notifier(this);
 
         dtBuffer = new CircularBuffer(NUM_SAMPLES);
@@ -180,8 +175,8 @@ public class TrajectoryExecutor implements Runnable {
         fillBuffer(UNINITIALIZED_SENTINEL);
         leftFollow.reset();
         rightFollow.reset();
-        leftFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV * 4, RobotConstants.WHEEL_DIAMETER);
-        rightFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV * 4, RobotConstants.WHEEL_DIAMETER);
+        leftFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV_LEFT * 4, RobotConstants.WHEEL_DIAMETER);
+        rightFollow.configureEncoder(0, DriveTrainSide.ENCODER_CODES_PER_REV_RIGHT * 4, RobotConstants.WHEEL_DIAMETER);
         currState = TrajectoryExecutionState.STATE_STABILIZING_TIMING;
         isFinished = false;
     }
@@ -218,9 +213,9 @@ public class TrajectoryExecutor implements Runnable {
                 double leftGyroPower = kHeading * headDiff;
                 double rightGyroPower = -kHeading * headDiff;
                 double leftTwist =
-                        leftGyroPower / kv / DriveTrainSide.DIST_PER_REV * DriveTrainSide.ENCODER_CODES_PER_REV * dt;
+                        leftGyroPower / kv / DriveTrainSide.DIST_PER_REV * DriveTrainSide.ENCODER_CODES_PER_REV_LEFT * dt;
                 double rightTwist =
-                        rightGyroPower / kv / DriveTrainSide.DIST_PER_REV * DriveTrainSide.ENCODER_CODES_PER_REV * dt;
+                        rightGyroPower / kv / DriveTrainSide.DIST_PER_REV * DriveTrainSide.ENCODER_CODES_PER_REV_RIGHT * dt;
                 leftGyroIntegrator += leftTwist;
                 rightGyroIntegrator += rightTwist;
 
@@ -233,8 +228,8 @@ public class TrajectoryExecutor implements Runnable {
                 driveTrain.setPowerLeftRight(left, right);
                 Vector2d vel = driveTrain.getVelocityIPS();
                 Robot.runningRobot.logger.storeValue(new double[] {
-                        currentPos.getX() / (double)(DriveTrainSide.ENCODER_CODES_PER_REV) * DriveTrainSide.DIST_PER_REV / 4.0,
-                        currentPos.getY() / (double)(DriveTrainSide.ENCODER_CODES_PER_REV) * DriveTrainSide.DIST_PER_REV / 4.0,
+                        currentPos.getX() / (double)(DriveTrainSide.ENCODER_CODES_PER_REV_LEFT) * DriveTrainSide.DIST_PER_REV / 4.0,
+                        currentPos.getY() / (double)(DriveTrainSide.ENCODER_CODES_PER_REV_RIGHT) * DriveTrainSide.DIST_PER_REV / 4.0,
                         vel.getX(), vel.getY(), segL.position, segR.position, segL.velocity, segR.velocity,
                         leftGyroIntegrator, rightGyroIntegrator, currentHeading, Pathfinder.r2d(segL.heading), left,
                         right, time });

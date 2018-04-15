@@ -12,17 +12,15 @@ import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
 public class CubeToScaleTCS extends SideDependentTrajectoryExecutor{
+    
+    public static final double OFFSET_X_RIGHT = MathUtil.feet2inches(19);
+    public static final double OFFSET_Y_RIGHT = MathUtil.feet2inches(7.5);
 
     public static final Waypoint[] RIGHT_PATH = new Waypoint[] { 
             new Waypoint(0, 0, 0),
-            new Waypoint(MathUtil.feet2inches(.5), 0,0),
-            new Waypoint(MathUtil.feet2inches(4.75), MathUtil.feet2inches(-1), 0)};
+            new Waypoint(MathUtil.feet2inches(24) - OFFSET_X_RIGHT, MathUtil.feet2inches(4.5) - OFFSET_Y_RIGHT, Pathfinder.d2r(-60))};
 
-    public static final Waypoint[] LEFT_PATH =
-            new Waypoint[] { 
-            new Waypoint(0, 0, 0),
-            new Waypoint(MathUtil.feet2inches(.5), 0,0),
-            new Waypoint(MathUtil.feet2inches(4.75), MathUtil.feet2inches(1), 0)};
+    public static final Waypoint[] LEFT_PATH = null;
 
     public CubeToScaleTCS() {
         requires(Robot.runningRobot.driveTrain);

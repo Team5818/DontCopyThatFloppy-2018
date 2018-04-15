@@ -1,4 +1,4 @@
-package org.rivierarobotics.autos.rightscale;
+package org.rivierarobotics.autos;
 
 import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
 import org.rivierarobotics.commands.MagicSpin;
@@ -15,18 +15,16 @@ import jaci.pathfinder.Waypoint;
 public class BackAndForth extends CommandGroup {
 
     public BackAndForth() {
-        TrajectoryExecutor first = new TrajectoryExecutor(
-                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(MathUtil.feet2inches(3), 0, 0) }, false, 0.0,
-                Double.NaN, DriveGear.GEAR_LOW, 10);
         TrajectoryExecutor forward = new TrajectoryExecutor(
-                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0) }, false, 0.0,
+                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(6, 0, 0) }, false, -180,
                 Double.NaN, DriveGear.GEAR_LOW, 10);
         TrajectoryExecutor backward = new TrajectoryExecutor(
-                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0) }, true, 0.0,
+                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(6, 0, 0) }, true, -180,
                 Double.NaN, DriveGear.GEAR_LOW, 10);
-        this.addSequential(new ExecuteTrajectoryCommand(first));
-        this.addSequential(new ExecuteTrajectoryCommand(forward));
-        this.addSequential(new ExecuteTrajectoryCommand(backward));
+        for(int i = 0; i < 5; i++) {
+            this.addSequential(new ExecuteTrajectoryCommand(forward));
+            this.addSequential(new ExecuteTrajectoryCommand(backward));
+        }
     }
 
     @Override

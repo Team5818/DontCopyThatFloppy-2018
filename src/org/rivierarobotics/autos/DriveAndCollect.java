@@ -1,5 +1,4 @@
 package org.rivierarobotics.autos;
-import org.rivierarobotics.autos.rightscale.BackAndForth;
 import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
 import org.rivierarobotics.commands.SetClampOpen;

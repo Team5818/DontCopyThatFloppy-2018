@@ -1,7 +1,9 @@
 package org.rivierarobotics.autos.rightscale;
 
+import org.rivierarobotics.autos.BackAndForth;
 import org.rivierarobotics.autos.SideDependentPunch;
 import org.rivierarobotics.autos.SideDependentShift;
+import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.MagicSpin;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
 import org.rivierarobotics.commands.SetClampOpen;
@@ -38,27 +40,30 @@ public class RightSideScaleAuto extends CommandGroup {
         this.addSequential(new TimedCommand(.5));
         this.addSequential(new SetPuncher(false));
         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
-        this.addSequential(new MagicSpin(-120));
+        this.addSequential(new MagicSpin(120));
         this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
         this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
-        //this.addSequential(new ScaleToCube());
-//
-//        CommandGroup driveBackGroup = new CommandGroup();
-//        CommandGroup getCubeGroup = new CommandGroup();
-//        Waypoint[] driveToCube = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(35, 0, 0) };
-//        driveBackGroup.addSequential(new ExecuteTrajectoryCommand(driveToCube, false, -180));
-//        driveBackGroup.addSequential(new WiggleWiggleWiggle());
-//        
-//        getCubeGroup.addParallel(driveBackGroup);
-//        getCubeGroup.addParallel(new CollectGrabRaise(false));
-//        this.addSequential(getCubeGroup);
-//
-//        CommandGroup placeGroup = new CommandGroup();
-//        placeGroup.addParallel(new CubeToScaleTCS());
-//        placeGroup.addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionBack()));
-//        placeGroup.addParallel(new AutoThrow(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 130));
-//        this.addSequential(placeGroup);
-//        this.addSequential(new TimedCommand(.5));
-//        this.addSequential(new BackUp());
+        this.addSequential(new ScaleToCube());
+        this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
+
+        CommandGroup collectGroup = new CommandGroup();
+        collectGroup.addParallel(new BackAndForth());
+        collectGroup.addParallel(new CollectGrabRaise(false));
+        
+        this.addSequential(collectGroup);
+        this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
+
+         CommandGroup returnGroup = new CommandGroup();
+         returnGroup.addParallel(new CubeToScaleTCS());
+         returnGroup.addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 250));
+         
+         this.addSequential(returnGroup);
+         
+         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
+         this.addSequential(new MagicSpin(60));
+         this.addSequential(new SetClampOpen(true));
+         this.addSequential(new TimedCommand(.5));
+         this.addSequential(new BackUp());
+         this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
     }
 }
