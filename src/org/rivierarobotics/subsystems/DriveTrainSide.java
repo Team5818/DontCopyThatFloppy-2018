@@ -129,7 +129,11 @@ public class DriveTrainSide {
     }
     
     public double getSidePositionInches() {
-        return (double)(masterTalon.getSelectedSensorPosition(0))/(double)(ENCODER_CODES_PER_REV)*DIST_PER_REV/4.0;
+        if(mySide == Side.RIGHT) {
+            return (double)(masterTalon.getSelectedSensorPosition(0))/(double)(ENCODER_CODES_PER_REV)*DIST_PER_REV/4.0;
+        }
+        return (double)(masterTalon.getSelectedSensorPosition(0))/(double)(5000)*DIST_PER_REV/4.0;
+
     }
 
     public double getRawPos() {
@@ -141,7 +145,10 @@ public class DriveTrainSide {
     }
     
     public double getSideVelocityIPS() {
-        return masterTalon.getSelectedSensorVelocity(0)/(double)(ENCODER_CODES_PER_REV)*DIST_PER_REV/4.0*10;
+        if(mySide == Side.RIGHT) {
+            return masterTalon.getSelectedSensorVelocity(0)/(double)(ENCODER_CODES_PER_REV)*DIST_PER_REV/4.0*10;
+        }
+        return masterTalon.getSelectedSensorVelocity(0)/(double)(5000)*DIST_PER_REV/4.0*10;
     }
     
     public double getRawSpeed() {

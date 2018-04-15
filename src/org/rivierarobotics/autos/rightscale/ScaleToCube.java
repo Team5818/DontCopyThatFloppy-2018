@@ -4,9 +4,11 @@ import org.rivierarobotics.autos.SideDependentTrajectoryExecutor;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.pathfollowing.TrajectoryExecutor;
 import org.rivierarobotics.robot.Robot;
+import org.rivierarobotics.subsystems.DriveTrain.DriveGear;
 import org.rivierarobotics.util.MathUtil;
 import org.rivierarobotics.util.Vector2d;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
@@ -19,11 +21,10 @@ public class ScaleToCube extends SideDependentTrajectoryExecutor {
     private static Vector2d start = new Vector2d(MathUtil.feet2inches(18),MathUtil.feet2inches(7.5));
     private static Vector2d diffVec = start.subtract(new Vector2d(OFFSET_X_RIGHT, OFFSET_Y_RIGHT));
     private static Vector2d rotated = diffVec.rotate(Pathfinder.d2r(-120));
-    private static Vector2d target = rotated.add(start);
     public static final Waypoint[] RIGHT_PATH =
             new Waypoint[] { 
                     new Waypoint(0, 0, 0), 
-                    new Waypoint(target.getX(), target.getY(), Pathfinder.d2r(180) - THETA_OFFSET)};
+                    new Waypoint(rotated.getX(), rotated.getY(), 60)};
 
     public static final Waypoint[] LEFT_PATH =  
             new Waypoint[] { 
@@ -33,8 +34,9 @@ public class ScaleToCube extends SideDependentTrajectoryExecutor {
 
     public ScaleToCube() {
         requires(Robot.runningRobot.driveTrain);
-        rightExecutor = new TrajectoryExecutor(RIGHT_PATH, true, 120);
-        leftExecutor = new TrajectoryExecutor(LEFT_PATH, true, -180);
+        DriverStation.reportError(rotated.toString(), false);
+        rightExecutor = new TrajectoryExecutor(RIGHT_PATH, true, 120, DriveGear.GEAR_HIGH);
+        leftExecutor = new TrajectoryExecutor(LEFT_PATH, true, -180, DriveGear.GEAR_HIGH);
     }
 
     protected boolean isRightSide() {

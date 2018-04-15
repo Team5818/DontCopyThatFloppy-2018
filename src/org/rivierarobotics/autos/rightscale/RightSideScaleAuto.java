@@ -2,10 +2,6 @@ package org.rivierarobotics.autos.rightscale;
 
 import org.rivierarobotics.autos.SideDependentPunch;
 import org.rivierarobotics.autos.SideDependentShift;
-import org.rivierarobotics.commands.AutoPunch;
-import org.rivierarobotics.commands.AutoThrow;
-import org.rivierarobotics.commands.CollectGrabRaise;
-import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
 import org.rivierarobotics.commands.MagicSpin;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
 import org.rivierarobotics.commands.SetClampOpen;
@@ -17,7 +13,6 @@ import org.rivierarobotics.subsystems.DriveTrain.DriveGear;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
-import jaci.pathfinder.Waypoint;
 
 public class RightSideScaleAuto extends CommandGroup {
 
@@ -26,7 +21,7 @@ public class RightSideScaleAuto extends CommandGroup {
         CommandGroup driveToScale = new CommandGroup();
         CommandGroup raiseGroup = new CommandGroup();
         driveToScale.addParallel(new DriveToScaleRight());
-        raiseGroup.addSequential(new TimedCommand(2));
+        raiseGroup.addSequential(new TimedCommand(1));
         raiseGroup.addSequential(
                 new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 180));
         driveToScale.addParallel(raiseGroup);
@@ -42,9 +37,11 @@ public class RightSideScaleAuto extends CommandGroup {
         this.addSequential(new SetClampOpen(true));
         this.addSequential(new TimedCommand(.5));
         this.addSequential(new SetPuncher(false));
+        this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
         this.addSequential(new MagicSpin(-120));
+        this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
         this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
-        this.addSequential(new ScaleToCube());
+        //this.addSequential(new ScaleToCube());
 //
 //        CommandGroup driveBackGroup = new CommandGroup();
 //        CommandGroup getCubeGroup = new CommandGroup();
