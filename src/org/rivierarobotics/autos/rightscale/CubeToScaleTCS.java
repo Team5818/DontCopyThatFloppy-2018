@@ -18,13 +18,11 @@ public class CubeToScaleTCS extends SideDependentTrajectoryExecutor{
 
     public static final Waypoint[] RIGHT_PATH = new Waypoint[] { 
             new Waypoint(0, 0, 0),
-            new Waypoint(MathUtil.feet2inches(24) - OFFSET_X_RIGHT, MathUtil.feet2inches(4.5) - OFFSET_Y_RIGHT, Pathfinder.d2r(-60))};
-
-    public static final Waypoint[] LEFT_PATH = null;
+            new Waypoint(MathUtil.feet2inches(24) - OFFSET_X_RIGHT, MathUtil.feet2inches(5) - OFFSET_Y_RIGHT, Pathfinder.d2r(-60))};
 
     public CubeToScaleTCS() {
         requires(Robot.runningRobot.driveTrain);
-        leftExecutor = new TrajectoryExecutor(LEFT_PATH, true, -180);
+        leftExecutor = null;
         rightExecutor = new TrajectoryExecutor(RIGHT_PATH, true, -180);
     }
 

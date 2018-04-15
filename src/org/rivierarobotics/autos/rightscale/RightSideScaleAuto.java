@@ -61,6 +61,7 @@ public class RightSideScaleAuto extends CommandGroup {
          
          this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
          this.addSequential(new MagicSpin(60));
+         this.addSequential(new SideDependentPunch(Side.RIGHT));
          this.addSequential(new SetClampOpen(true));
          this.addSequential(new TimedCommand(.5));
          this.addSequential(new BackUp());

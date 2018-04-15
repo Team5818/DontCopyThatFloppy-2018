@@ -76,12 +76,6 @@ public class TrajectoryExecutor implements Runnable {
     private DriveGear gear;
     private Object lock = new Object();
 
-    public static final Trajectory.Config CONFIG_LOW = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-            Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, DEFAULT_MAX_VEL, DEFAULT_MAX_ACCEL, DEFAULT_MAX_JERK);
-    
-    public static final Trajectory.Config CONFIG_HIGH = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-            Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, MAX_VEL_HIGH, MAX_ACCEL_HIGH, DEFAULT_MAX_JERK);
-
     public TrajectoryExecutor(Waypoint[] waypoints, boolean rev,
             double gyroOffset, double kGyro, DriveGear g, double speed) {
         gear = g;
@@ -91,13 +85,15 @@ public class TrajectoryExecutor implements Runnable {
         DriverStation.reportError("starting generation...", false);
         Config config;
         if(g == DriveGear.GEAR_HIGH) {
-            config = CONFIG_HIGH;
+            config =new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+                    Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, MAX_VEL_HIGH, MAX_ACCEL_HIGH, DEFAULT_MAX_JERK);
             kv = KV_HIGH;
             kOffset = K_OFFSET_HIGH;
             kHeading = K_HEADING_HIGH;
         }
         else {
-            config = CONFIG_LOW;
+            config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+                    Trajectory.Config.SAMPLES_LOW, DEFAULT_DT, DEFAULT_MAX_VEL, DEFAULT_MAX_ACCEL, DEFAULT_MAX_JERK);
             kv = KV;
             kOffset = K_OFFSET;
             kHeading = K_HEADING_DEFAULT;

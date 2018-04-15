@@ -13,7 +13,7 @@ public class BackUp extends SideDependentTrajectoryExecutor{
     
     public BackUp() {
         requires(Robot.runningRobot.driveTrain);
-        rightExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(40,0,0)},true, -60);
+        rightExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(28,0,0)},true, -60);
         leftExecutor =  new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(40,0,0)},true, 0);
     }
 
