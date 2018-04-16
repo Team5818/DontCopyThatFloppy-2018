@@ -16,10 +16,10 @@ public class BackAndForth extends CommandGroup {
 
     public BackAndForth() {
         TrajectoryExecutor forward = new TrajectoryExecutor(
-                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(6, 0, 0) }, false, -180,
+                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(18, 0, 0) }, false, -180,
                 Double.NaN, DriveGear.GEAR_LOW, 10);
         TrajectoryExecutor backward = new TrajectoryExecutor(
-                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(6, 0, 0) }, true, -180,
+                new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(18, 0, 0) }, true, -180,
                 Double.NaN, DriveGear.GEAR_LOW, 10);
         for(int i = 0; i < 5; i++) {
             this.addSequential(new ExecuteTrajectoryCommand(forward));

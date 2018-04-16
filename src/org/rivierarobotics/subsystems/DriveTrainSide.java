@@ -85,7 +85,7 @@ public class DriveTrainSide {
             ticks = dist/DIST_PER_REV*ENCODER_CODES_PER_REV_LEFT*4.0;
         }
         else {
-            ticks = dist/DIST_PER_REV*ENCODER_CODES_PER_REV_RIGHT*4.0;
+            ticks = dist/DIST_PER_REV*360*4.0;
         }
         DriverStation.reportError(""+ticks,false);
         double setPoint = masterTalon.getSelectedSensorPosition(MOTION_MAGIC_IDX) + ticks;

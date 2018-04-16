@@ -55,15 +55,16 @@ public class RightSideScaleAuto extends CommandGroup {
 
          CommandGroup returnGroup = new CommandGroup();
          returnGroup.addParallel(new CubeToScaleTCS());
-         returnGroup.addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 250));
+         returnGroup.addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 150));
          
          this.addSequential(returnGroup);
          
          this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
-         this.addSequential(new MagicSpin(60));
+         this.addSequential(new MagicSpin(45));
          this.addSequential(new SideDependentPunch(Side.RIGHT));
          this.addSequential(new SetClampOpen(true));
          this.addSequential(new TimedCommand(.5));
+         this.addSequential(new SetPuncher(false));
          this.addSequential(new BackUp());
          this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
     }
