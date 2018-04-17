@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
-public class DriveToScaleRight extends SideDependentTrajectoryExecutor {
+public class DriveToScaleRight2R extends SideDependentTrajectoryExecutor {
 
     public static final double X_OFFSET = RobotConstants.TOTAL_ROBOT_LENGTH / 2;
     public static final double Y_OFFSET = MathUtil.feet2inches(3.68); // width already included
@@ -31,7 +31,7 @@ public class DriveToScaleRight extends SideDependentTrajectoryExecutor {
                     new Waypoint(0, 0, 0), 
                     new Waypoint(MathUtil.feet2inches(20.0) - X_OFFSET, 0, 0) };
 
-    public DriveToScaleRight() {
+    public DriveToScaleRight2R() {
         requires(Robot.runningRobot.driveTrain);
         leftExecutor = new TrajectoryExecutor(LEFT_PATH, false, 0, DriveGear.GEAR_HIGH);
         rightExecutor = new TrajectoryExecutor(RIGHT_PATH, false, 0, DriveGear.GEAR_HIGH);

@@ -4,9 +4,9 @@ import org.rivierarobotics.autos.SideDependentSpin;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.robot.Robot;
 
-public class TurnToCube extends SideDependentSpin{
+public class TurnToCube2R extends SideDependentSpin{
 
-    public TurnToCube() {
+    public TurnToCube2R() {
         leftTarget = Double.NaN;
         rightTarget = 120;
         dt = Robot.runningRobot.driveTrain;

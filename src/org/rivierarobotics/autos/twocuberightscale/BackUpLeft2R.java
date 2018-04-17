@@ -9,9 +9,9 @@ import org.rivierarobotics.util.MathUtil;
 
 import jaci.pathfinder.Waypoint;
 
-public class BackUpLeft extends SideDependentTrajectoryExecutor{
+public class BackUpLeft2R extends SideDependentTrajectoryExecutor{
     
-    public BackUpLeft() {
+    public BackUpLeft2R() {
         requires(Robot.runningRobot.driveTrain);
         rightExecutor = null;
         leftExecutor =  new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(40,0,0)},true, 0);

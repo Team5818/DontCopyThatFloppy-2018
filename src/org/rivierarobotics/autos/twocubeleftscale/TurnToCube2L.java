@@ -1,17 +1,17 @@
-package org.rivierarobotics.autos.twocuberightscale;
+package org.rivierarobotics.autos.twocubeleftscale;
 
 import org.rivierarobotics.autos.SideDependentSpin;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.robot.Robot;
 
-public class LeftSideOnlySpinToScale extends SideDependentSpin{
+public class TurnToCube2L extends SideDependentSpin{
 
-    public LeftSideOnlySpinToScale() {
-        leftTarget = 0.0;
-        rightTarget = Double.NaN;
+    public TurnToCube2L() {
+        leftTarget = Double.NaN;
+        rightTarget = 120;
         dt = Robot.runningRobot.driveTrain;
         requires(dt);
-        setTimeout(.75);
+        setTimeout(1);
     }
     
     @Override

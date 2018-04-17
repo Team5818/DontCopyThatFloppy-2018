@@ -18,9 +18,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import jaci.pathfinder.Waypoint;
 
-public class ScaleAutoLeft extends CommandGroup {
+public class OneCubeScaleAutoLeft extends CommandGroup {
 
-    public ScaleAutoLeft() {
+    public OneCubeScaleAutoLeft() {
 
         CommandGroup driveToScale = new CommandGroup();
         CommandGroup raiseGroup = new CommandGroup();

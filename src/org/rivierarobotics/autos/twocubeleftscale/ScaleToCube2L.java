@@ -1,4 +1,4 @@
-package org.rivierarobotics.autos.twocuberightscale;
+package org.rivierarobotics.autos.twocubeleftscale;
 
 import org.rivierarobotics.autos.SideDependentTrajectoryExecutor;
 import org.rivierarobotics.constants.Side;
@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
-public class ScaleToCube extends SideDependentTrajectoryExecutor {
+public class ScaleToCube2L extends SideDependentTrajectoryExecutor {
 
     public static final double OFFSET_X_RIGHT = MathUtil.feet2inches(25);
     public static final double OFFSET_Y_RIGHT = MathUtil.feet2inches(6);
@@ -32,7 +32,7 @@ public class ScaleToCube extends SideDependentTrajectoryExecutor {
                     new Waypoint(MathUtil.feet2inches(4), 0, 0)};
 ;
 
-    public ScaleToCube() {
+    public ScaleToCube2L() {
         requires(Robot.runningRobot.driveTrain);
         rightExecutor = new TrajectoryExecutor(RIGHT_PATH, false, -120, DriveGear.GEAR_HIGH);
         leftExecutor = new TrajectoryExecutor(LEFT_PATH, true, 0, DriveGear.GEAR_HIGH);
