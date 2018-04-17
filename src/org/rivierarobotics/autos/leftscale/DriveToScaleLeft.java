@@ -20,10 +20,6 @@ public class DriveToScaleLeft extends SideDependentTrajectoryExecutor {
     public static final double RIGHT_PLACING_Y = MathUtil.feet2inches(7.0);
 
     public static final Waypoint[] LEFT_PATH =
-//            new Waypoint[] { 
-//                    new Waypoint(0, 0, 0), 
-//                    new Waypoint(MathUtil.feet2inches(15) - X_OFFSET, 0, 0),
-//                    new Waypoint(MathUtil.feet2inches(25.25) - X_OFFSET, MathUtil.feet2inches(8.25) - Y_OFFSET, 0) };
             new Waypoint[] { 
                     new Waypoint(0, 0, 0), 
                     new Waypoint(MathUtil.feet2inches(27) - X_OFFSET, 0, 0) };

@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 package org.rivierarobotics.robot;
 
+import org.rivierarobotics.autos.centerswitch.CenterSwitchAuto;
 import org.rivierarobotics.autos.twocuberightscale.TwoCubeRightSideScaleAuto;
 import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.constants.RobotMap;
@@ -76,7 +77,7 @@ public class Robot extends TimedRobot {
                 "Left Gyro Integ", "Right Gyro Integ", "Heading", "Set Heading", "LPow", "RPow", "Time" };
         logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG_VERBOSE_NEW", fields);
 
-        switchInAuto = new TwoCubeRightSideScaleAuto();
+        switchInAuto = new CenterSwitchAuto();
         switchOutAuto = new TwoCubeRightSideScaleAuto();
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
     }
@@ -95,7 +96,7 @@ public class Robot extends TimedRobot {
                     side[x] = Side.RIGHT;
             }
         }
-        fieldData = new Side[] { Side.LEFT, Side.RIGHT, Side.LEFT };
+        fieldData = side;
     }
 
     public Side[] getSide() {
