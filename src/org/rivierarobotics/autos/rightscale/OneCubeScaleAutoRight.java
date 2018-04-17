@@ -1,4 +1,4 @@
-package org.rivierarobotics.autos.leftscale;
+package org.rivierarobotics.autos.rightscale;
 
 import org.rivierarobotics.autos.SideDependentPunch;
 import org.rivierarobotics.commands.AutoPunch;
@@ -18,13 +18,13 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import jaci.pathfinder.Waypoint;
 
-public class OneCubeScaleAutoLeft extends CommandGroup {
+public class OneCubeScaleAutoRight extends CommandGroup {
 
-    public OneCubeScaleAutoLeft() {
+    public OneCubeScaleAutoRight() {
 
         CommandGroup driveToScale = new CommandGroup();
         CommandGroup raiseGroup = new CommandGroup();
-        driveToScale.addParallel(new DriveToScaleLeft());
+        driveToScale.addParallel(new DriveToScaleRight());
         raiseGroup.addSequential(new TimedCommand(1));
         raiseGroup.addSequential(
                 new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 180));
@@ -32,17 +32,17 @@ public class OneCubeScaleAutoLeft extends CommandGroup {
         this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
         this.addSequential(driveToScale);
         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
-        this.addSequential(new RightSideOnlyTurnToCrossL());//both
+        this.addSequential(new LeftSideOnlyTurnToCrossR());//both
         this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
-        this.addSequential(new RightSideOnlyDriveAcrossFieldL());//left
+        this.addSequential(new LeftSideOnlyDriveAcrossFieldR());//left
         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
-        this.addSequential(new RIghtSideOnlySpinToScaleL());
-        this.addSequential(new RightSideOnlyDriveToScaleL());//both
-        this.addSequential(new SideDependentPunch(Side.LEFT));
+        this.addSequential(new LeftSideOnlySpinToScaleR());
+        this.addSequential(new LeftSideOnlyDriveToScaleR());//both
+        this.addSequential(new SideDependentPunch(Side.RIGHT));
         this.addSequential(new SetClampOpen(true));
         this.addSequential(new TimedCommand(.5));
         this.addSequential(new SetPuncher(false));
-        this.addSequential(new BackUpL());
+        this.addSequential(new BackUpR());
         this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
     }
 }
