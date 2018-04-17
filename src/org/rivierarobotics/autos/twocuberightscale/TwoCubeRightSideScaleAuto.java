@@ -1,4 +1,4 @@
-package org.rivierarobotics.autos.rightscale;
+package org.rivierarobotics.autos.twocuberightscale;
 
 import org.rivierarobotics.autos.BackAndForth;
 import org.rivierarobotics.autos.SideDependentPunch;
@@ -17,9 +17,9 @@ import org.rivierarobotics.subsystems.DriveTrain.DriveGear;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
-public class RightSideScaleAuto extends CommandGroup {
+public class TwoCubeRightSideScaleAuto extends CommandGroup {
 
-    public RightSideScaleAuto() {
+    public TwoCubeRightSideScaleAuto() {
 
         CommandGroup driveToScale = new CommandGroup();
         CommandGroup raiseGroup = new CommandGroup();

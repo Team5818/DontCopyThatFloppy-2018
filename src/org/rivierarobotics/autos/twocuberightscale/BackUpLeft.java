@@ -1,4 +1,4 @@
-package org.rivierarobotics.autos.rightscale;
+package org.rivierarobotics.autos.twocuberightscale;
 
 import org.rivierarobotics.autos.SideDependentTrajectoryExecutor;
 import org.rivierarobotics.constants.Side;
