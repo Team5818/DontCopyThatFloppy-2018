@@ -29,14 +29,14 @@ public class TwoCubeLeftSideScaleAuto extends CommandGroup {
                 new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 180));
         driveToScale.addParallel(raiseGroup);
         this.addSequential(driveToScale);
-        this.addSequential(new SideDependentShift(Side.LEFT, DriveGear.GEAR_LOW));
+        this.addSequential(new SideDependentShift(Side.RIGHT, DriveGear.GEAR_LOW));
         this.addSequential(new RightSideOnlyTurnToCross2L());
-        this.addSequential(new SideDependentShift(Side.LEFT, DriveGear.GEAR_HIGH));
+        this.addSequential(new SideDependentShift(Side.RIGHT, DriveGear.GEAR_HIGH));
         this.addSequential(new RightSideOnlyDriveAcrossField2L());
-        this.addSequential(new SideDependentShift(Side.LEFT, DriveGear.GEAR_LOW));
+        this.addSequential(new SideDependentShift(Side.RIGHT, DriveGear.GEAR_LOW));
         this.addSequential(new RightSideOnlySpinToScale2L());
         this.addSequential(new RightSideOnlyDriveToScale2L());
-        this.addSequential(new SideDependentPunch(Side.RIGHT));
+        this.addSequential(new SideDependentPunch(Side.LEFT));
         this.addSequential(new SetClampOpen(true));
         this.addSequential(new TimedCommand(.5));
         this.addSequential(new SetPuncher(false));
@@ -44,7 +44,7 @@ public class TwoCubeLeftSideScaleAuto extends CommandGroup {
         this.addSequential(new TurnToCube2L());
         this.addSequential(new BackUpRight2L());
         this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
-        this.addSequential(new SideDependentWait(Side.LEFT, 15));
+        this.addSequential(new SideDependentWait(Side.RIGHT, 15));
         this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
         this.addSequential(new ScaleToCube2L());
         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
@@ -64,7 +64,7 @@ public class TwoCubeLeftSideScaleAuto extends CommandGroup {
          
          this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
          this.addSequential(new MagicSpin(-45));
-         this.addSequential(new SideDependentPunch(Side.RIGHT));
+         this.addSequential(new SideDependentPunch(Side.LEFT));
          this.addSequential(new SetClampOpen(true));
          this.addSequential(new TimedCommand(.5));
          this.addSequential(new SetPuncher(false));
