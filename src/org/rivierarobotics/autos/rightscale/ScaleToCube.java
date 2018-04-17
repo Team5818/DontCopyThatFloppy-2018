@@ -29,14 +29,13 @@ public class ScaleToCube extends SideDependentTrajectoryExecutor {
     public static final Waypoint[] LEFT_PATH =  
             new Waypoint[] { 
                     new Waypoint(0, 0, 0), 
-                    new Waypoint(MathUtil.feet2inches(3), 0, 0)};
+                    new Waypoint(MathUtil.feet2inches(4), 0, 0)};
 ;
 
     public ScaleToCube() {
         requires(Robot.runningRobot.driveTrain);
-        DriverStation.reportError(rotated.toString(), false);
         rightExecutor = new TrajectoryExecutor(RIGHT_PATH, false, -120, DriveGear.GEAR_HIGH);
-        leftExecutor = new TrajectoryExecutor(LEFT_PATH, true, -180, DriveGear.GEAR_HIGH);
+        leftExecutor = new TrajectoryExecutor(LEFT_PATH, true, 0, DriveGear.GEAR_HIGH);
     }
 
     protected boolean isRightSide() {

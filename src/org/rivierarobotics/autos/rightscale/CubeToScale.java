@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
-public class CubeToScaleTCS extends SideDependentTrajectoryExecutor{
+public class CubeToScale extends SideDependentTrajectoryExecutor{
     
     public static final double OFFSET_X_RIGHT = MathUtil.feet2inches(20);
     public static final double OFFSET_Y_RIGHT = MathUtil.feet2inches(8);
@@ -20,7 +20,7 @@ public class CubeToScaleTCS extends SideDependentTrajectoryExecutor{
             new Waypoint(0, 0, 0),
             new Waypoint(MathUtil.feet2inches(25) - OFFSET_X_RIGHT, MathUtil.feet2inches(5) - OFFSET_Y_RIGHT, Pathfinder.d2r(-60))};
 
-    public CubeToScaleTCS() {
+    public CubeToScale() {
         requires(Robot.runningRobot.driveTrain);
         leftExecutor = null;
         rightExecutor = new TrajectoryExecutor(RIGHT_PATH, true, -180);

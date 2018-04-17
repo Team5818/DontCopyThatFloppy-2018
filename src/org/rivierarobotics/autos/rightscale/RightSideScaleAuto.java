@@ -3,6 +3,7 @@ package org.rivierarobotics.autos.rightscale;
 import org.rivierarobotics.autos.BackAndForth;
 import org.rivierarobotics.autos.SideDependentPunch;
 import org.rivierarobotics.autos.SideDependentShift;
+import org.rivierarobotics.autos.SideDependentWait;
 import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.MagicSpin;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
@@ -40,9 +41,11 @@ public class RightSideScaleAuto extends CommandGroup {
         this.addSequential(new TimedCommand(.5));
         this.addSequential(new SetPuncher(false));
         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
-        this.addSequential(new MagicSpin(120));
-        this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
+        this.addSequential(new TurnToCube());
+        this.addSequential(new BackUpLeft());
         this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
+        this.addSequential(new SideDependentWait(Side.LEFT, 15));
+        this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
         this.addSequential(new ScaleToCube());
         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
 
@@ -54,7 +57,7 @@ public class RightSideScaleAuto extends CommandGroup {
         this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
 
          CommandGroup returnGroup = new CommandGroup();
-         returnGroup.addParallel(new CubeToScaleTCS());
+         returnGroup.addParallel(new CubeToScale());
          returnGroup.addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 150));
          
          this.addSequential(returnGroup);
@@ -65,7 +68,7 @@ public class RightSideScaleAuto extends CommandGroup {
          this.addSequential(new SetClampOpen(true));
          this.addSequential(new TimedCommand(.5));
          this.addSequential(new SetPuncher(false));
-         this.addSequential(new BackUp());
+         this.addSequential(new BackUpRight());
          this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
     }
 }
