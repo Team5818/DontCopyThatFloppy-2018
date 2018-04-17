@@ -9,12 +9,12 @@ import org.rivierarobotics.util.MathUtil;
 
 import jaci.pathfinder.Waypoint;
 
-public class LeftSideOnlyDriveAcrossField2L extends SideDependentTrajectoryExecutor{
+public class RightSideOnlyDriveAcrossField2L extends SideDependentTrajectoryExecutor{
     
-    public LeftSideOnlyDriveAcrossField2L() {
+    public RightSideOnlyDriveAcrossField2L() {
         requires(Robot.runningRobot.driveTrain);
-        leftExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(MathUtil.feet2inches(16.5),0,0)},false,-90, DriveGear.GEAR_HIGH);
-        rightExecutor = null;
+        rightExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(MathUtil.feet2inches(16.5),0,0)},false,-90, DriveGear.GEAR_HIGH);
+        leftExecutor = null;
     }
 
     @Override

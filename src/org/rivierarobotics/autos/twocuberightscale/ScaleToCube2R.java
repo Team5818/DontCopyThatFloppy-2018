@@ -17,7 +17,6 @@ public class ScaleToCube2R extends SideDependentTrajectoryExecutor {
 
     public static final double OFFSET_X_RIGHT = MathUtil.feet2inches(25);
     public static final double OFFSET_Y_RIGHT = MathUtil.feet2inches(6);
-    public static final double THETA_OFFSET = Pathfinder.d2r(120.0);
     private static Vector2d target = new Vector2d(MathUtil.feet2inches(20),MathUtil.feet2inches(8));
     private static Vector2d diffVec = target.subtract(new Vector2d(OFFSET_X_RIGHT, OFFSET_Y_RIGHT));
     private static Vector2d rotated = diffVec.rotate(Pathfinder.d2r(-120));
@@ -26,16 +25,10 @@ public class ScaleToCube2R extends SideDependentTrajectoryExecutor {
                     new Waypoint(0, 0, 0), 
                     new Waypoint(rotated.getX(), rotated.getY(), Pathfinder.d2r(60))};
 
-    public static final Waypoint[] LEFT_PATH =  
-            new Waypoint[] { 
-                    new Waypoint(0, 0, 0), 
-                    new Waypoint(MathUtil.feet2inches(4), 0, 0)};
-;
-
     public ScaleToCube2R() {
         requires(Robot.runningRobot.driveTrain);
         rightExecutor = new TrajectoryExecutor(RIGHT_PATH, false, -120, DriveGear.GEAR_HIGH);
-        leftExecutor = new TrajectoryExecutor(LEFT_PATH, true, 0, DriveGear.GEAR_HIGH);
+        leftExecutor = null;
     }
 
     protected boolean isRightSide() {

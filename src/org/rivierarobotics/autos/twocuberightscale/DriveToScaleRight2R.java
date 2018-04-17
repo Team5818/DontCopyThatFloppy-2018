@@ -16,8 +16,6 @@ public class DriveToScaleRight2R extends SideDependentTrajectoryExecutor {
 
     public static final double X_OFFSET = RobotConstants.TOTAL_ROBOT_LENGTH / 2;
     public static final double Y_OFFSET = MathUtil.feet2inches(3.68); // width already included
-    public static final double RIGHT_PLACING_X = MathUtil.feet2inches(26.5);
-    public static final double RIGHT_PLACING_Y = MathUtil.feet2inches(7.0);
 
     public static final Waypoint[] RIGHT_PATH =
             new Waypoint[] { 

@@ -30,19 +30,19 @@ public class TwoCubeLeftSideScaleAuto extends CommandGroup {
         driveToScale.addParallel(raiseGroup);
         this.addSequential(driveToScale);
         this.addSequential(new SideDependentShift(Side.LEFT, DriveGear.GEAR_LOW));
-        this.addSequential(new LeftSideOnlyTurnToCross2L());
+        this.addSequential(new RightSideOnlyTurnToCross2L());
         this.addSequential(new SideDependentShift(Side.LEFT, DriveGear.GEAR_HIGH));
-        this.addSequential(new LeftSideOnlyDriveAcrossField2L());
+        this.addSequential(new RightSideOnlyDriveAcrossField2L());
         this.addSequential(new SideDependentShift(Side.LEFT, DriveGear.GEAR_LOW));
-        this.addSequential(new LeftSideOnlySpinToScale2L());
-        this.addSequential(new LeftSideOnlyDriveToScale2L());
+        this.addSequential(new RightSideOnlySpinToScale2L());
+        this.addSequential(new RightSideOnlyDriveToScale2L());
         this.addSequential(new SideDependentPunch(Side.RIGHT));
         this.addSequential(new SetClampOpen(true));
         this.addSequential(new TimedCommand(.5));
         this.addSequential(new SetPuncher(false));
         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
         this.addSequential(new TurnToCube2L());
-        this.addSequential(new BackUpLeft2L());
+        this.addSequential(new BackUpRight2L());
         this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
         this.addSequential(new SideDependentWait(Side.LEFT, 15));
         this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
@@ -63,12 +63,12 @@ public class TwoCubeLeftSideScaleAuto extends CommandGroup {
          this.addSequential(returnGroup);
          
          this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
-         this.addSequential(new MagicSpin(45));
+         this.addSequential(new MagicSpin(-45));
          this.addSequential(new SideDependentPunch(Side.RIGHT));
          this.addSequential(new SetClampOpen(true));
          this.addSequential(new TimedCommand(.5));
          this.addSequential(new SetPuncher(false));
-         this.addSequential(new BackUpRight2L());
+         this.addSequential(new BackUpLeft2L());
          this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
     }
 }

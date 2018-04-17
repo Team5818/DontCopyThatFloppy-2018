@@ -4,11 +4,11 @@ import org.rivierarobotics.autos.SideDependentSpin;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.robot.Robot;
 
-public class LeftSideOnlyTurnToCross2L extends SideDependentSpin{
+public class RightSideOnlyTurnToCross2L extends SideDependentSpin{
 
-    public LeftSideOnlyTurnToCross2L() {
-        leftTarget = 90.0;
-        rightTarget = Double.NaN;
+    public RightSideOnlyTurnToCross2L() {
+        leftTarget = Double.NaN;
+        rightTarget = 90.0;
         dt = Robot.runningRobot.driveTrain;
         requires(dt);
         setTimeout(.75);

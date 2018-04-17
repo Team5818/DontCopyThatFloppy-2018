@@ -7,8 +7,8 @@ import org.rivierarobotics.robot.Robot;
 public class TurnToCube2L extends SideDependentSpin{
 
     public TurnToCube2L() {
-        leftTarget = Double.NaN;
-        rightTarget = 120;
+        rightTarget = Double.NaN;
+        leftTarget = -120;
         dt = Robot.runningRobot.driveTrain;
         requires(dt);
         setTimeout(1);
