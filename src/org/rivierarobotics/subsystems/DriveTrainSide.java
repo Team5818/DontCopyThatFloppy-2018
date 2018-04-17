@@ -23,8 +23,8 @@ public class DriveTrainSide {
     private static final int SLOT_IDX = 0;
     private static final int TIMEOUT = 10;
     public static final double DIST_PER_REV = RobotConstants.WHEEL_DIAMETER * Math.PI;
-    public static final int ENCODER_CODES_PER_REV_RIGHT = 308;
-    public static final int ENCODER_CODES_PER_REV_LEFT = 5000;
+    public static final int ENCODER_CODES_PER_REV_RIGHT = 360;
+    public static final int ENCODER_CODES_PER_REV_LEFT = 360;
     
     private WPI_TalonSRX slaveTalon1;
     private WPI_TalonSRX slaveTalon2;
@@ -85,7 +85,7 @@ public class DriveTrainSide {
             ticks = dist/DIST_PER_REV*ENCODER_CODES_PER_REV_LEFT*4.0;
         }
         else {
-            ticks = dist/DIST_PER_REV*360*4.0;
+            ticks = dist/DIST_PER_REV*ENCODER_CODES_PER_REV_RIGHT*4.0;
         }
         DriverStation.reportError(""+ticks,false);
         double setPoint = masterTalon.getSelectedSensorPosition(MOTION_MAGIC_IDX) + ticks;
