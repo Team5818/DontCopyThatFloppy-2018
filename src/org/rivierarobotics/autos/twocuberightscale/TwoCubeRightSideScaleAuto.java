@@ -26,7 +26,7 @@ public class TwoCubeRightSideScaleAuto extends CommandGroup {
         driveToScale.addParallel(new DriveToScaleRight2R());
         raiseGroup.addSequential(new TimedCommand(1));
         raiseGroup.addSequential(
-                new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 180));
+                new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 100));
         driveToScale.addParallel(raiseGroup);
         this.addSequential(driveToScale);
         this.addSequential(new SideDependentShift(Side.LEFT, DriveGear.GEAR_LOW));
@@ -43,7 +43,6 @@ public class TwoCubeRightSideScaleAuto extends CommandGroup {
         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
         this.addSequential(new TurnToCube2R());
         this.addSequential(new BackUpLeft2R());
-        this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
         this.addSequential(new SideDependentWait(Side.LEFT, 15));
         this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
         this.addSequential(new ScaleToCube2R());
@@ -58,7 +57,7 @@ public class TwoCubeRightSideScaleAuto extends CommandGroup {
 
          CommandGroup returnGroup = new CommandGroup();
          returnGroup.addParallel(new CubeToScale2R());
-         returnGroup.addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 150));
+         returnGroup.addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 180));
          
          this.addSequential(returnGroup);
          
