@@ -14,7 +14,7 @@ import jaci.pathfinder.Waypoint;
 public class CubeToScale2R extends SideDependentTrajectoryExecutor{
     
     public static final double OFFSET_X_RIGHT = MathUtil.feet2inches(20);
-    public static final double OFFSET_Y_RIGHT = MathUtil.feet2inches(8);
+    public static final double OFFSET_Y_RIGHT = MathUtil.feet2inches(7.5);
 
     public static final Waypoint[] RIGHT_PATH = new Waypoint[] { 
             new Waypoint(0, 0, 0),

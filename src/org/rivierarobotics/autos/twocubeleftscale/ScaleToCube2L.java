@@ -16,8 +16,8 @@ import jaci.pathfinder.Waypoint;
 public class ScaleToCube2L extends SideDependentTrajectoryExecutor {
 
     public static final double OFFSET_X_RIGHT = MathUtil.feet2inches(25);
-    public static final double OFFSET_Y_RIGHT = MathUtil.feet2inches(21);
-    private static Vector2d target = new Vector2d(MathUtil.feet2inches(20),MathUtil.feet2inches(19));
+    public static final double OFFSET_Y_RIGHT = MathUtil.feet2inches(22);
+    private static Vector2d target = new Vector2d(MathUtil.feet2inches(20),MathUtil.feet2inches(19.5));
     private static Vector2d diffVec = target.subtract(new Vector2d(OFFSET_X_RIGHT, OFFSET_Y_RIGHT));
     private static Vector2d rotated = diffVec.rotate(Pathfinder.d2r(120));
     public static final Waypoint[] LEFT_PATH =

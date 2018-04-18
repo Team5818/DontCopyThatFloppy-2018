@@ -14,11 +14,11 @@ import jaci.pathfinder.Waypoint;
 public class CubeToScale2L extends SideDependentTrajectoryExecutor{
     
     public static final double OFFSET_X_RIGHT = MathUtil.feet2inches(20);
-    public static final double OFFSET_Y_RIGHT = MathUtil.feet2inches(19);
+    public static final double OFFSET_Y_RIGHT = MathUtil.feet2inches(19.5);
 
     public static final Waypoint[] LEFT_PATH = new Waypoint[] { 
             new Waypoint(0, 0, 0),
-            new Waypoint(MathUtil.feet2inches(25) - OFFSET_X_RIGHT, MathUtil.feet2inches(21) - OFFSET_Y_RIGHT, Pathfinder.d2r(60))};
+            new Waypoint(MathUtil.feet2inches(25) - OFFSET_X_RIGHT, MathUtil.feet2inches(22) - OFFSET_Y_RIGHT, Pathfinder.d2r(60))};
 
     public CubeToScale2L() {
         requires(Robot.runningRobot.driveTrain);
