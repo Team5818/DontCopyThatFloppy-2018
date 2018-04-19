@@ -7,6 +7,7 @@
 package org.rivierarobotics.robot;
 
 import org.rivierarobotics.autos.centerswitch.CenterSwitchAuto;
+import org.rivierarobotics.autos.twocubeleftscale.TwoCubeLeftSideScaleAuto;
 import org.rivierarobotics.autos.twocuberightscale.TwoCubeRightSideScaleAuto;
 import org.rivierarobotics.commands.CompressorControlCommand;
 import org.rivierarobotics.constants.RobotMap;
@@ -78,7 +79,7 @@ public class Robot extends TimedRobot {
         logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG_VERBOSE_NEW", fields);
 
         switchInAuto = new CenterSwitchAuto();
-        switchOutAuto = new TwoCubeRightSideScaleAuto();
+        switchOutAuto = new TwoCubeLeftSideScaleAuto();
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
     }
 
