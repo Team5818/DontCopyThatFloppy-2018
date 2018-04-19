@@ -5,6 +5,7 @@ import org.rivierarobotics.constants.RobotConstants;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.pathfollowing.TrajectoryExecutor;
 import org.rivierarobotics.robot.Robot;
+import org.rivierarobotics.subsystems.DriveTrain.DriveGear;
 import org.rivierarobotics.util.MathUtil;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -19,11 +20,15 @@ public class CubeToScale2R extends SideDependentTrajectoryExecutor{
     public static final Waypoint[] RIGHT_PATH = new Waypoint[] { 
             new Waypoint(0, 0, 0),
             new Waypoint(MathUtil.feet2inches(25) - OFFSET_X_RIGHT, MathUtil.feet2inches(5) - OFFSET_Y_RIGHT, Pathfinder.d2r(-60))};
+    
+    public static final Waypoint[] LEFT_PATH = new Waypoint[] { 
+            new Waypoint(0, 0, 0),
+            new Waypoint(36, 0, 0)};
 
     public CubeToScale2R() {
         requires(Robot.runningRobot.driveTrain);
-        leftExecutor = null;
-        rightExecutor = new TrajectoryExecutor(RIGHT_PATH, true, -180);
+        leftExecutor = new TrajectoryExecutor(LEFT_PATH, true, -180, DriveGear.GEAR_HIGH);
+        rightExecutor = new TrajectoryExecutor(RIGHT_PATH, true, -180, DriveGear.GEAR_HIGH);
     }
 
     protected boolean isRightSide() {

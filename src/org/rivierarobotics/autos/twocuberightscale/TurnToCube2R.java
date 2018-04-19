@@ -7,7 +7,7 @@ import org.rivierarobotics.robot.Robot;
 public class TurnToCube2R extends SideDependentSpin{
 
     public TurnToCube2R() {
-        leftTarget = Double.NaN;
+        leftTarget = 180;
         rightTarget = 120;
         dt = Robot.runningRobot.driveTrain;
         requires(dt);

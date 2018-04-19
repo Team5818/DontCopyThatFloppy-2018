@@ -41,9 +41,8 @@ public class TwoCubeRightSideScaleAuto extends CommandGroup {
         this.addSequential(new TimedCommand(.5));
         this.addSequential(new SetPuncher(false));
         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
-        this.addSequential(new TurnToCube2R());
         this.addSequential(new BackUpLeft2R());
-        this.addSequential(new SideDependentWait(Side.LEFT, 15));
+        this.addSequential(new TurnToCube2R());
         this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
         this.addSequential(new ScaleToCube2R());
         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
@@ -60,7 +59,7 @@ public class TwoCubeRightSideScaleAuto extends CommandGroup {
          returnGroup.addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 180));
          
          this.addSequential(returnGroup);
-         
+         this.addSequential(new SideDependentWait(Side.LEFT, 15));
          this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
          this.addSequential(new MagicSpin(45));
          this.addSequential(new SideDependentPunch(Side.RIGHT));

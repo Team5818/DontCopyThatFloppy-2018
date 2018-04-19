@@ -24,10 +24,15 @@ public class ScaleToCube2L extends SideDependentTrajectoryExecutor {
             new Waypoint[] { 
                     new Waypoint(0, 0, 0), 
                     new Waypoint(rotated.getX(), rotated.getY(), Pathfinder.d2r(-60))};
+    
+    public static final Waypoint[] RIGHT_PATH =
+            new Waypoint[] { 
+                    new Waypoint(0, 0, 0), 
+                    new Waypoint(MathUtil.feet2inches(2.18), 0, 0)};
 
     public ScaleToCube2L() {
         requires(Robot.runningRobot.driveTrain);
-        rightExecutor = null;
+        rightExecutor =  new TrajectoryExecutor(RIGHT_PATH, false, 180, DriveGear.GEAR_HIGH);
         leftExecutor = new TrajectoryExecutor(LEFT_PATH, false, 120, DriveGear.GEAR_HIGH);
     }
 

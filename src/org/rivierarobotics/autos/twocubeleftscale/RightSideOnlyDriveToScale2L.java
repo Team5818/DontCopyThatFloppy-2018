@@ -11,7 +11,7 @@ public class RightSideOnlyDriveToScale2L extends SideDependentTrajectoryExecutor
     
     public RightSideOnlyDriveToScale2L() {
         requires(Robot.runningRobot.driveTrain);
-        rightExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(60,0,0)},false,0);
+        rightExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(56,0,0)},false,0);
         leftExecutor = null;
     }
 

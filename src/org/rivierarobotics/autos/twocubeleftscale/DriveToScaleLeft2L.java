@@ -27,7 +27,7 @@ public class DriveToScaleLeft2L extends SideDependentTrajectoryExecutor {
     public static final Waypoint[] RIGHT_PATH =
             new Waypoint[] { 
                     new Waypoint(0, 0, 0), 
-                    new Waypoint(MathUtil.feet2inches(20.0) - X_OFFSET, 0, 0) };
+                    new Waypoint(MathUtil.feet2inches(20.4) - X_OFFSET, 0, 0) };
 
     public DriveToScaleLeft2L() {
         requires(Robot.runningRobot.driveTrain);
