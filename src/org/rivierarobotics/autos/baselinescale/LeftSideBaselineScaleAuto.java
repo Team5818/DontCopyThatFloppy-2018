@@ -25,11 +25,11 @@ public class LeftSideBaselineScaleAuto extends CommandGroup {
         CommandGroup driveToScale = new CommandGroup();
         CommandGroup raiseGroup = new CommandGroup();
         driveToScale.addParallel(new DriveToScaleLeftBL());
-        raiseGroup.addSequential(new TimedCommand(1));
+        raiseGroup.addSequential(new TimedCommand(0));
         raiseGroup.addSequential(
                 new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 180));
         driveToScale.addParallel(raiseGroup);
-        this.addSequential(new SideDependentWait(Side.RIGHT,13));
+        this.addSequential(new SideDependentWait(Side.RIGHT,1));
         this.addSequential(driveToScale);
         this.addSequential(new SideDependentShift(Side.RIGHT, DriveGear.GEAR_LOW));
         this.addSequential(new RightSideOnlyTurnToCrossBL());
@@ -37,7 +37,9 @@ public class LeftSideBaselineScaleAuto extends CommandGroup {
         this.addSequential(new RightSideOnlyDriveAcrossFieldBL());
         this.addSequential(new SideDependentShift(Side.RIGHT, DriveGear.GEAR_LOW));
         this.addSequential(new RightSideOnlySpinToScaleBL());
+        this.addSequential(new SideDependentShift(Side.RIGHT, DriveGear.GEAR_HIGH));
         this.addSequential(new RightSideOnlyDriveToScaleBL());
+        this.addSequential(new SideDependentShift(Side.RIGHT, DriveGear.GEAR_LOW));
         this.addSequential(new RightSideOnlyLastSpinBL());
         this.addSequential(new SideDependentPunch(Side.LEFT));
         this.addSequential(new AutoPunch(-.2));

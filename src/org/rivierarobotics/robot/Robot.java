@@ -80,7 +80,7 @@ public class Robot extends TimedRobot {
         logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG_VERBOSE_NEW", fields);
 
         switchInAuto = new CenterSwitchAuto();
-        switchOutAuto = new TwoCubeLeftSideScaleAuto();
+        switchOutAuto = new LeftSideBaselineScaleAuto();
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
     }
 

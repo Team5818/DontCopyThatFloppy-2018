@@ -11,7 +11,7 @@ public class RightSideOnlyTurnToCrossBL extends SideDependentSpin{
         rightTarget = -90.0;
         dt = Robot.runningRobot.driveTrain;
         requires(dt);
-        setTimeout(.75);
+        setTimeout(1);
     }
     
     @Override

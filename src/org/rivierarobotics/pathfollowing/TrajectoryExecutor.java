@@ -43,7 +43,7 @@ public class TrajectoryExecutor implements Runnable {
     public static final double K_OFFSET = 0.045;
     public static final double K_OFFSET_HIGH = 0.0717;
     public static final double K_HEADING_DEFAULT = 0.03;
-    public static final double K_HEADING_HIGH = 0.02;
+    public static final double K_HEADING_HIGH = 0.015;
 
     public enum TrajectoryExecutionState {
         STATE_STABILIZING_TIMING, STATE_RUNNING_PROFILE, STATE_FINISHED, STATE_SENSOR_FAULT

@@ -13,7 +13,7 @@ public class RightSideOnlyDriveAcrossFieldBL extends SideDependentTrajectoryExec
     
     public RightSideOnlyDriveAcrossFieldBL() {
         requires(Robot.runningRobot.driveTrain);
-        rightExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(MathUtil.feet2inches(19.64),0,0)},false, 90, DriveGear.GEAR_HIGH);
+        rightExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(MathUtil.feet2inches(21),0,0)},false, 90, DriveGear.GEAR_HIGH);
         leftExecutor = null;
     }
 
