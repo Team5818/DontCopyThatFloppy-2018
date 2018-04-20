@@ -94,10 +94,6 @@ public class Arm extends Subsystem {
     }
 
     public double getPosition() {
-        int pos = masterTalon.getSelectedSensorPosition(MOTION_MAGIC_IDX);
-        if(pos < RobotDependentConstants.Constant.getLowerArmSoftLimit() - 200) {
-            masterTalon.setSelectedSensorPosition(pos + 4096, MOTION_MAGIC_IDX, TIMEOUT);
-        }
         return masterTalon.getSelectedSensorPosition(MOTION_MAGIC_IDX);
     }
 

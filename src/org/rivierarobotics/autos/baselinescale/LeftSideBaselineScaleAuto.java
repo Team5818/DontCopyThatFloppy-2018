@@ -29,6 +29,7 @@ public class LeftSideBaselineScaleAuto extends CommandGroup {
         raiseGroup.addSequential(
                 new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 180));
         driveToScale.addParallel(raiseGroup);
+        this.addSequential(new SideDependentWait(Side.RIGHT,13));
         this.addSequential(driveToScale);
         this.addSequential(new SideDependentShift(Side.RIGHT, DriveGear.GEAR_LOW));
         this.addSequential(new RightSideOnlyTurnToCrossBL());

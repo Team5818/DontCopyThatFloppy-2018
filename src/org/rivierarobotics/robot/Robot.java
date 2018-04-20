@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 package org.rivierarobotics.robot;
 
+import org.rivierarobotics.autos.baselinescale.LeftSideBaselineScaleAuto;
 import org.rivierarobotics.autos.centerswitch.CenterSwitchAuto;
 import org.rivierarobotics.autos.twocubeleftscale.TwoCubeLeftSideScaleAuto;
 import org.rivierarobotics.autos.twocuberightscale.TwoCubeRightSideScaleAuto;
@@ -150,7 +151,7 @@ public class Robot extends TimedRobot {
         driveTrain.unslaveLeft();
         if (camCollect == null) {
             camCollect = CameraServer.getInstance().startAutomaticCapture(0);
-            boolean setCam = camCollect.setVideoMode(PixelFormat.kMJPEG, 320, 240, 30);
+            boolean setCam = camCollect.setVideoMode(PixelFormat.kYUYV, 320, 240, 30);
             if (!setCam) {
                 DriverStation.reportError("Failed to set camera parameters", false);
             }

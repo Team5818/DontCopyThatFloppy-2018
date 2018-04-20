@@ -83,7 +83,7 @@ public class Driver {
         //autoCollectButton.whenPressed(new CollectGrabRaise(true));
 
         removeArmLimitButton.whenPressed(new RemoveArmLimit(JS_ARM));//engage PTO + disengage arm
-        startWinchingButton.whenPressed(new StartWinching());
+        startWinchingButton.whenPressed(new StartWinching(JS_ARM));
         reengageArmButton.whenPressed(new SetArmEngagedAndPTODisengaged(true));//reengage + lower arm, winching at same time
         disengageArmButton.whenPressed(new SetArmEngagedAndPTODisengaged(false));//disengage arm when it hits bottom
         lockWinchButton.whenPressed(new SetArmBrake(true));//lock robot in place after climb   
