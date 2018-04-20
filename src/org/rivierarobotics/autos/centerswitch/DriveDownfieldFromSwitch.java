@@ -19,13 +19,13 @@ public class DriveDownfieldFromSwitch extends SideDependentTrajectoryExecutor {
             new Waypoint(0, 0, 0),
             new Waypoint(X_OFFSET - MathUtil.feet2inches(8.0), Y_OFFSET_LEFT - MathUtil.feet2inches(20.5), Pathfinder.d2r(-90)),
             new Waypoint(X_OFFSET - MathUtil.feet2inches(14.0), Y_OFFSET_LEFT - MathUtil.feet2inches(23.0), Pathfinder.d2r(-180)),
-            new Waypoint(X_OFFSET - MathUtil.feet2inches(21.0), Y_OFFSET_LEFT - MathUtil.feet2inches(23.0), Pathfinder.d2r(-180)) };
+            new Waypoint(X_OFFSET - MathUtil.feet2inches(16.0), Y_OFFSET_LEFT - MathUtil.feet2inches(23.0), Pathfinder.d2r(-180)) };
 
     public static final Waypoint[] RIGHT_PATH = new Waypoint[] { 
             new Waypoint(0, 0, 0),
             new Waypoint(X_OFFSET - MathUtil.feet2inches(8.0), Y_OFFSET_RIGHT - MathUtil.feet2inches(6.5), Pathfinder.d2r(90)),
             new Waypoint(X_OFFSET - MathUtil.feet2inches(14.0), Y_OFFSET_RIGHT - MathUtil.feet2inches(4.0), Pathfinder.d2r(180)),
-            new Waypoint(X_OFFSET - MathUtil.feet2inches(21.0), Y_OFFSET_RIGHT - MathUtil.feet2inches(4.0), Pathfinder.d2r(180)) };
+            new Waypoint(X_OFFSET - MathUtil.feet2inches(16.0), Y_OFFSET_RIGHT - MathUtil.feet2inches(4.0), Pathfinder.d2r(180)) };
 
     public DriveDownfieldFromSwitch() {
         requires(Robot.runningRobot.driveTrain);

@@ -11,7 +11,7 @@ public class RightSideOnlySpinToScaleBL extends SideDependentSpin{
         rightTarget = 0.0;
         dt = Robot.runningRobot.driveTrain;
         requires(dt);
-        setTimeout(1);
+        setTimeout(.75);
     }
     
     @Override
