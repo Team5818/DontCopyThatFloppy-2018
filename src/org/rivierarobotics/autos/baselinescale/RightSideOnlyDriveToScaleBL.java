@@ -1,4 +1,4 @@
-package org.rivierarobotics.autos.rightscale;
+package org.rivierarobotics.autos.baselinescale;
 
 import org.rivierarobotics.autos.SideDependentTrajectoryExecutor;
 import org.rivierarobotics.constants.Side;
@@ -9,16 +9,17 @@ import org.rivierarobotics.util.MathUtil;
 
 import jaci.pathfinder.Waypoint;
 
-public class LeftSideOnlyDriveAcrossField extends SideDependentTrajectoryExecutor{
+public class RightSideOnlyDriveToScaleBL extends SideDependentTrajectoryExecutor{
     
-    public LeftSideOnlyDriveAcrossField() {
+    public RightSideOnlyDriveToScaleBL() {
         requires(Robot.runningRobot.driveTrain);
-        leftExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(MathUtil.feet2inches(16.5),0,0)},false,-90, DriveGear.GEAR_HIGH);
-        rightExecutor = null;
+        rightExecutor = new TrajectoryExecutor(new Waypoint[] {new Waypoint(0,0,0),new Waypoint(MathUtil.feet2inches(22),0,0)},false,0, DriveGear.GEAR_HIGH);
+        leftExecutor = null;
     }
 
     @Override
     protected boolean isRightSide() {
         return Robot.runningRobot.getSide()[1] == Side.RIGHT;
     }
+
 }

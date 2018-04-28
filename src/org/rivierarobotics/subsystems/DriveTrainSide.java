@@ -23,7 +23,8 @@ public class DriveTrainSide {
     private static final int SLOT_IDX = 0;
     private static final int TIMEOUT = 10;
     public static final double DIST_PER_REV = RobotConstants.WHEEL_DIAMETER * Math.PI;
-    public static final int ENCODER_CODES_PER_REV = 360;
+    public static final int ENCODER_CODES_PER_REV_RIGHT = 360;
+    public static final int ENCODER_CODES_PER_REV_LEFT = 360;
     
     private WPI_TalonSRX slaveTalon1;
     private WPI_TalonSRX slaveTalon2;
@@ -79,7 +80,13 @@ public class DriveTrainSide {
     }
 
     public void driveDistanceMotionMagicInches(double dist) {
-        double ticks = dist/DIST_PER_REV*ENCODER_CODES_PER_REV*4.0;
+        double ticks;
+        if(mySide == Side.LEFT) {
+            ticks = dist/DIST_PER_REV*ENCODER_CODES_PER_REV_LEFT*4.0;
+        }
+        else {
+            ticks = dist/DIST_PER_REV*ENCODER_CODES_PER_REV_RIGHT*4.0;
+        }
         DriverStation.reportError(""+ticks,false);
         double setPoint = masterTalon.getSelectedSensorPosition(MOTION_MAGIC_IDX) + ticks;
         masterTalon.set(ControlMode.MotionMagic, setPoint);
@@ -129,7 +136,11 @@ public class DriveTrainSide {
     }
     
     public double getSidePositionInches() {
-        return (double)(masterTalon.getSelectedSensorPosition(0))/(double)(ENCODER_CODES_PER_REV)*DIST_PER_REV/4.0;
+        if(mySide == Side.RIGHT) {
+            return (double)(masterTalon.getSelectedSensorPosition(0))/(double)(ENCODER_CODES_PER_REV_RIGHT)*DIST_PER_REV/4.0;
+        }
+        return (double)(masterTalon.getSelectedSensorPosition(0))/(double)(ENCODER_CODES_PER_REV_LEFT)*DIST_PER_REV/4.0;
+
     }
 
     public double getRawPos() {
@@ -141,7 +152,10 @@ public class DriveTrainSide {
     }
     
     public double getSideVelocityIPS() {
-        return masterTalon.getSelectedSensorVelocity(0)/ENCODER_CODES_PER_REV*DIST_PER_REV/4.0*10;
+        if(mySide == Side.RIGHT) {
+            return masterTalon.getSelectedSensorVelocity(0)/(double)(ENCODER_CODES_PER_REV_RIGHT)*DIST_PER_REV/4.0*10;
+        }
+        return masterTalon.getSelectedSensorVelocity(0)/(double)(ENCODER_CODES_PER_REV_LEFT)*DIST_PER_REV/4.0*10;
     }
     
     public double getRawSpeed() {

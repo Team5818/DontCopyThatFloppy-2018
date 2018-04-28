@@ -1,14 +1,14 @@
-package org.rivierarobotics.autos.rightscale;
+package org.rivierarobotics.autos.baselinescale;
 
 import org.rivierarobotics.autos.SideDependentSpin;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.robot.Robot;
 
-public class LeftSideOnlySpinToScale extends SideDependentSpin{
+public class RightSideOnlyTurnToCrossBL extends SideDependentSpin{
 
-    public LeftSideOnlySpinToScale() {
-        leftTarget = 0.0;
-        rightTarget = Double.NaN;
+    public RightSideOnlyTurnToCrossBL() {
+        leftTarget = Double.NaN;
+        rightTarget = -90.0;
         dt = Robot.runningRobot.driveTrain;
         requires(dt);
         setTimeout(.75);

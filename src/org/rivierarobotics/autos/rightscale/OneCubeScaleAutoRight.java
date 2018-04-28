@@ -18,51 +18,31 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import jaci.pathfinder.Waypoint;
 
-public class TwoCubeScaleAuto extends CommandGroup {
+public class OneCubeScaleAutoRight extends CommandGroup {
 
-    public TwoCubeScaleAuto() {
+    public OneCubeScaleAutoRight() {
 
         CommandGroup driveToScale = new CommandGroup();
         CommandGroup raiseGroup = new CommandGroup();
         driveToScale.addParallel(new DriveToScaleRight());
-        raiseGroup.addSequential(new TimedCommand(2));
+        raiseGroup.addSequential(new TimedCommand(1));
         raiseGroup.addSequential(
                 new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 180));
         driveToScale.addParallel(raiseGroup);
         this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
         this.addSequential(driveToScale);
         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
-        this.addSequential(new LeftSideOnlyTurnToCross());//both
+        this.addSequential(new LeftSideOnlyTurnToCrossR());//both
         this.addSequential(new ShiftGear(DriveGear.GEAR_HIGH));
-        this.addSequential(new LeftSideOnlyDriveAcrossField());//left
+        this.addSequential(new LeftSideOnlyDriveAcrossFieldR());//left
         this.addSequential(new ShiftGear(DriveGear.GEAR_LOW));
-        this.addSequential(new LeftSideOnlySpinToScale());
-        this.addSequential(new LeftSideOnlyDriveToScale());//both
+        this.addSequential(new LeftSideOnlySpinToScaleR());
+        this.addSequential(new LeftSideOnlyDriveToScaleR());//both
         this.addSequential(new SideDependentPunch(Side.RIGHT));
         this.addSequential(new SetClampOpen(true));
         this.addSequential(new TimedCommand(.5));
         this.addSequential(new SetPuncher(false));
-//        
-//        this.addSequential(new ScaleToCube());
-//        this.addSequential(new MagicSpin(180));
-//
-//        CommandGroup driveBackGroup = new CommandGroup();
-//        CommandGroup getCubeGroup = new CommandGroup();
-//        Waypoint[] driveToCube = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(35, 0, 0) };
-//        driveBackGroup.addSequential(new ExecuteTrajectoryCommand(driveToCube, false, -180));
-//        driveBackGroup.addSequential(new WiggleWiggleWiggle());
-//        
-//        getCubeGroup.addParallel(driveBackGroup);
-//        getCubeGroup.addParallel(new CollectGrabRaise(false));
-//        this.addSequential(getCubeGroup);
-//
-//        CommandGroup placeGroup = new CommandGroup();
-//        placeGroup.addParallel(new CubeToScaleTCS());
-//        placeGroup.addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionBack()));
-//        placeGroup.addParallel(new AutoThrow(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 130));
-//        this.addSequential(placeGroup);
-//        this.addSequential(new TimedCommand(.5));
-        this.addSequential(new BackUp());
+        this.addSequential(new BackUpR());
         this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
     }
 }

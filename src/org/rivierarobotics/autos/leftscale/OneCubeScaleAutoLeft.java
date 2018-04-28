@@ -18,14 +18,14 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import jaci.pathfinder.Waypoint;
 
-public class ScaleAutoLeft extends CommandGroup {
+public class OneCubeScaleAutoLeft extends CommandGroup {
 
-    public ScaleAutoLeft() {
+    public OneCubeScaleAutoLeft() {
 
         CommandGroup driveToScale = new CommandGroup();
         CommandGroup raiseGroup = new CommandGroup();
         driveToScale.addParallel(new DriveToScaleLeft());
-        raiseGroup.addSequential(new TimedCommand(2));
+        raiseGroup.addSequential(new TimedCommand(1));
         raiseGroup.addSequential(
                 new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 180));
         driveToScale.addParallel(raiseGroup);
@@ -42,26 +42,6 @@ public class ScaleAutoLeft extends CommandGroup {
         this.addSequential(new SetClampOpen(true));
         this.addSequential(new TimedCommand(.5));
         this.addSequential(new SetPuncher(false));
-//        
-//        this.addSequential(new ScaleToCube());
-//        this.addSequential(new MagicSpin(180));
-//
-//        CommandGroup driveBackGroup = new CommandGroup();
-//        CommandGroup getCubeGroup = new CommandGroup();
-//        Waypoint[] driveToCube = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(35, 0, 0) };
-//        driveBackGroup.addSequential(new ExecuteTrajectoryCommand(driveToCube, false, -180));
-//        driveBackGroup.addSequential(new WiggleWiggleWiggle());
-//        
-//        getCubeGroup.addParallel(driveBackGroup);
-//        getCubeGroup.addParallel(new CollectGrabRaise(false));
-//        this.addSequential(getCubeGroup);
-//
-//        CommandGroup placeGroup = new CommandGroup();
-//        placeGroup.addParallel(new CubeToScaleTCS());
-//        placeGroup.addParallel(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionBack()));
-//        placeGroup.addParallel(new AutoThrow(RobotDependentConstants.Constant.getArmPositionScaleHigh() - 130));
-//        this.addSequential(placeGroup);
-//        this.addSequential(new TimedCommand(.5));
         this.addSequential(new BackUpL());
         this.addSequential(new SetArmAngleGainScheduled(RobotDependentConstants.Constant.getArmPositionSwitchMid()));
     }

@@ -6,12 +6,11 @@
 /*----------------------------------------------------------------------------*/
 package org.rivierarobotics.robot;
 
-import org.rivierarobotics.autos.JustDrive;
+import org.rivierarobotics.autos.baselinescale.LeftSideBaselineScaleAuto;
 import org.rivierarobotics.autos.centerswitch.CenterSwitchAuto;
-import org.rivierarobotics.autos.leftscale.ScaleAutoLeft;
-import org.rivierarobotics.autos.rightscale.TwoCubeScaleAuto;
+import org.rivierarobotics.autos.twocubeleftscale.TwoCubeLeftSideScaleAuto;
+import org.rivierarobotics.autos.twocuberightscale.TwoCubeRightSideScaleAuto;
 import org.rivierarobotics.commands.CompressorControlCommand;
-import org.rivierarobotics.commands.ExecuteTrajectoryCommand;
 import org.rivierarobotics.constants.RobotMap;
 import org.rivierarobotics.constants.Side;
 import org.rivierarobotics.driverinterface.Driver;
@@ -24,7 +23,6 @@ import org.rivierarobotics.util.CSVLogger;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoMode.PixelFormat;
-import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -32,11 +30,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import jaci.pathfinder.Waypoint;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -85,7 +80,7 @@ public class Robot extends TimedRobot {
         logger = new CSVLogger("/home/lvuser/templogs/PROFILE_LOG_VERBOSE_NEW", fields);
 
         switchInAuto = new CenterSwitchAuto();
-        switchOutAuto = new ScaleAutoLeft();
+        switchOutAuto = new TwoCubeLeftSideScaleAuto();
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
     }
 
@@ -126,7 +121,6 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         queryFieldData();
         driveTrain.resetGyro();
-        driveTrain.shiftGear(DriveGear.GEAR_LOW);
         compressor.stop();
         if (autoSelector.get()) {
             autonomousCommand = switchOutAuto;
@@ -157,7 +151,7 @@ public class Robot extends TimedRobot {
         driveTrain.unslaveLeft();
         if (camCollect == null) {
             camCollect = CameraServer.getInstance().startAutomaticCapture(0);
-            boolean setCam = camCollect.setVideoMode(PixelFormat.kMJPEG, 320, 240, 30);
+            boolean setCam = camCollect.setVideoMode(PixelFormat.kYUYV, 320, 240, 30);
             if (!setCam) {
                 DriverStation.reportError("Failed to set camera parameters", false);
             }
