@@ -65,6 +65,8 @@ public class Driver {
         
         JoystickButton autoCollectButton = new JoystickButton(JS_FLOPPIES, ControlMap.COLLECT_SEQUENCE_BUTTON);
         JoystickButton autoPunch = new JoystickButton(JS_FLOPPIES, ControlMap.AUTO_PUNCH_BUTTON);
+        
+        JoystickButton deadManButton = new JoystickButton(JS_RIGHT_BUTTONS, ControlMap.DEAD_MAN_BUTTON);
 
         
         // Bind Commands
