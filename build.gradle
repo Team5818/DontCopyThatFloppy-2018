@@ -1,5 +1,5 @@
 plugins {
-    id "org.rivierarobotics.frcgrantle" version "0.1.8"
+    id "org.rivierarobotics.frcgrantle" version "0.1.10"
 }
 grantle.with {
     packageBase = 'org.rivierarobotics.robot'
