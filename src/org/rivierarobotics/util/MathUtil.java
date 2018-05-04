@@ -1,5 +1,5 @@
 /*
- * This file is part of Rogue-Cephalopod, licensed under the GNU General Public License (GPLv3).
+ * This file is part of DontCopyThatFloppy-2018, licensed under the GNU General Public License (GPLv3).
  *
  * Copyright (c) Riviera Robotics <https://github.com/Team5818>
  * Copyright (c) contributors
