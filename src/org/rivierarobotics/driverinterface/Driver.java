@@ -4,6 +4,7 @@ import org.rivierarobotics.commands.AutoPunch;
 import org.rivierarobotics.commands.AutoThrow;
 import org.rivierarobotics.commands.CollectGrabRaise;
 import org.rivierarobotics.commands.CompressorControlCommand;
+import org.rivierarobotics.commands.DisableAllSubsystems;
 import org.rivierarobotics.commands.LeaveClimbCommand;
 import org.rivierarobotics.commands.MagicSpin;
 import org.rivierarobotics.commands.SetArmAngleGainScheduled;
@@ -32,6 +33,8 @@ public class Driver {
     public Joystick JS_LEFT_BUTTONS;
     public Joystick JS_RIGHT_BUTTONS;
     public DriveCalculator DRIVE_CALC;
+    
+    private DisableAllSubsystems robotStopper;
 
     public Driver() {
         // Instantiate Sticks
@@ -84,6 +87,8 @@ public class Driver {
         shiftHigh.whenPressed(new ShiftGear(DriveTrain.DriveGear.GEAR_HIGH));
         //autoCollectButton.whenPressed(new CollectGrabRaise(true));
 
+        // remove climb for adams school
+        /*
         removeArmLimitButton.whenPressed(new RemoveArmLimit(JS_ARM));//engage PTO + disengage arm
         startWinchingButton.whenPressed(new StartWinching(JS_ARM));
         reengageArmButton.whenPressed(new SetArmEngagedAndPTODisengaged(true));//reengage + lower arm, winching at same time
@@ -91,7 +96,11 @@ public class Driver {
         lockWinchButton.whenPressed(new SetArmBrake(true));//lock robot in place after climb   
         unlockWinchButton.whenPressed(new SetArmBrake(false));//for the pits
         leaveClimbButton.whenPressed(new LeaveClimbCommand());//for crisis mode
-        
+        */
         autoPunch.whenPressed(new AutoPunch(-0.2));
+        
+        robotStopper = new DisableAllSubsystems();
+        deadManButton.whenReleased(robotStopper);
+        deadManButton.cancelWhenPressed(robotStopper);
     }
 }
