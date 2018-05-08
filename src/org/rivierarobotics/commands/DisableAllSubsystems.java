@@ -20,6 +20,7 @@ public class DisableAllSubsystems extends Command {
 		requires(arm);
 		requires(clamp);
 		requires(floppies);
+		setInterruptible(false);
 	}
 	
 	@Override
