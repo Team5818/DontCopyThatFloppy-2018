@@ -8,14 +8,14 @@ import org.rivierarobotics.subsystems.Floppies;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class RequireAllSubsystems extends Command {
+public class DisableAllSubsystems extends Command {
 	
 	private final DriveTrain dt = Robot.runningRobot.driveTrain;
 	private final Arm arm = Robot.runningRobot.arm;
 	private final Clamp clamp = Robot.runningRobot.clamp;
 	private final Floppies floppies = Robot.runningRobot.floppies;
 	
-	public RequireAllSubsystems() {
+	public DisableAllSubsystems() {
 		requires(dt);
 		requires(arm);
 		requires(clamp);
