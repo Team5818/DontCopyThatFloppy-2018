@@ -14,6 +14,7 @@ public class DisableAllSubsystems extends Command {
 	private final Arm arm = Robot.runningRobot.arm;
 	private final Clamp clamp = Robot.runningRobot.clamp;
 	private final Floppies floppies = Robot.runningRobot.floppies;
+	private final boolean open = clamp.isOpen()
 	
 	public DisableAllSubsystems() {
 		requires(dt);
@@ -27,7 +28,7 @@ public class DisableAllSubsystems extends Command {
 	protected void execute() {
 		dt.setPowerLeftRight(0, 0);
 		arm.setPower(0);
-		clamp.setOpen(clamp.isOpen());
+		clamp.setOpen(open);
 		clamp.setPuncher(false);
 		floppies.setPower(0, 0);
 	}
