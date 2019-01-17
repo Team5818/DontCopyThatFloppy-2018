@@ -101,6 +101,13 @@ public class Robot extends TimedRobot {
         switchInAuto = new CenterSwitchAuto();
         switchOutAuto = new TwoCubeLeftSideScaleAuto();
         compDisable = new CompressorControlCommand(driver.JS_LEFT_BUTTONS);
+        if (camCollect == null) {
+            camCollect = CameraServer.getInstance().startAutomaticCapture(0);
+            boolean setCam = camCollect.setVideoMode(PixelFormat.kYUYV, 320, 240, 30);
+            if (!setCam) {
+                DriverStation.reportError("Failed to set camera parameters", false);
+            }
+        }
     }
 
     public void queryFieldData() {
@@ -168,13 +175,6 @@ public class Robot extends TimedRobot {
         }
         compDisable.start();
         driveTrain.unslaveLeft();
-        if (camCollect == null) {
-            camCollect = CameraServer.getInstance().startAutomaticCapture(0);
-            boolean setCam = camCollect.setVideoMode(PixelFormat.kYUYV, 320, 240, 30);
-            if (!setCam) {
-                DriverStation.reportError("Failed to set camera parameters", false);
-            }
-        }
         arm.stop();
     }
 
